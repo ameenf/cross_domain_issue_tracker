@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 
 /**
@@ -46,6 +49,9 @@ public class HelloWorldServlet extends HttpServlet {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		PrintWriter writer = response.getWriter();
 		
+		PostgresConnection dbs = new PostgresConnection();
+		dbs.connect();
+		
 		writer.println("<html>");
 		writer.println("<head><title>Helloo World Servlet</title></head>");
 		writer.println("<body>");
@@ -62,6 +68,21 @@ public class HelloWorldServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	public void connect(){
+	      Connection c = null;
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/testdb",
+	            "postgres", "123");
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	      System.out.println("Opened database successfully");
 	}
 
 }

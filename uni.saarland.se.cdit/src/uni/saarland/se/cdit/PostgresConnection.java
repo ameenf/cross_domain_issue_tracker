@@ -6,6 +6,11 @@ import java.sql.SQLException;
 public class PostgresConnection {
 	public static void main(String[] argv) {
 
+		PostgresConnection test = new PostgresConnection();
+		test.connect();
+	}
+	
+	public void connect(){
 		System.out.println("-------- PostgreSQL "
 				+ "JDBC Connection Testing ------------");
 
