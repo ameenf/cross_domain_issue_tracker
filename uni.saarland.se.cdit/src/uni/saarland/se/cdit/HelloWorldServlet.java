@@ -56,6 +56,9 @@ public class HelloWorldServlet extends HttpServlet {
 		writer.println("<head><title>Helloo World Servlet</title></head>");
 		writer.println("<body>");
 		writer.println("	<h1>Hello World from a Sevlet!</h1>");
+		writer.println("");
+		writer.println("");
+		writer.println("");
 		writer.println("<body>");
 		writer.println("</html>");
 			
@@ -69,20 +72,4 @@ public class HelloWorldServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
-	public void connect(){
-	      Connection c = null;
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/testdb",
-	            "postgres", "123");
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
-	      }
-	      System.out.println("Opened database successfully");
-	}
-
 }
