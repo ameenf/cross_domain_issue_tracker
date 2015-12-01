@@ -18,55 +18,58 @@ import javax.ws.rs.core.MediaType;
 
 		TicketDAO dao = new TicketDAO();
 		
-		/*@GET
+		@GET
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-		public List<Wine> findAll() {
+		public List<Ticket> findAll() {
 			System.out.println("findAll");
 			return dao.findAll();
 		}
-
-		@GET @Path("search/{query}")
+		
+		
+		@GET @Path("searchByTitle/{query}")
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-		public List<Wine> findByName(@PathParam("query") String query) {
-			System.out.println("findByName: " + query);
-			return dao.findByName(query);
-		}*/
+		public List<Ticket> findByTitle(@PathParam("query") String query) {
+			System.out.println("findByTitle: " + query);
+			return dao.findByTitle(query);
+		}
+		
+		@GET @Path("searchByType/{query}")
+		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		public List<Ticket> findByType(@PathParam("query") String query) {
+			System.out.println("findByType: " + query);
+			return dao.findByType(query);
+		}
 
-		@GET @Path("{id}")
+		@GET @Path("searchById/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 		public Ticket findById(@PathParam("id") String id) {
 			System.out.println("findById " + id);
 			return dao.findById(Integer.parseInt(id));
 		}
-		
-		@GET
-		@Produces(MediaType.TEXT_HTML)
-		public String htmlTest(){
-			return "<html><title>TEST</title><body><h1>Hello</h1></body></html>";
-			
-		}
-/*
+	
+
 		@POST
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-		public Wine create(Wine wine) {
-			System.out.println("creating wine");
-			return dao.create(wine);
-		}
-
-		@PUT @Path("{id}")
-		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-		public Wine update(Wine wine) {
-			System.out.println("Updating wine: " + wine.getName());
-			dao.update(wine);
-			return wine;
+		public Ticket create(Ticket ticket) {
+			System.out.println("creating ticket");
+			return dao.create(ticket);
 		}
 		
-		@DELETE @Path("{id}")
+
+		@PUT @Path("update/{id}")
+		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		public Ticket update(Ticket ticket) {
+			System.out.println("Updating ticket: " + ticket.getTitle());
+			dao.update(ticket);
+			return ticket;
+		}
+		
+		@DELETE @Path("remove/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 		public void remove(@PathParam("id") int id) {
 			dao.remove(id);
-		}*/
+		}
 
 	}

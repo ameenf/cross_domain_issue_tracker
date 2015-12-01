@@ -4,13 +4,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 
 @XmlRootElement
+
 public class Ticket {
 
     private int id;
 
     private String title;
 
-    private Timestamp creationDate;
+    private String creationDate;
 
     private String description;
     
@@ -38,11 +39,11 @@ public class Ticket {
 		this.title = title;
 	}
 
-	public Timestamp getCreationDate() {
+	public String getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Timestamp creation_date) {
+	public void setCreationDate(String creation_date) {
 		this.creationDate = creation_date;
 	}
 
