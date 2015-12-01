@@ -1,7 +1,7 @@
 package uni.saarland.se.cdit;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @XmlRootElement
 public class Ticket {
@@ -10,7 +10,7 @@ public class Ticket {
 
     private String title;
 
-    private Date creationDate;
+    private Timestamp creationDate;
 
     private String description;
     
@@ -34,15 +34,15 @@ public class Ticket {
 		return title;
 	}
 
-	public void setName(String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public Date getCreationDate() {
+	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creation_date) {
+	public void setCreationDate(Timestamp creation_date) {
 		this.creationDate = creation_date;
 	}
 
