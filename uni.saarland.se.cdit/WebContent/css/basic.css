@@ -1,0 +1,12 @@
+body {
+    font-family: sans-serif;
+    font-size: 1em;
+    padding: 2em;
+}
+
+textarea,
+input[type] {
+    margin-top: 10px;
+}
+
+#dlgNewTicket {}

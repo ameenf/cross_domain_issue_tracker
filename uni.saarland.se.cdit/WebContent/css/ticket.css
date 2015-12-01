@@ -1,0 +1,14 @@
+#btnTicketContent {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: auto;
+    width: auto;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+
+.btnTicket {
+/*    position: fixed;*/
+    
+}

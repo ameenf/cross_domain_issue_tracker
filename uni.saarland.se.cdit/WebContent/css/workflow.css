@@ -1,0 +1,42 @@
+li {
+    width: 8em;
+    height: 8em;
+    text-align: center;
+    line-height: 7.5em;
+    border-radius: 10em;
+    border-color: white;
+    border-width: thick;
+    border-style: solid;
+    background: #31a9db;
+    margin: 0 4em;
+    display: inline-block;
+    color: white;
+    position: relative;
+}
+
+li::before {
+    content: '';
+    position: absolute;
+    top: 3.7em;
+    left: -9em;
+    width: 10em;
+    height: .5em;
+    background: #31a9db;
+    z-index: -1;
+}
+
+li:first-child::before {
+    display: none;
+}
+
+.active {
+    background: #31a9db;
+}
+
+.active ~ li {
+    background: lightblue;
+}
+
+.active ~ li::before {
+    background: lightblue;
+}
