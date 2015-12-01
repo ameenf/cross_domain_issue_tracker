@@ -44,16 +44,14 @@ public class Hello {
   public String sayHtmlHello() {
 	  
 	  Connection c = null;
+	try {
+		c = ConnectionHelper.getConnection();
+	} catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
 	  
-		try {
-			c = DriverManager.getConnection(
-					"jdbc:postgresql://127.0.0.1:5432/cdit_db", "postgres",
-					"admin");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String sql = "SELECT * FROM users";
+	  String sql = "SELECT * FROM users";
 		
 		
 		PreparedStatement ps;
