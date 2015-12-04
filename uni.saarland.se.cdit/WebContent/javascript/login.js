@@ -37,6 +37,7 @@ function login(email, pwd) {
                 console.log(result);
                 console.log(textStatus);
                 console.log(xhr);
+                location.href = 'http://localhost:8080/uni.saarland.se.cdit/main.html';
                 if (result) {
 
                 }
