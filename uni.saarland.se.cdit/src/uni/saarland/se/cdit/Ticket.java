@@ -1,7 +1,6 @@
 package uni.saarland.se.cdit;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
 
 @XmlRootElement
 
@@ -22,6 +21,8 @@ public class Ticket {
     private int statusId;
     
     private int projectId;
+    
+    /*public Ticket(){}*/
 
 	public int getId() {
 		return id;
@@ -86,5 +87,17 @@ public class Ticket {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	/*@Override
+	public String toString() {
+		return "Ticket [id=" + id + 
+						", title=" + title +
+						", creationDate=" + creationDate +
+						", description=" + description +
+						", priorityId=" + priorityId +
+						", statusId=" + statusId +
+						", projectId=" + projectId +
+						"]";
+	}*/
 
 }

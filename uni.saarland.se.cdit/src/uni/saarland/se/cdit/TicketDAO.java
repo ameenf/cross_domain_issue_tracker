@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,10 +107,11 @@ public class TicketDAO {
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement("INSERT INTO ticket(ticket_title, ticket_description, ticket_creation_date, priority_id, type_id, status_id, project_id) " +
-                                    "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[] { "ID" });
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[] { "ticket_id" });
+            
             ps.setString(1, ticket.getTitle());
             ps.setString(2, ticket.getDescription());
-            ps.setString(3, ticket.getCreationDate());
+            ps.setTimestamp(3, Timestamp.valueOf(ticket.getCreationDate()));
             ps.setInt(4, ticket.getPriorityId());
             ps.setInt(5, ticket.getTypeId());
             ps.setInt(6, ticket.getStatusId());
@@ -119,6 +121,7 @@ public class TicketDAO {
             rs.next();
             // Update the id in the returned object. This is important as this value must be returned to the client.
             int id = rs.getInt(1);
+            
             ticket.setId(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,6 +182,7 @@ public class TicketDAO {
         ticket.setTypeId(rs.getInt("type_id"));
         ticket.setProjectId(rs.getInt("project_id"));
         ticket.setDescription(rs.getString("ticket_description"));
+        ticket.setStatusId(rs.getInt("status_id"));
         return ticket;
     }
 	

@@ -3,7 +3,7 @@ package uni.saarland.se.cdit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//import java.util.ResourceBundle;
+import java.util.ResourceBundle;
 
 public class ConnectionHelper
 {
@@ -14,12 +14,12 @@ public class ConnectionHelper
 	{
     	String driver = null;
 		try {
-			Class.forName("org.postgresql.Driver");
-			url = "jdbc:postgresql://localhost:5432/cdit_db?user=postgres&password=admin";
-            /*ResourceBundle bundle = ResourceBundle.getBundle("cellar");
+			//Class.forName("org.postgresql.Driver");
+			//url = "jdbc:postgresql://localhost:5432/cdit_db?user=postgres&password=admin";
+            ResourceBundle bundle = ResourceBundle.getBundle("cdit");
             driver = bundle.getString("jdbc.driver");
             Class.forName(driver);
-            url=bundle.getString("jdbc.url");*/
+            url=bundle.getString("jdbc.url");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
