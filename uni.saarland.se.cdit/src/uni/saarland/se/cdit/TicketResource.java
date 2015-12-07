@@ -68,8 +68,8 @@ import javax.ws.rs.core.MediaType;
 		
 		@DELETE @Path("remove/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-		public void remove(@PathParam("id") int id) {
-			dao.remove(id);
+		public boolean remove(@PathParam("id") int id) {
+			return dao.remove(id);
 		}
 
 	}

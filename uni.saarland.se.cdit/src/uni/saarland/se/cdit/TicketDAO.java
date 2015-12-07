@@ -141,7 +141,7 @@ public class TicketDAO {
             										  "priority_id=?, type_id=?, status_id=?, project_id=? WHERE ticket_id=?");
             ps.setString(1, ticket.getTitle());
             ps.setString(2, ticket.getDescription());
-            ps.setString(3, ticket.getCreationDate());
+            ps.setTimestamp(3, Timestamp.valueOf(ticket.getCreationDate()));
             ps.setInt(4, ticket.getPriorityId());
             ps.setInt(5, ticket.getTypeId());
             ps.setInt(6, ticket.getStatusId());
