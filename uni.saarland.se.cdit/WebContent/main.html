@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="javascript/basic.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="javascript/workflow.js"></script>
@@ -26,69 +25,22 @@
 </head>
 
 <body>
-    <script src=""></script>
+
+<button id="btnGetTicket1">Get ticket1</button>
+<button id="btnGetTicket2">Get ticket2</button>
+<button id="btnGetTicket3">Get ticket3</button>
+<button id="btnDeleteTicket1">Delete ticket1</button>
+<button id="btnDeleteTicket2">Delete ticket2</button>
+<button id="btnDeleteTicket3">Delete ticket3</button>
     <button id="btnNewTicket">New ticket</button>
-    <div id="dlgNewTicket" title="New Ticket">
-        <form>
-            <label for="ticketTitle">Title:</label>
-            <input type="text" name="ticketTitle">
-            <br>
-            <label for="ticketDescription">Description:</label>
-            <textarea name="ticketDescription"></textarea>
-            <br>
-            <input name="ticketUpload" type="file" accept="text/*">
-            <br>
-            <label for="ticketPriority">Priority:</label>
-            <select name="ticketPriority" id="selPriority">
-                <option value="1">High</option>
-                <option value="2">Medium</option>
-                <option value="3">Normal</option>
-                <option value="4">Low</option>
-            </select>
-            <br>
-            <label for="ticketType">Type:</label>
-            <select name="ticketType" id="selType">
-                <option value="1">Meeting</option>
-                <option value="2">Programming</option>
-                <option value="3">Design</option>
-                <option value="4">Development</option>
-                <option value="5">Documentation</option>
-            </select>
-            <br>
-            <label for="ticketStatus">Status:</label>
-            <select name="ticketStatus" id="selStatus">
-                <option value="1">In Progress</option>
-                <option value="2">Done</option>
-                <option value="3">New</option>
-                <option value="4">Resolved</option>
-                <option value="5">Closed</option>
-                <br>
-                <label for="ticketStatus">Status:</label>
-            </select>
-            <br>
 
-
-        </form>
-        <div id="btnTicketContent">
-            <button id="btnTicketCreate" class="btnTicket">Create Ticket</button>
-            <button id="btnTicketCancel" class="btnTicket">Cancel</button>
-        </div>
-    </div>
-
-
-    <ul>
-        <li class="drop">Todo</li>
-        <li class="drop">Implementation</li>
-        <li class="drop active">Finish</li>
-    </ul>
 
     <div class="ticket1">
-        <div class="Title">Meet</div>
-        <div class="Description">blablablblbab</div>
-        <div class="Attachement">Attachement</div>
-        <div class="Priority">High</div>
-        <div class="Type">Type</div>
-        <div class="Status">Status</div>
+        <div class="Title"></div>
+        <div class="Description"></div>
+        <div class="Priority"></div>
+        <div class="Type"></div>
+        <div class="Status"></div>
     </div>
 
 </body>
