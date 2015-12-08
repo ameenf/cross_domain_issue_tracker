@@ -5,14 +5,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class FileDAO {
 	
-	String serverPath;
+	private String serverPath;
+	
 	public FileDAO(){
 		ResourceBundle bundle = ResourceBundle.getBundle("cdit");
 		serverPath = bundle.getString("files.path");
+	}
+	
+	public String getFilesPath(){
+		return serverPath;
 	}
 
 	public boolean saveFile(InputStream uploadedInputStream, String fileName) {
@@ -33,4 +41,30 @@ public class FileDAO {
 		}
 		return success;
 	}
+	
+	public Attachment create(Attachment file) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "INSERT INTO attachment(attachment_type, attachment_url, ticket_id) VALUES (?, ?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "attachment_id" });
+            
+            ps.setString(1, file.getType());
+            ps.setString(2, file.getUrl());
+            ps.setInt(3, file.getTicketId());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            file.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return file;
+    }
 }

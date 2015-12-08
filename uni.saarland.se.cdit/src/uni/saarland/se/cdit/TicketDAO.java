@@ -104,25 +104,34 @@ public class TicketDAO {
 	public Ticket create(Ticket ticket) {
         Connection c = null;
         PreparedStatement ps = null;
+        String statement;
+        if(ticket.getCreationDate()==null){
+        	statement= "INSERT INTO ticket(ticket_title, ticket_description, priority_id, type_id, status_id, project_id) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?)";
+        }else{
+        	statement= "INSERT INTO ticket(ticket_title, ticket_description, priority_id, type_id, status_id, project_id, ticket_creation_date) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        }
         try {
             c = ConnectionHelper.getConnection();
-            ps = c.prepareStatement("INSERT INTO ticket(ticket_title, ticket_description, ticket_creation_date, priority_id, type_id, status_id, project_id) " +
-                                    "VALUES (?, ?, ?, ?, ?, ?, ?)", new String[] { "ticket_id" });
+            ps = c.prepareStatement(statement, new String[] { "ticket_id", "ticket_creation_date" });
             
             ps.setString(1, ticket.getTitle());
             ps.setString(2, ticket.getDescription());
-            ps.setTimestamp(3, Timestamp.valueOf(ticket.getCreationDate()));
-            ps.setInt(4, ticket.getPriorityId());
-            ps.setInt(5, ticket.getTypeId());
-            ps.setInt(6, ticket.getStatusId());
-            ps.setInt(7, ticket.getProjectId());
+            ps.setInt(3, ticket.getPriorityId());
+            ps.setInt(4, ticket.getTypeId());
+            ps.setInt(5, ticket.getStatusId());
+            ps.setInt(6, ticket.getProjectId());
+            if(ticket.getCreationDate()!=null)
+            	ps.setTimestamp(7, Timestamp.valueOf(ticket.getCreationDate()));
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
             // Update the id in the returned object. This is important as this value must be returned to the client.
             int id = rs.getInt(1);
-            
+            Timestamp ts = rs.getTimestamp(2);            
             ticket.setId(id);
+            ticket.setCreationDate(ts.toString());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

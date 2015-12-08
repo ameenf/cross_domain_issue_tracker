@@ -3,7 +3,7 @@ package uni.saarland.se.cdit;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class File {
+public class Attachment {
 
 	private int id;
 	private String type;
