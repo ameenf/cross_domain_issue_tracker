@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 
+    <!-- Boostrap start -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -21,20 +28,40 @@
     <link rel="stylesheet" href="css/basic.css">
     <link rel="stylesheet" href="css/workflow.css">
     <link rel="stylesheet" href="css/ticket.css">
+    <link rel="stylesheet" href="css/main.css">
 
 </head>
 
 <body>
 
-<button id="btnGetTicket1">Get ticket1</button>
-<button id="btnGetTicket2">Get ticket2</button>
-<button id="btnGetTicket3">Get ticket3</button>
-<button id="btnDeleteTicket1">Delete ticket1</button>
-<button id="btnDeleteTicket2">Delete ticket2</button>
-<button id="btnDeleteTicket3">Delete ticket3</button>
-    <button id="btnNewTicket">New ticket</button>
+    <button id="btnGetTicket1">Get ticket1</button>
+    <button id="btnGetTicket2">Get ticket2</button>
+    <button id="btnGetTicket3">Get ticket3</button>
+    <button id="btnDeleteTicket1">Delete ticket1</button>
+    <button id="btnDeleteTicket2">Delete ticket2</button>
+    <button id="btnDeleteTicket3">Delete ticket3</button>
+    <div class="wrapper">
+        <div class="newTicket">
+            <h5 style="text-align:center">New Ticket</h5>
+            <input type="text" id="input_new_title">
+            <input type="text" id="input_new_desc">
+            <input type="text" id="input_new_priority">
+            <input type="text" id="input_new_type">
+            <input type="text" id="input_new_status">
+            <button id="btnNewTicket">New ticket</button>
+        </div>
+        <div class="getTicket">
+            <h5 style="text-align:center">Get Ticket</h5>
+            <input type="text" id="input_get_ticket">
+            <button id="btnGetTicket">Get ticket</button>
+        </div>
 
-
+        <div class="removeTicket">
+            <h5 style="text-align:center">Delete Ticket</h5>
+            <input type="text" id="input_rmv_ticket">
+            <button id="btnDeleteTicket">Delete ticket</button>
+        </div>
+    </div>
     <div class="ticket1">
         <div class="Title"></div>
         <div class="Description"></div>
