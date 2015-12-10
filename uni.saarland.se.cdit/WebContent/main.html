@@ -19,7 +19,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="javascript/workflow.js"></script>
-    <script src="javascript/main.js"></script>
+    <!--    <script src="javascript/main.js"></script>-->
+    <script src="javascript/json.js"></script>
 
 
     <link rel="stylesheet" href="css/jqueryUI/jquery-ui.css">
@@ -34,27 +35,40 @@
 
 <body>
 
-    <button id="btnGetTicket1">Get ticket1</button>
-    <button id="btnGetTicket2">Get ticket2</button>
-    <button id="btnGetTicket3">Get ticket3</button>
-    <button id="btnDeleteTicket1">Delete ticket1</button>
-    <button id="btnDeleteTicket2">Delete ticket2</button>
-    <button id="btnDeleteTicket3">Delete ticket3</button>
+    <!--
+<button id="btnGetTicket1">Get ticket1</button>
+<button id="btnGetTicket2">Get ticket2</button>
+<button id="btnGetTicket3">Get ticket3</button>
+<button id="btnDeleteTicket1">Delete ticket1</button>
+<button id="btnDeleteTicket2">Delete ticket2</button>
+<button id="btnDeleteTicket3">Delete ticket3</button>
+-->
+
+
+
     <div class="wrapper">
+
+        <div class="getTicket">
+            <h5 style="text-align:center">Get Ticket</h5>
+            <button id="btnGetTicket">Get ticket</button>
+        </div>
+
         <div class="newTicket">
-            <h5 style="text-align:center">New Ticket</h5>
-            <input type="text" id="input_new_title">
-            <input type="text" id="input_new_desc">
-            <input type="text" id="input_new_priority">
-            <input type="text" id="input_new_type">
+            <h5 style="text-align:center">New Ticket</h5> Title :
+            <input type="text" id="input_new_title"> Description :
+            <input type="text" id="input_new_desc"> Priority :
+            <input type="text" id="input_new_priority"> Type :
+            <input type="text" id="input_new_type"> Status :
             <input type="text" id="input_new_status">
             <button id="btnNewTicket">New ticket</button>
         </div>
+        <!--
         <div class="getTicket">
             <h5 style="text-align:center">Get Ticket</h5>
             <input type="text" id="input_get_ticket">
             <button id="btnGetTicket">Get ticket</button>
         </div>
+-->
 
         <div class="removeTicket">
             <h5 style="text-align:center">Delete Ticket</h5>
@@ -62,13 +76,16 @@
             <button id="btnDeleteTicket">Delete ticket</button>
         </div>
     </div>
-    <div class="ticket1">
-        <div class="Title"></div>
-        <div class="Description"></div>
-        <div class="Priority"></div>
-        <div class="Type"></div>
-        <div class="Status"></div>
-    </div>
+    <div class="tickets"></div>
+    <!--
+<div class="ticket1">
+    <div class="Title"></div>
+    <div class="Description"></div>
+    <div class="Priority"></div>
+    <div class="Type"></div>
+    <div class="Status"></div>
+</div>
+-->
 
 </body>
 
