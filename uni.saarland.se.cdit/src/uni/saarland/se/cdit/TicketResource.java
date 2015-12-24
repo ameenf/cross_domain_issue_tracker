@@ -57,7 +57,7 @@ import javax.ws.rs.core.MediaType;
 		}
 		
 
-		@PUT @Path("update/{id}")
+		@PUT @Path("update")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 		public Ticket update(Ticket ticket) {
