@@ -3,17 +3,17 @@
     padding: 0px;
 }
 
-.projectItem {
+.itemRow {
     margin: 10px;
 }
 
-.projectTag {
+.itemTag {
     height: 50px;
     width: 50px;
     border-radius: 50%;
     background-color: #B91D1D;
 }
 
-.projectName {}
+.itemName {}
 
-.projectInfo {}
+.itemInfo {}
