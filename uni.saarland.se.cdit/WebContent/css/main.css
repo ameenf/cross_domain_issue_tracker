@@ -1,33 +1,12 @@
-.wrapper {
-    display: flex;
-    flex-direction: row;
-    /*    align-items: center;*/
-    justify-content: center;
-}
-
-.newTicket {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.getTicket {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.removeTicket {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.tickets {
+.flexrow {
     display: flex;
     flex-direction: row;
 }
 
-.ticket {
-    padding: 20px;
+.centeritems {
+    align-items: center;
+}
+
+.flexspacebetween {
+    justify-content: space-between
 }

@@ -1,0 +1,19 @@
+.noList {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.itemRow {
+    margin: 10px;
+}
+
+.itemTag {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: #B91D1D;
+}
+
+.itemName {}
+
+.itemInfo {}
