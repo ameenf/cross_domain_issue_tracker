@@ -18,18 +18,17 @@ public class ProjectDAO {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
+            sql = "SELECT users_id FROM project_users WHERE project_id = ?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
+                ps.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getUserIds(rs2));
+                i++;
             }
-            /*sql = "SELECT users_id FROM project_users WHERE project_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setInt(1, list.get(0).getId());
-            rs = ps.executeQuery();
-            int[] temp = new int[rs.getFetchSize()];
-            for(int i = 0;rs.next();i++){
-            	temp[i] = rs.getInt(1);
-            }*/
-            //list.get(0).setUsers(new int[]{0,1,2,3,4});
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -50,18 +49,18 @@ public class ProjectDAO {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
+            sql = "SELECT users_id FROM project_users WHERE project_id = ?";
+            ps = c.prepareStatement(sql);
+            int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
+                ps.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getUserIds(rs2));
+                i++;
             }
-            /*sql = "SELECT users_id FROM project_users WHERE project_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setInt(1, list.get(0).getId());
-            rs = ps.executeQuery();
-            int[] temp = new int[rs.getFetchSize()];
-            for(int i = 0;rs.next();i++){
-            	temp[i] = rs.getInt(1);
-            }*/
-            //list.get(0).setUsers(new int[]{0,1,2,3,4});
+                        
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -157,4 +156,18 @@ public class ProjectDAO {
 		project.setDescription(rs.getString("project_description"));
         return users;
     }*/
+	
+	protected int[] getUserIds(ResultSet rs){
+		int[] users = null;
+		try {
+			users = new int[rs.getRow()];
+			for(int i = 0;rs.next();i++){
+            	users[i] = rs.getInt(1);
+            }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return users;
+	}
 }
