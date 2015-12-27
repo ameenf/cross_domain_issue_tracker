@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/workflow.css">
 
 </head>
 
@@ -65,7 +66,14 @@
 
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+                <div id="diagramContainer">
+                    <div id="item_1" class="item">Research</div>
+                    <div id="item_2" class="item" style="left:150px;top:200px">Concept</div>
+                    <div id="item_3" class="item" style="left:300px;">Development</div>
+                    <div id="item_4" class="item" style="left:450px;top:200px">Validate</div>
+                    <div id="item_5" class="item" style="left:600px;">Optimization</div>
+                    <div id="item_6" class="item" style="left:750px;top:200px">Finished</div>
+                </div>
             </div>
         </div>
     </div>
@@ -74,6 +82,10 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="/js/jsPlumb-2.0.5-min.js"></script>
+    <script src="/js/workflow.js"></script>
+
     <!--
     <script>
         window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
