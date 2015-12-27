@@ -20,8 +20,16 @@ public class TicketDAO {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
+            sql = "SELECT users_id FROM tickets_users WHERE ticket_id = ?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
+                ps.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getUserIds(rs2));
+                i++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,6 +51,12 @@ public class TicketDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 ticket = processRow(rs);
+                sql = "SELECT users_id FROM tickets_users WHERE ticket_id = ?";
+                ps = c.prepareStatement(sql);
+                ps.setInt(1, ticket.getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	ticket.setUsers(getUserIds(rs2));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,8 +79,16 @@ public class TicketDAO {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, "%" + title.toUpperCase() + "%");
             ResultSet rs = ps.executeQuery();
+            sql = "SELECT users_id FROM tickets_users WHERE ticket_id = ?";
+            ps = c.prepareStatement(sql);
+            int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
+                ps.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getUserIds(rs2));
+                i++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,8 +111,16 @@ public class TicketDAO {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, type.toUpperCase());
             ResultSet rs = ps.executeQuery();
+            sql = "SELECT users_id FROM tickets_users WHERE ticket_id = ?";
+            ps = c.prepareStatement(sql);
+            int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
+                ps.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getUserIds(rs2));
+                i++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,6 +162,16 @@ public class TicketDAO {
             Timestamp ts = rs.getTimestamp(2);            
             ticket.setId(id);
             ticket.setCreationDate(ts.toString());
+            int users[] = ticket.getUsers();
+            if(users!=null){
+            	statement = "INSERT INTO tickets_users(ticket_id, users_id) VALUES (?, ?)";
+            	ps = c.prepareStatement(statement);
+            	for(int i=0;i<users.length;i++){
+            		ps.setInt(1, id);
+                    ps.setInt(2, users[i]);
+                    ps.executeUpdate();
+            	}
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -194,7 +234,19 @@ public class TicketDAO {
         ticket.setStatusId(rs.getInt("status_id"));
         return ticket;
     }
-	
+	protected int[] getUserIds(ResultSet rs){
+		int[] users = null;
+		try {
+			users = new int[rs.getRow()];
+			for(int i = 0;rs.next();i++){
+            	users[i] = rs.getInt(1);
+            }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return users;
+	}
 	
 	
 }

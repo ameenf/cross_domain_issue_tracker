@@ -7,20 +7,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Ticket {
 
     private int id;
-
     private String title;
-
     private String creationDate;
-
-    private String description;
-    
-    private int priorityId;
-    
-    private int typeId;
-    
-    private int statusId;
-    
+    private String description;    
+    private int priorityId;    
+    private int typeId;    
+    private int statusId;    
     private int projectId;
+
+    private int[] users;
 
 	public int getId() {
 		return id;
@@ -28,6 +23,14 @@ public class Ticket {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int[] getUsers() {
+		return users;
+	}
+
+	public void setUsers(int[] users) {
+		this.users = users;
 	}
 
 	public String getTitle() {
