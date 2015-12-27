@@ -26,9 +26,9 @@
         <div id="item_right" class="item" style="left:250px;">DRAG ME</div>
     </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
 
     <script>
         jsPlumb.ready(function () {
@@ -39,11 +39,11 @@
                 isTarget: true
             }
             jsPlumb.addEndpoint("item_left", {
-                anchor:"Right"
+                anchor: "Right"
             }, common);
 
             jsPlumb.addEndpoint("item_right", {
-                anchor:"Left"
+                anchor: "Left"
             }, common);
             jsPlumb.draggable("item_left");
             jsPlumb.draggable("item_right");
