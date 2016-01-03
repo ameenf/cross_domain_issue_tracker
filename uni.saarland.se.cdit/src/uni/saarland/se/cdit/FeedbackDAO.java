@@ -13,9 +13,9 @@ public class FeedbackDAO {
 	public List<Feedback> getTicketFeedback(int ticketId) {
         List<Feedback> list = new ArrayList<Feedback>();
         Connection c = null;
-    	String sql = "SELECT * FROM feedback" +
-			"WHERE ticket_id = ? " +	
-			"ORDER BY feedback_date asc";
+    	String sql = "SELECT * FROM feedback " +
+    				 "WHERE ticket_id = ? " +	
+    				 "ORDER BY feedback_date ASC";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
@@ -65,7 +65,7 @@ public class FeedbackDAO {
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE feedback " +
-            										  "SET feedback_text=?, feedback_date=?, " +
+            										  "SET feedback_text=?, feedback_date=? " +
             										  "WHERE feedback_id=?");
             ps.setString(1, feedback.getFeedbackText());
             ps.setTimestamp(2, Timestamp.valueOf(feedback.getFeedbackDate()));

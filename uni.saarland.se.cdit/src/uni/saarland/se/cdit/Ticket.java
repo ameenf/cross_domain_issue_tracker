@@ -16,6 +16,7 @@ public class Ticket {
     private int projectId;
 
     private int[] users;
+    private int[] labels;
 
 	public int getId() {
 		return id;
@@ -31,6 +32,14 @@ public class Ticket {
 
 	public void setUsers(int[] users) {
 		this.users = users;
+	}
+	
+	public int[] getLabels() {
+		return labels;
+	}
+
+	public void setLabels(int[] labels) {
+		this.labels = labels;
 	}
 
 	public String getTitle() {
