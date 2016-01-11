@@ -54,11 +54,13 @@ function getTickets() {
             console.log(result);
             allTickets = result;
             for (var key in result) {
+                //        Load tickets into Issues-List
                 $('.issues').append('<li class="itemRow issue' + result[key].id + '"></li>');
                 $('.issue' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + result[key].id + '"></div>');
                 $('.innerIssue' + result[key].id).append('<div class="itemTag"></div>');
                 $('.innerIssue' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
                 $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + result[key].description + '</div>');
+        
             }
         },
         error: function (a, b, c) {

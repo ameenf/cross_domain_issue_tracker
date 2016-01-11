@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/workflow.css">
+
 
 </head>
 
@@ -90,6 +92,32 @@
                         </div>
                     </div>
                 </div>
+
+
+                <!--                Workflow Graph Content-->
+                <div id="diagramContainer">
+                    <div class="bgRaster"></div>
+<!--
+                    <div id="item_1" class="item" style="top:50px">
+                        <div class="topTitle">Research</div>
+                    </div>
+                    <div id="item_2" class="item" style="left:150px;top:200px">
+                        <div class="topTitle">Concept</div>
+                    </div>
+                    <div id="item_3" class="item" style="left:300px; top:50px">
+                        <div class="topTitle">Development</div>
+                    </div>
+                    <div id="item_4" class="item" style="left:450px;top:200px">
+                        <div class="topTitle">Validate</div>
+                    </div>
+                    <div id="item_5" class="item" style="left:600px;top:50px">
+                        <div class="topTitle">Optimization</div>
+                    </div>
+                    <div id="item_6" class="item" style="left:750px;top:200px">
+                        <div class="topTitle">Finished</div>
+                    </div>
+-->
+                </div>
             </div>
         </div>
     </div>
@@ -97,7 +125,10 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="js/jsPlumb-2.0.5-min.js"></script>
+    <script src="js/workflow.js"></script>
     <!--
     <script>
         window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
