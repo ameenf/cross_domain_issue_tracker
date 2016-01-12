@@ -27,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 		
 		@GET @Path("searchByUser/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-		public List<Project> findById(@PathParam("id") String id) {
+		public List<Project> findByUserId(@PathParam("id") String id) {
 			System.out.println("findByUser " + id);
 			return dao.findByUser(Integer.parseInt(id));
 		}

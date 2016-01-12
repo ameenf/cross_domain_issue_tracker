@@ -19,7 +19,7 @@ public class UserResource {
 	UserDAO dao = new UserDAO();
 	
 	@POST @Path("login")
-	public Response addUser(
+	public Response authenticate(
 			@FormParam("inputEmail") String email,
 			@FormParam("inputPassword") String password) {
 			return Response.status(200)
@@ -30,7 +30,7 @@ public class UserResource {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public List<User> getAll() {
+	public List<User> getAllUsers() {
 		System.out.println("getAll");
 		return dao.getAll();
 	}

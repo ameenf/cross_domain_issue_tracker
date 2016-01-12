@@ -59,7 +59,7 @@ public class FileResource {
 	}
 	
 	@GET
-	public Response returnList() {
+	public Response returnFileList() {
 		FileDAO dao = new FileDAO();
 		String location = dao.getFilesPath();
 		File dir = new File(location);

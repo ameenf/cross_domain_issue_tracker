@@ -12,21 +12,21 @@ import java.util.ResourceBundle;
 
 public class FileDAO {
 	
-	private String serverPath;
+	private String filesPath;
 	
 	public FileDAO(){
 		ResourceBundle bundle = ResourceBundle.getBundle("cdit");
-		serverPath = bundle.getString("files.path");
+		filesPath = bundle.getString("files.path");
 	}
 	
 	public String getFilesPath(){
-		return serverPath;
+		return filesPath;
 	}
 
 	public boolean saveFile(InputStream uploadedInputStream, String fileName) {
 		boolean success = false;
 		try {
-			 	OutputStream outpuStream = new FileOutputStream(new File(serverPath+fileName));
+			 	OutputStream outpuStream = new FileOutputStream(new File(filesPath+fileName));
 	            int read = 0;
 	            byte[] bytes = new byte[1024];
 	            while ((read = uploadedInputStream.read(bytes)) != -1) {
