@@ -21,6 +21,22 @@
     border-radius: 5px 5px 5px 5px;
     background-color: white;
 }
+/*if hovering over a node, addTicket button becomes visible*/
+.item:hover .addTicket {
+    visibility: visible;
+}
+
+.addTicket {
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    height: 20px;
+    width: 20px;
+/*    opacity: .6;*/
+    border-radius: 50%;
+    background-color: green;
+    visibility: hidden;
+}
 
 .topTitle {
     width: auto;

@@ -69,25 +69,29 @@
 
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Default modal
-                </button>
-
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Here comes the title</h4>
+                                <h4 class="modal-title" id="myModalLabel"> </h4>
                             </div>
                             <div class="modal-body">
-                                Here the body content
+                                Title :
+                                <input type="text" id="input_new_title">
+                                <br> Description :
+                                <input type="text" id="input_new_desc">
+                                <br> Priority :
+                                <input type="text" id="input_new_priority">
+                                <br> Type :
+                                <input type="text" id="input_new_type">
+                                <br> Status :
+                                <input type="text" id="input_new_status">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                             </div>
                         </div>
                     </div>
@@ -97,7 +101,7 @@
                 <!--                Workflow Graph Content-->
                 <div id="diagramContainer">
                     <div class="bgRaster"></div>
-<!--
+                    <!--
                     <div id="item_1" class="item" style="top:50px">
                         <div class="topTitle">Research</div>
                     </div>
@@ -114,9 +118,12 @@
                         <div class="topTitle">Optimization</div>
                     </div>
                     <div id="item_6" class="item" style="left:750px;top:200px">
+                        <div class="addTicket"> </div>
                         <div class="topTitle">Finished</div>
+
                     </div>
 -->
+
                 </div>
             </div>
         </div>
@@ -125,7 +132,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="js/jsPlumb-2.0.5-min.js"></script>
     <script src="js/workflow.js"></script>

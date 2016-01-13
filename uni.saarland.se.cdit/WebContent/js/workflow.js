@@ -5,44 +5,84 @@ var k = 0;
 
 $(document).ready(function () {
     getNodes();
+});
 
-    function getNodes() {
+function listener() {
+    var nodename;
+    $('.addTicket').on('click', function (e) {
+        $('#myModal').modal('toggle');
+        nodename = $(this).next().html();
+        $("#input_new_status").val(nodename);
+        $('.modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
+    });
+
+    $('#submitTicket').on('click', function (e) {
+        var data = {
+            "title": $("#input_new_title").val(),
+            "creationDate": "2015-12-05 10:44:52",
+            "description": $("#input_new_desc").val(),
+            "priorityId": $("#input_new_priority").val(),
+            "typeId": $("#input_new_type").val(),
+            "statusId": $("#input_new_status").val(),
+            "projectId": 1
+        }
+
         $.ajax({
-            type: "GET",
-            url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
-            dataType: 'json',
+            type: "POST",
+            url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
             async: true,
             success: function (result) {
+                console.log("SUCCESS!");
                 console.log(result);
-                allNodes = result;
-                console.log("Result: " + result);
-                for (var key in result) {
-                    // console.log("desc: " + result[key].description);
-                    // console.log("id: " + result[key].id);
-                    console.log("Node title: " + result[key].title);
-                    $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + k + 'px;top:' + i + 'px><div class="topTitle">' + result[key].title + '</div></div>');
-                    i += 50;
-                    k += 150;
-                }
-                startJsplumb();
+                $('#myModal').modal('toggle');
             },
             error: function (a, b, c) {
                 console.log(a + " " + b + " " + c + "ERROR");
                 document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             }
         })
-    }
-});
+
+    });
+}
+
+// Get all nodes from server and create nodes
+function getNodes() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            allNodes = result;
+            for (var key in result) {
+                // console.log("desc: " + result[key].description);
+                // console.log("id: " + result[key].id);
+
+                // Create nodes in workflow view
+                $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + k + 'px;top:' + i + 'px><div class="addTicket"> </div><div class="topTitle">' + result[key].title + '</div></div>');
+                i += 50;
+                k += 150;
+            }
+            startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
+            listener(); // Activate the listener after create HTML content
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
 
 function startJsplumb() {
 
 
     jsPlumb.ready(function () {
         console.log("jsplumb loaded!");
-
-
-
-
+        // Set the container for the workflow
         jsPlumb.setContainer("diagramContainer");
 
         // Default setting of connections
@@ -63,8 +103,8 @@ function startJsplumb() {
                             font: "15px sans-serif",
                             color: "rgba(97, 170, 224, 0.72)",
                         },
-                        label: "Label",
-                        location: 0.5,
+                        label: "Label", // Name of the label at the arrow
+                        location: 0.5, // Position of the label at the arrow
                 }]
                       ],
                 paintStyle: {
