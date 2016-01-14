@@ -17,12 +17,13 @@ $(document).ready(function () {
 
     $('.b_addUser').on('click', function (e) {
         $('#m_addUser').modal('toggle');
-        nodename = $(this).next().html();
-        $("#input_new_status").val(nodename);
-        $('.modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
-    getTickets();
+    $('#createUser').on('click', function (e) {
+        createUser();
+    });
+
+    getUsers();
 });
 
 function openIssue(e) {
@@ -50,7 +51,7 @@ function filterUsers() {
     }
 }
 
-function getTickets() {
+function getUsers() {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
@@ -66,6 +67,36 @@ function getTickets() {
                 $('.innerUser' + result[key].id).append('<a class="itemName" href="profile.html">' + result[key].username + '</a>');
                 $('.innerUser' + result[key].id).append('<div class="itemInfo">' + result[key].id + '</div>');
             }
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+
+function createUser() {
+    var data = {
+        "email": $("#i_email").val(),
+        "id": "",
+        "password": "test",
+        "type": "",
+        "username": $("#i_name").val(),
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            console.log("SUCCESS!");
+            console.log(result);
+            $('#myModal').modal('toggle');
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
