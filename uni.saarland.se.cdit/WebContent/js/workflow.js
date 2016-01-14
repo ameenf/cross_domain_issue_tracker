@@ -1,19 +1,30 @@
 "use strict";
 var allNodes = [];
-var i = 50;
+var allTickets = [];
+var i = 0;
 var k = 0;
 
 $(document).ready(function () {
-    getNodes();
+    getAmountTicketsNodes(); // Get the amount of tickets and store number in node
+
 });
 
 function listener() {
     var nodename;
     $('.addTicket').on('click', function (e) {
-        $('#myModal').modal('toggle');
+        $('#myModal1').modal('toggle');
         nodename = $(this).next().html();
-        $("#input_new_status").val(nodename);
-        $('.modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
+        console.log(nodename);
+        $('#input_new_status').val(nodename);
+        $('#myModal1 .modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
+    });
+
+    $('.showNode').on('click', function (e) {
+        $('#myModal2').modal('toggle');
+        nodename = $(this).prev().html();
+        $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
+        var statusid = $(this).parent().attr("id").charAt(0);
+        getAllTicketsNodes(statusid);
     });
 
     $('#submitTicket').on('click', function (e) {
@@ -45,7 +56,6 @@ function listener() {
                 document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             }
         })
-
     });
 }
 
@@ -63,9 +73,18 @@ function getNodes() {
                 // console.log("id: " + result[key].id);
 
                 // Create nodes in workflow view
-                $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + k + 'px;top:' + i + 'px><div class="addTicket"> </div><div class="topTitle">' + result[key].title + '</div></div>');
-                i += 50;
-                k += 150;
+                $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + k + '%;top:' + i + '%><div class="addTicket"> </div><div class="topTitle">' + result[key].title + '</div><div class="showNode"></div></div>');
+                var counterTickets = 0;
+                var l = 0;
+                for (l; l < allTickets.length; l++) {
+                    if (allTickets[l].statusId == result[key].id) {
+                        counterTickets++;
+                    }
+                    //console.log(counterTickets + " " + allTickets[l].statusId + " " + result[key].id);
+                }
+                $('#' + result[key].id + 'node .showNode').after('<div class="amountTickets">' + counterTickets + '</div>');
+                i += 14;
+                k += 14;
             }
             startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
             listener(); // Activate the listener after create HTML content
@@ -77,8 +96,56 @@ function getNodes() {
     })
 }
 
-function startJsplumb() {
+function getAmountTicketsNodes() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            allTickets = result;
+            for (var key in result) {
+                //        Load tickets into Nodes
 
+            }
+            getNodes();
+
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+function getAllTicketsNodes(statusid) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            allTickets = result;
+            $('#myModal2 .modal-body').empty();
+            console.log("cleared!");
+            for (var key in result) {
+                //        Load tickets into Nodes
+                if (allTickets[key].statusId == statusid) {
+                    $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"><div id="' + allTickets[key].id + 
+                    allTickets[key].title + 'ticket" class="nodeTicket">Title: ' + allTickets[key].title + ' </br> Priority: ' 
+                    + allTickets[key].priorityId + '</div></div>');
+                }
+            }
+
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+function startJsplumb() {
 
     jsPlumb.ready(function () {
         console.log("jsplumb loaded!");
@@ -127,27 +194,37 @@ function startJsplumb() {
         jsPlumb.connect({
             source: "1node",
             target: "2node",
+            detachable: false
         }, common);
 
         jsPlumb.connect({
             source: "2node",
             target: "3node",
+            detachable: false
         }, common);
         jsPlumb.connect({
             source: "3node",
             target: "4node",
+            detachable: false
+
         }, common);
         jsPlumb.connect({
             source: "4node",
             target: "5node",
+            detachable: false
+
         }, common);
         jsPlumb.connect({
             source: "5node",
             target: "6node",
+            detachable: false
+
         }, common);
         jsPlumb.connect({
             source: "6node",
             target: "7node",
+            detachable: false
+
         }, common);
         // adding anchorpoints to nodes
         //    jsPlumb.addEndpoint($(".item"), {
@@ -184,7 +261,8 @@ function startJsplumb() {
                 //Zoom in
                 setZoom(scaleData.curScale * '1.1', stage);
             }
-
+            jsPlumb.repaintEverything();
+            console.log("ALL REPAINTED");
             return false;
             event.stopPropagation();
 
@@ -205,7 +283,6 @@ function startJsplumb() {
                     '-ms-transform: scale(' + scale + ');' +
                     'transform: scale(' + scale + ');'
             });
-
         }
 
         //Helper to get the current scale factor of the stage
