@@ -50,23 +50,24 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="projects.html">Back to projects</a>
-                    </li>
-                    <li><a href="workflow.html">Workflow</a>
-                    </li>
-                    <li><a href="issues.html">Issues</a>
-                    </li>
-                    <li class="active"><a href="">Users<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li><a href="files.html">Files</a>
+                    <li><a href="projects.html">Projects</a>
                     </li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li><a href="usermanagement.html">User Management</a>
+                    <li><a href="usermanagement.html">Management</a>
                     </li>
+
+                    <li class="nav_secondlevel"><a href="usermanagement.html">Users</a>
+                    </li>
+                    <li class="nav_secondlevel active"><a href="#">Projects<span class="sr-only">(current)</span></a></li>
+                    <li class="nav_secondlevel"><a href="metamanagement.html">Meta</a>
+                    </li>
+
                     <li><a href="profile.html">Profile</a>
                     </li>
+
                 </ul>
+
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="input-group">
@@ -74,20 +75,14 @@
                     <span class="input-group-btn">
         <button class="btn btn-success b_addUser" type="button">
             <span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    <span> New User</span>
+                    <span> New Project</span>
                     </button>
                     </span>
                 </div>
 
 
                 <ul class="noList users">
-                    <!--                    <li class="itemRow">-->
-                    <!--                        <div class="flexrow centeritems flexspacebetween">-->
-                    <!--                            <div class="itemTag"></div>-->
-                    <!--                            <a class="itemName issue" href="">Issue 1</a>-->
-                    <!--                            <div class="itemInfo">Edited 10 hours ago</div>-->
             </div>
-            <!--                    </li>-->
 
 
             <!-- Modal -->
@@ -96,7 +91,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Add a new user</h4>
+                            <h4 class="modal-title" id="myModalLabel">Add a new project</h4>
                         </div>
                         <div class="modal-body">
                             Name :
@@ -152,8 +147,7 @@
 -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="js/header.js"></script>
-    <script src="js/users.js"></script>
+    <script src="js/projectmanagement.js"></script>
 </body>
 
 </html>
