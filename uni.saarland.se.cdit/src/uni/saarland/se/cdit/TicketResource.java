@@ -33,6 +33,13 @@ import javax.ws.rs.core.MediaType;
 			return dao.findByTitle(query);
 		}
 		
+		@GET @Path("getNodeTickets/{id}")
+		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		public List<Ticket> getNodeTickets(@PathParam("id") String id) {
+			System.out.println("findByNode: " + id);
+			return dao.findByNode(Integer.parseInt(id));
+		}
+		
 		@GET @Path("searchByType/{query}")
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 		public List<Ticket> findByType(@PathParam("query") String query) {
