@@ -62,7 +62,7 @@ function filterUsers() {
 function getUsers() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -72,8 +72,14 @@ function getUsers() {
                 $('.users').append('<li class="itemRow user' + result[key].id + '"></li>');
                 $('.user' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result[key].id + '"></div>');
                 $('.innerUser' + result[key].id).append('<div class="itemTag"></div>');
-                $('.innerUser' + result[key].id).append('<a class="itemName" href="profile.html">' + result[key].username + '</a>');
-                $('.innerUser' + result[key].id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
+                $('.innerUser' + result[key].id).append('<a class="itemName" href="">' + result[key].title + '</a>');
+
+                $('.innerUser' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
 
                 $('.innerUser' + result[key].id).append('<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
 

@@ -5,6 +5,7 @@
 
 body {
     padding-top: 50px;
+    font-family: 'Helvetica','Droid Sans','Roboto',arial,sans-serif;
 }
 /*
  * Global add-ons
@@ -122,4 +123,7 @@ body {
 
 .headerIcon {
     margin-right: 10px;
+}
+.nav_secondlevel {
+    margin-left: 20px;
 }
