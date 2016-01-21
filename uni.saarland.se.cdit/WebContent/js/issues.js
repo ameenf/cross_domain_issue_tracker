@@ -1,6 +1,7 @@
 "use strict";
 var allTickets = [];
 var filteredTickets = [];
+var statusList = [];
 
 $(document).ready(function () {
     console.log("issues.js");
@@ -38,6 +39,12 @@ function filterIssues() {
             $('.issue' + allTickets[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + allTickets[key].id + '"></div>');
             $('.innerIssue' + allTickets[key].id).append('<div class="itemTag"></div>');
             $('.innerIssue' + allTickets[key].id).append('<a class="itemName" href="workflow.html">' + allTickets[key].title + '</a>');
+            $('.innerIssue' + allTickets[key].id).append('<div class="innerUserlist' + allTickets[key].id + ' "aria-hidden="true"></div>');
+            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
             $('.innerIssue' + allTickets[key].id).append('<div class="itemInfo">' + allTickets[key].description + '</div>');
         }
 
@@ -45,6 +52,7 @@ function filterIssues() {
 }
 
 function getTickets() {
+    getStatus();
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
@@ -59,9 +67,38 @@ function getTickets() {
                 $('.issue' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + result[key].id + '"></div>');
                 $('.innerIssue' + result[key].id).append('<div class="itemTag"></div>');
                 $('.innerIssue' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
-                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + result[key].description + '</div>');
-        
+                $('.innerIssue' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + statusList[result[key].statusId - 1].title + '</div>');
+
             }
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+function getStatus() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            console.log(result);
+            statusList = result;
+            //            for (var key in result) {
+            //                for (var ticketId in allTickets) {
+            //                    
+            //                }
+            //
+            //            }
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");

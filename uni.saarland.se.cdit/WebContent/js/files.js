@@ -58,8 +58,10 @@ function getTickets() {
                 $('.issues').append('<li class="itemRow issue' + result[key].id + '"></li>');
                 $('.issue' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + result[key].id + '"></div>');
                 $('.innerIssue' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
-                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + result[key].description + '</div>');
-                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + result[key].description + '</div>');
+                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + '01.01.2016' + '</div>');
+                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + '5 MB' + '</div>');
+                $('.innerIssue' + result[key].id).append('<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+
 
             }
         },
