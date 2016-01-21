@@ -3,7 +3,9 @@ var allUsers = [];
 var filteredTickets = [];
 
 $(document).ready(function () {
-    console.log("users.js");
+    console.log("projectmanagement.js");
+
+    getUsers();
 
     //Clickhandler for an element in the issues list
     $('.issue').on('click', function (e) {
@@ -15,7 +17,7 @@ $(document).ready(function () {
         filterUsers();
     });
 
-    $('.b_addUser').on('click', function (e) {
+    $('.b_addProject').on('click', function (e) {
         openModalCreateUser();
     });
 
@@ -29,9 +31,13 @@ $(document).ready(function () {
         $('#dd_addUserProjectListTitle').text = "TEST";
     });
 
+    $('.users').on('click', '#b_deleteProject', function () {
+        openModalDeleteProject();
+    });
+
+    $('#deleteProject').on('click', function () {});
 
 
-    getUsers();
 });
 
 function openIssue(e) {
@@ -81,7 +87,10 @@ function getUsers() {
                 $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
                 $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
 
-                $('.innerUser' + result[key].id).append('<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+                $('.innerUser' + result[key].id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+
+                //$('.innerUser' + result[key].id).append('<button id="b_deleteProject" type="button" class="btn btn-default b_deleteProject" aria-label="Left Align"> <span class="glyphicon glyphicon-trash b_deleteProject" aria-hidden = "true"></span></button>');
+
 
 
 
@@ -166,4 +175,8 @@ function getProjectsFromUser() {
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
         }
     })
+}
+
+function openModalDeleteProject() {
+    $('#m_deleteProject').modal('toggle');
 }

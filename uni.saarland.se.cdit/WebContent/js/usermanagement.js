@@ -29,6 +29,10 @@ $(document).ready(function () {
         $('#dd_addUserProjectListTitle').text = "TEST";
     });
 
+    $('.users').on('click', '#b_deleteUser', function () {
+        openModalDeleteUser();
+    });
+
 
 
     getUsers();
@@ -53,8 +57,9 @@ function filterUsers() {
             $('.users').append('<li class="itemRow user' + allUsers[key].id + '"></li>');
             $('.user' + allUsers[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + allUsers[key].id + '"></div>');
             $('.innerUser' + allUsers[key].id).append('<div class="itemTag"></div>');
-            $('.innerUser' + allUsers[key].id).append('<a class="itemName" href="workflow.html">' + allUsers[key].username + '</a>');
-            $('.innerUser' + allUsers[key].id).append('<div class="itemInfo">' + allUsers[key].id + '</div>');
+            $('.innerUser' + allUsers[key].id).append('<a class="itemName" href="profile.html">' + allUsers[key].username + '</a>');
+            $('.innerUser' + allUsers[key].id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
+            $('.innerUser' + allUsers[key].id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
         }
     }
 }
@@ -74,8 +79,7 @@ function getUsers() {
                 $('.innerUser' + result[key].id).append('<div class="itemTag"></div>');
                 $('.innerUser' + result[key].id).append('<a class="itemName" href="profile.html">' + result[key].username + '</a>');
                 $('.innerUser' + result[key].id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
-
-                $('.innerUser' + result[key].id).append('<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+                $('.innerUser' + result[key].id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
 
 
 
@@ -160,4 +164,8 @@ function getProjectsFromUser() {
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
         }
     })
+}
+
+function openModalDeleteUser() {
+    $('#m_deleteUser').modal('toggle');
 }

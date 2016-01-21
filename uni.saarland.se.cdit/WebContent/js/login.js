@@ -20,12 +20,12 @@ function login(email, pwd) {
             crossDomain: true,
             async: true,
             success: function (result, textStatus, xhr) {
+                console.log('result: ' + result);
                 console.log(result);
                 console.log(textStatus);
                 console.log(xhr);
-                location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
-                if (result) {
-
+                if (result === "true") {
+                    location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
                 }
             },
             error: function (a, b, c) {
