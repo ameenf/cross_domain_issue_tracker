@@ -28,10 +28,15 @@ function listener() {
         $('#myModal1').modal('toggle');
         nodename = $(this).next().html();
         nodeId = $(this).parent().attr("id").charAt(0);
-        //console.log("nodename: " + nodename);
+        var found = 0;
+        for (var i = 0; i < allNodes.length; i++) {
+            if (allNodes[i].title == nodename) {
+                found = i;
+                break;
+            }
+        }
+        //        console.log("nodename: " + nodename);
         //console.log("nodeID: " + nodeId);
-        console.log("date: " + datetime);
-        $('#input_new_status').val(nodename);
         $('#myModal1 .modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
@@ -43,14 +48,23 @@ function listener() {
         getAllTicketsNodes(nodeId);
     });
 
+    $('#closeTicket').on('click', function (e) {
+        
+    });
     // Submit a ticket to the database
     $('#submitTicket').on('click', function (e) {
+        var elem = document.getElementById("prioritylist");
+        var prioId = elem.options[elem.selectedIndex].value;
+        
+        var elem = document.getElementById("typelist");
+        var typeId = elem.options[elem.selectedIndex].value;
+        
         var data = {
             "title": $("#input_new_title").val(),
             "creationDate": datetime,
             "description": $("#input_new_desc").val(),
-            "priorityId": $("#input_new_priority").val(),
-            "typeId": $("#input_new_type").val(),
+            "priorityId": prioId,
+            "typeId": typeId,
             "statusId": nodeId,
             "projectId": 1
         }
@@ -77,6 +91,23 @@ function listener() {
     });
 }
 
+// Get all tickets
+function getAmountTicketsNodes() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            allTickets = result;
+            getWorkflow(projectId);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
 // Get the workflow for a user
 function getWorkflow(projectId) {
     $.ajax({
@@ -98,7 +129,23 @@ function getWorkflow(projectId) {
             }
             startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
             listener(); // Activate the listener after create HTML content
-
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+// Update all tickets for a node
+function updateAmountTicketsNodes(nodeId) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            allTicketInNode = result;
+            $('#' + nodeId + 'node .amountTickets').html(allTicketInNode.length);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -125,71 +172,6 @@ function getStatus() {
     })
 }
 
-
-// Get all tickets
-function getAmountTicketsNodes() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            allTickets = result;
-            getWorkflow(projectId);
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
-}
-
-// Update all tickets for a node
-function updateAmountTicketsNodes(nodeId) {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            allTicketInNode = result;
-            $('#' + nodeId + 'node .amountTickets').html(allTicketInNode.length);
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
-}
-
-// get all tickets for showing all within a node
-function getAllTicketsNodes(nodeId) {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            allTicketInNode = result;
-            $('#myModal2 .modal-body').empty();
-            for (var key in result) {
-                console.log(result[key].id + " bv " + result[key].title);
-                //        Load tickets into Nodes
-                $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"></div>');
-                $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].id + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
-
-                //        
-                //                            $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"><div id="' + allTicketInNode[key].id +
-                //                        allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div></div>');
-            }
-
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
-}
 // Get all types in the DB
 function getTypes() {
     $.ajax({
@@ -199,6 +181,9 @@ function getTypes() {
         async: true,
         success: function (result) {
             allTypes = result;
+            for (var key in result) {
+                $('#typelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
+            }
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -215,6 +200,37 @@ function getPriorities() {
         async: true,
         success: function (result) {
             allPriorities = result;
+            for (var key in result) {
+                $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
+            }
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+// get all tickets for showing all within a node  
+function getAllTicketsNodes(nodeId) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            allTicketInNode = result;
+            $('#myModal2 .modal-body').empty();
+            for (var key in result) {
+                //        Load tickets into Nodes
+                $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"></div>');
+                $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].id + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
+
+                //        
+                //                            $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"><div id="' + allTicketInNode[key].id +
+                //                        allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div></div>');
+            }
+
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -269,41 +285,16 @@ function startJsplumb() {
         var dynamicAnchors2 = ["Right", "Left", "Top", "Bottom"];
 
         // Connect nodes
-        jsPlumb.connect({
-            source: "1node",
-            target: "2node",
-            detachable: false
-        }, common);
+        for (var i = 0; i < workflowNodes.length; i++) {
+            var sourceName = workflowNodes[i].id;
+            var targetName = workflowNodes[i].targetNodeId;
+            jsPlumb.connect({
+                source: sourceName + "node",
+                target: targetName + "node",
+                detachable: false
+            }, common);
+        }
 
-        jsPlumb.connect({
-            source: "2node",
-            target: "3node",
-            detachable: false
-        }, common);
-        jsPlumb.connect({
-            source: "3node",
-            target: "4node",
-            detachable: false
-
-        }, common);
-        jsPlumb.connect({
-            source: "4node",
-            target: "5node",
-            detachable: false
-
-        }, common);
-        jsPlumb.connect({
-            source: "5node",
-            target: "6node",
-            detachable: false
-
-        }, common);
-        jsPlumb.connect({
-            source: "6node",
-            target: "7node",
-            detachable: false
-
-        }, common);
         // adding anchorpoints to nodes
         //    jsPlumb.addEndpoint($(".item"), {
         //        anchors: dynamicAnchors1

@@ -41,7 +41,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
                 </ul>
-<!--
+                <!--
 <form class="navbar-form navbar-right">
     <input type="text" class="form-control searchHeader" placeholder="Search...">
 </form>
@@ -89,12 +89,14 @@
                                 <br> Description :
                                 <input type="text" id="input_new_desc">
                                 <br> Priority :
-                                <input type="text" id="input_new_priority">
+                                <select id="prioritylist">
+                                </select>
                                 <br> Type :
-                                <input type="text" id="input_new_type">
+                                <select id="typelist">
+                                </select>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button id="closeTicket" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                             </div>
                         </div>
