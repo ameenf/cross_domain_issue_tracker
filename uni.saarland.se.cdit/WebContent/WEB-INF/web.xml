@@ -5,7 +5,7 @@
   <servlet>
     <servlet-name>Jersey REST Service</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-     <!-- Register resources and providers under com.vogella.jersey.first package. -->
+     <!-- Register resources and providers under uni.saarland.se.cdit package. -->
     <init-param>
         <param-name>jersey.config.server.provider.packages</param-name>
         <param-value>uni.saarland.se.cdit</param-value>

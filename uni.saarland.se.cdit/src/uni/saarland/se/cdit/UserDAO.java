@@ -84,6 +84,26 @@ public class UserDAO {
         return user;
     }
 	
+	public boolean updatePassword(User user) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE users " +
+            										  "SET users_password = ? " +
+            										  "WHERE users.users_id = ?");
+            
+            ps.setString(1, user.getPassword());
+            ps.setInt(2, user.getId());
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
 	public boolean remove(int id) {
         Connection c = null;
         try {

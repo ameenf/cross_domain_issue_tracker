@@ -5,18 +5,25 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
+import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor;
+import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor.CommonMediaTypes;
 
 	
 	@Path("/tickets")
 	public class TicketResource {
 
 		TicketDAO dao = new TicketDAO();
+		int counter = 0;
 		
 		@GET
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -77,6 +84,15 @@ import javax.ws.rs.core.MediaType;
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 		public boolean remove(@PathParam("id") int id) {
 			return dao.remove(id);
+		}
+		
+		@GET @Path("test")
+		public Response test(@HeaderParam("user-agent") String str, @HeaderParam("Content-Type") String str2){
+			Hello.counter++;
+			System.out.println(counter);
+			ResponseBuilder response = Response.ok((Object) "{\"user-agent\":\""+String.valueOf(Hello.counter)+"\", \"content-type\":\""+str2+"\"}"); 
+			response.header("Content-Type", "application/json");
+		    return response.build();
 		}
 
 	}

@@ -44,6 +44,15 @@ public class UserResource {
 		return dao.create(user);
 	}
 	
+	@PUT @Path("updatePassword")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response updatePassword(User user) {
+		System.out.println("Updating password");
+		return Response.status(200)
+				.entity(dao.updatePassword(user))
+				.build();
+	}
+	
 	@DELETE @Path("remove/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public boolean remove(@PathParam("id") int id) {
