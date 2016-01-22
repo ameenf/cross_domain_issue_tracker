@@ -9,7 +9,8 @@ function getProjects() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            //return result;
+            callbackGetProjects(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -182,7 +183,7 @@ function getTicketsById(id) {
     })
 };
 
-function createTicket(title, description, prioId, typeId, nodeId, projId) {
+function createTiwcket(title, description, prioId, typeId, nodeId, projId) {
     var data = {
         "title": title,
         "creationDate": "",
@@ -213,7 +214,7 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
 
 function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
     var data = {
-        "id": = id,
+        "id": id,
         "title": title,
         "creationDate": "",
         "description": description,
