@@ -5,7 +5,7 @@ $(document).ready(function () {
     });
 });
 
-// Ausgewählte Sprache aus dem Login Screen dem Server melden
+
 function login(email, pwd) {
     console.log('login');
     console.log(email);
@@ -39,30 +39,3 @@ function login(email, pwd) {
 
     function JSONPCallback() {}
 }
-
-//// Ausgewählte Sprache aus dem Login Screen dem Server melden
-//function get() {
-//    $.ajax({
-//            type: "GET",
-//            url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchById/1",
-//            //       dataType: 'jsonp',
-//            //       jsonp: false,
-//            //       jsonpCallback: 'JSONPCallback',
-//            async: true,
-//            //       crossDomain: true,
-//            //       username: 'user1',
-//            //       password: 'user1',
-//            success: function (result) {
-//
-//            },
-//            error: function (a, b, c) {
-//                console.log(a + " " + b + " " + c + "ERROR");
-//                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-//            }
-//        })
-//        .fail(function (e) {
-//            console.log(e.msg + "ERROR");
-//        });
-//
-//    function JSONPCallback() {}
-//}
