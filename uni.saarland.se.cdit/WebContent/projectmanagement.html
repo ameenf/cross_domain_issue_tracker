@@ -88,7 +88,7 @@
 
 
             <!-- Modal -->
-            <div class="modal fade" id="m_addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="m_addProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -96,25 +96,14 @@
                             <h4 class="modal-title" id="myModalLabel">Add a new project</h4>
                         </div>
                         <div class="modal-body">
-                            Name :
-                            <input type="text" class="form-control" id="i_name">
-                            <br> E-Mail :
-                            <input type="text" class="form-control" id="i_email">
-
-                            <br>
-                            <div class="dropdown">
-                                Project :
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dd_addUserProjectListTitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Project
-                                    <span class="caret"></span>
-                                </button>
-                                <ul id="dd_addUserProjectList" class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                </ul>
-                            </div>
+                            Title :
+                            <input type="text" class="form-control" id="i_addProject_title">
+                            <br> Description :
+                            <input type="text" class="form-control" id="i_addProject_desc">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button id="createUser" type="submit" class="btn btn-primary">Invite User</button>
+                            <button id="createUser" type="submit" class="btn btn-primary">Create Project</button>
                         </div>
                     </div>
                 </div>
@@ -161,7 +150,9 @@
 -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="js/rest.js"></script>
     <script src="js/projectmanagement.js"></script>
+
 </body>
 
 </html>

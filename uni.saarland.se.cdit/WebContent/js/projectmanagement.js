@@ -22,7 +22,7 @@ $(document).ready(function () {
     });
 
     $('#createUser').on('click', function (e) {
-        createUser();
+        createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), "")
     });
 
 
@@ -36,6 +36,9 @@ $(document).ready(function () {
     });
 
     $('#deleteProject').on('click', function () {});
+
+
+
 
 
 });
@@ -104,7 +107,7 @@ function getUsers() {
 }
 
 function openModalCreateUser() {
-    $('#m_addUser').modal('toggle');
+    $('#m_addProject').modal('toggle');
 
 
     $.ajax({
@@ -128,34 +131,7 @@ function openModalCreateUser() {
     })
 }
 
-function createUser() {
-    var data = {
-        "email": $("#i_email").val(),
-        "id": "",
-        "password": "test",
-        "type": "",
-        "username": $("#i_name").val(),
-    }
 
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        crossDomain: true,
-        dataType: "json",
-        async: true,
-        success: function (result) {
-            console.log("SUCCESS!");
-            console.log(result);
-            $('#myModal').modal('toggle');
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
-}
 
 function getProjectsFromUser() {
     $.ajax({
