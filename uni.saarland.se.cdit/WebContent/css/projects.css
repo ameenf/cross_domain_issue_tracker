@@ -14,6 +14,12 @@
     background-color: #B91D1D;
 }
 
-.itemName {}
+.itemName {
+    width: 20%;
+    text-align: left;
+}
 
-.itemInfo {}
+.itemInfo {
+    width: 20%;
+    text-align: left;
+}

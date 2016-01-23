@@ -39,7 +39,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
                 </ul>
-<!--
+                <!--
 <form class="navbar-form navbar-right">
     <input type="text" class="form-control" placeholder="Search...">
 </form>
@@ -52,95 +52,91 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="projects.html">Back to projects</a>
-                    </li>
-                    <li><a href="workflow.html">Workflow</a>
-                    </li>
-                    <li><a href="issues.html">Issues</a>
-                    </li>
-                    <li class="active"><a href="">Users<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li><a href="files.html">Files</a>
+                    <li><a href="projects.html">Projects</a>
                     </li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li><a href="usermanagement.html">User Management</a>
+                    <li><a href="usermanagement.html">Management</a>
                     </li>
+
+                    <li class="nav_secondlevel"><a href="usermanagement.html">Users</a>
+                    </li>
+                    <li class="nav_secondlevel active"><a href="#">Projects<span class="sr-only">(current)</span></a></li>
+                    <li class="nav_secondlevel"><a href="metamanagement.html">Meta</a>
+                    </li>
+
                     <li><a href="profile.html">Profile</a>
                     </li>
+
                 </ul>
+
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="input-group">
                     <input type="text" class="form-control filterUsers" placeholder="Filter...">
                     <span class="input-group-btn">
-        <button class="btn btn-success b_addUser" type="button">
+        <button class="btn btn-success b_addProject" type="button">
             <span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    <span> New User</span>
+                    <span> New Project</span>
                     </button>
                     </span>
                 </div>
 
 
-                <ul class="noList users">
-                    <!--                    <li class="itemRow">-->
-                    <!--                        <div class="flexrow centeritems flexspacebetween">-->
-                    <!--                            <div class="itemTag"></div>-->
-                    <!--                            <a class="itemName issue" href="">Issue 1</a>-->
-                    <!--                            <div class="itemInfo">Edited 10 hours ago</div>-->
+                <ul class="noList users"></ul>
             </div>
-            <!--                    </li>-->
 
 
             <!-- Modal -->
-            <div class="modal fade" id="m_addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="m_addProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Add a new user</h4>
+                            <h4 class="modal-title" id="myModalLabel">Add a new project</h4>
                         </div>
                         <div class="modal-body">
-                            Name :
-                            <input type="text" class="form-control" id="i_name">
-                            <br> E-Mail :
-                            <input type="text" class="form-control" id="i_email">
-
-                            <br>
-                            <!--Project :
-                            <input type="text" class="form-control" id="i_project">
-                            <br>
--->
-
-                            <div class="dropdown">
-                                Project :
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dd_addUserProjectListTitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Project
-                                    <span class="caret"></span>
-                                </button>
-                                <ul id="dd_addUserProjectList" class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <!--
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
--->
-                                </ul>
-                            </div>
+                            Title :
+                            <input type="text" class="form-control" id="i_addProject_title">
+                            <br> Description :
+                            <input type="text" class="form-control" id="i_addProject_desc">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button id="createUser" type="submit" class="btn btn-primary">Invite User</button>
+                            <button id="createUser" type="submit" class="btn btn-primary">Create Project</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /Modal -->
 
-            </ul>
+
+            <div class="modal fade" id="m_deleteProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Confirm deletion</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="flexcolumn centeritems">
+                                <div class="warningicon">
+                                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                                </div>
+                                <div class="warningtext">Do you really want to delete this project?</div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button id="deleteProject" type="submit" class="btn btn-primary">Delete Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Modal -->
+
         </div>
-    </div>
     </div>
 
     <!-- Bootstrap core JavaScript
@@ -154,8 +150,9 @@
 -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="js/header.js"></script>
-    <script src="js/users.js"></script>
+    <script src="js/rest.js"></script>
+    <script src="js/projectmanagement.js"></script>
+
 </body>
 
 </html>

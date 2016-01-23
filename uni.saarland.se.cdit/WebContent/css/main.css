@@ -3,10 +3,24 @@
     flex-direction: row;
 }
 
+.flexcolumn {
+    display: flex;
+    flex-direction: column;
+}
+
 .centeritems {
     align-items: center;
 }
 
 .flexspacebetween {
     justify-content: space-between
+}
+
+.warningicon {
+    font-size: 60px;
+    color: #ffeb00;
+}
+
+.warningtext {
+    font-size: 20px;
 }

@@ -34,7 +34,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <div class="nav navbar-nav navbar-left">
-                    <div class="headeritem pageName">Issues</div>
+                    <div class="headeritem pageName">Users</div>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
@@ -52,37 +52,27 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="projects.html">Back to projects</a>
-                    </li>
-                    <li><a href="workflow.html">Workflow</a>
-                    </li>
-                    <li class="active"><a href="">Issues<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li><a href="users.html">Users</a>
-                    </li>
-                    <li><a href="files.html">Files</a>
+                    <li><a href="projects.html">Projects</a>
                     </li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li><a href="usermanagement.html">User Management</a>
+                    <li><a href="usermanagement.html">Management</a>
                     </li>
+
+                    <li class="nav_secondlevel"><a href="usermanagement.html">Users</a>
+                    </li>
+                    <li class="nav_secondlevel"><a href="projectmanagement.html">Projects</a>
+                    </li>
+
+                    <li class="nav_secondlevel active"><a href="#">Meta<span class="sr-only">(current)</span></a></li>
+
                     <li><a href="profile.html">Profile</a>
                     </li>
-                </ul>
-            </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div>
-                    <input type="text" class="form-control filterIssues" placeholder="Filter...">
-                </div>
 
-                <ul class="noList issues">
-                    <!--                    <li class="itemRow">-->
-                    <!--                        <div class="flexrow centeritems flexspacebetween">-->
-                    <!--                            <div class="itemTag"></div>-->
-                    <!--                            <a class="itemName issue" href="">Issue 1</a>-->
-                    <!--                            <div class="itemInfo">Edited 10 hours ago</div>-->
+                </ul>
+
             </div>
-            <!--                    </li>-->
+
 
             </ul>
         </div>
@@ -100,8 +90,7 @@
 -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="js/header.js"></script>
-    <script src="js/issues.js"></script>
+    <script src="js/projectmanagement.js"></script>
 </body>
 
 </html>

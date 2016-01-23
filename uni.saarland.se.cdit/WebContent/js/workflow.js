@@ -1,21 +1,41 @@
 "use strict";
 var allNodes = [];
 var allTickets = [];
+var allTicketInNode = [];
+var allTypes = [];
+var allPriorities = [];
+var workflowNodes = [];
+var projectId = 1;
 var i = 0;
 var k = 0;
 
 $(document).ready(function () {
-    getAmountTicketsNodes(); // Get the amount of tickets and store number in node
-
+    getTickets(); // Get the amount of tickets and store number in node
+    getStatus();
+    getTypes();
+    getPriorities();
 });
 
 function listener() {
+    var currentdate = new Date();
+    var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+
     var nodename;
+    var nodeId;
+    // Open dialog to create a ticket
     $('.addTicket').on('click', function (e) {
         $('#myModal1').modal('toggle');
         nodename = $(this).next().html();
-        console.log(nodename);
-        $('#input_new_status').val(nodename);
+        nodeId = $(this).parent().attr("id").charAt(0);
+        var found = 0;
+        for (var i = 0; i < allNodes.length; i++) {
+            if (allNodes[i].title == nodename) {
+                found = i;
+                break;
+            }
+        }
+        //        console.log("nodename: " + nodename);
+        //console.log("nodeID: " + nodeId);
         $('#myModal1 .modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
@@ -23,18 +43,28 @@ function listener() {
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
-        var statusid = $(this).parent().attr("id").charAt(0);
-        getAllTicketsNodes(statusid);
+        var nodeId = $(this).parent().attr("id").charAt(0);
+        getAllTicketsNodes(nodeId);
     });
 
+    $('#closeTicket').on('click', function (e) {
+
+    });
+    // Submit a ticket to the database
     $('#submitTicket').on('click', function (e) {
+        var elem = document.getElementById("prioritylist");
+        var prioId = elem.options[elem.selectedIndex].value;
+
+        var elem = document.getElementById("typelist");
+        var typeId = elem.options[elem.selectedIndex].value;
+
         var data = {
             "title": $("#input_new_title").val(),
-            "creationDate": "2015-12-05 10:44:52",
+            "creationDate": datetime,
             "description": $("#input_new_desc").val(),
-            "priorityId": $("#input_new_priority").val(),
-            "typeId": $("#input_new_type").val(),
-            "statusId": $("#input_new_status").val(),
+            "priorityId": prioId,
+            "typeId": typeId,
+            "statusId": nodeId,
             "projectId": 1
         }
 
@@ -49,7 +79,8 @@ function listener() {
             success: function (result) {
                 console.log("SUCCESS!");
                 console.log(result);
-                $('#myModal').modal('toggle');
+                updateAmountTicketsNodes(nodeId);
+                $('#myModal1').modal('toggle');
             },
             error: function (a, b, c) {
                 console.log(a + " " + b + " " + c + "ERROR");
@@ -59,35 +90,42 @@ function listener() {
     });
 }
 
-// Get all nodes from server and create nodes
-function getNodes() {
+// Callback to get all tickets
+function callbackGetTickets(result) {
+    console.log("callbackGetTickets");
+    allTickets = result;
+    getWorkflow(projectId);
+}
+
+// Callback for the workflow of a user
+function callbackGetWorkflow(result) {
+    console.log("callbackGetWorkflow");
+    workflowNodes = result;
+    for (var key in result) {
+        $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionX + '%></div>');
+        $('#' + result[key].id + 'node').append('<div class="addTicket"></div>');
+        $('#' + result[key].id + 'node .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+        $('#' + result[key].id + 'node').append('<div class="topTitle">' + allNodes[result[key].sourceNodeId - 1].title + '</div>');
+        $('#' + result[key].id + 'node').append('<div class="showNode"></div>');
+        $('#' + result[key].id + 'node .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
+        $('#' + result[key].id + 'node .showNode').after('<div class="amountTickets"></div>');
+        //        console.log("nodeid: " + allNodes[result[key].sourceNodeId - 1].id);
+        updateAmountTicketsNodes(allNodes[result[key].sourceNodeId - 1].id);
+        getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
+    }
+    startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
+    listener(); // Activate the listener after create HTML content
+}
+
+function updateAmountTicketsNodes(nodeId) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
         dataType: 'json',
         async: true,
         success: function (result) {
-            allNodes = result;
-            for (var key in result) {
-                // console.log("desc: " + result[key].description);
-                // console.log("id: " + result[key].id);
-
-                // Create nodes in workflow view
-                $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + k + '%;top:' + i + '%><div class="addTicket"> </div><div class="topTitle">' + result[key].title + '</div><div class="showNode"></div></div>');
-                var counterTickets = 0;
-                var l = 0;
-                for (l; l < allTickets.length; l++) {
-                    if (allTickets[l].statusId == result[key].id) {
-                        counterTickets++;
-                    }
-                    //console.log(counterTickets + " " + allTickets[l].statusId + " " + result[key].id);
-                }
-                $('#' + result[key].id + 'node .showNode').after('<div class="amountTickets">' + counterTickets + '</div>');
-                i += 14;
-                k += 14;
-            }
-            startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
-            listener(); // Activate the listener after create HTML content
+            allTicketInNode = result;
+            $('#' + nodeId + 'node .amountTickets').html(allTicketInNode.length);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -96,45 +134,99 @@ function getNodes() {
     })
 }
 
-function getAmountTicketsNodes() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            allTickets = result;
-            for (var key in result) {
-                //        Load tickets into Nodes
-
-            }
-            getNodes();
-
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
+// Callback to get all status from server
+function callbackGetStatus(result) {
+    console.log("callbackGetStatus");
+    allNodes = result;
 }
+//function getStatus() {
+//    $.ajax({
+//        type: "GET",
+//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+//        dataType: 'json',
+//        async: true,
+//        success: function (result) {
+//            allNodes = result;
+//        },
+//        error: function (a, b, c) {
+//            console.log(a + " " + b + " " + c + "ERROR");
+//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+//        }
+//    })
+//}
 
-function getAllTicketsNodes(statusid) {
+// Callback to get all types in the DB
+function callbackGetTypes(result) {
+    console.log("callbackGetTypes");
+    allTypes = result;
+    for (var key in result) {
+        $('#typelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
+    }
+}
+//function getTypes() {
+//    $.ajax({
+//        type: "GET",
+//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/type",
+//        dataType: 'json',
+//        async: true,
+//        success: function (result) {
+//            allTypes = result;
+//            for (var key in result) {
+//                $('#typelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
+//            }
+//        },
+//        error: function (a, b, c) {
+//            console.log(a + " " + b + " " + c + "ERROR");
+//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+//        }
+//    })
+//}
+
+// Get all priorites in the DB
+function callbackGetPriorities(result) {
+    console.log("callbackGetTypes");
+    allPriorities = result;
+    for (var key in result) {
+        $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
+    }
+}
+//function getPriorities() {
+//    $.ajax({
+//        type: "GET",
+//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/priority",
+//        dataType: 'json',
+//        async: true,
+//        success: function (result) {
+//            allPriorities = result;
+//            for (var key in result) {
+//                $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
+//            }
+//        },
+//        error: function (a, b, c) {
+//            console.log(a + " " + b + " " + c + "ERROR");
+//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+//        }
+//    })
+//}
+
+// get all tickets for showing all within a node  
+function getAllTicketsNodes(nodeId) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
         dataType: 'json',
         async: true,
         success: function (result) {
-            allTickets = result;
+            allTicketInNode = result;
             $('#myModal2 .modal-body').empty();
-            console.log("cleared!");
             for (var key in result) {
                 //        Load tickets into Nodes
-                if (allTickets[key].statusId == statusid) {
-                    $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"><div id="' + allTickets[key].id + 
-                    allTickets[key].title + 'ticket" class="nodeTicket">Title: ' + allTickets[key].title + ' </br> Priority: ' 
-                    + allTickets[key].priorityId + '</div></div>');
-                }
+                $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"></div>');
+                $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].id + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
+
+                //        
+                //                            $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"><div id="' + allTicketInNode[key].id +
+                //                        allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div></div>');
             }
 
         },
@@ -170,7 +262,7 @@ function startJsplumb() {
                             font: "15px sans-serif",
                             color: "rgba(97, 170, 224, 0.72)",
                         },
-                        label: "Label", // Name of the label at the arrow
+                        label: "", // Name of the label at the arrow
                         location: 0.5, // Position of the label at the arrow
                 }]
                       ],
@@ -191,41 +283,16 @@ function startJsplumb() {
         var dynamicAnchors2 = ["Right", "Left", "Top", "Bottom"];
 
         // Connect nodes
-        jsPlumb.connect({
-            source: "1node",
-            target: "2node",
-            detachable: false
-        }, common);
+        for (var i = 0; i < workflowNodes.length; i++) {
+            var sourceName = workflowNodes[i].id;
+            var targetName = workflowNodes[i].targetNodeId;
+            jsPlumb.connect({
+                source: sourceName + "node",
+                target: targetName + "node",
+                detachable: false
+            }, common);
+        }
 
-        jsPlumb.connect({
-            source: "2node",
-            target: "3node",
-            detachable: false
-        }, common);
-        jsPlumb.connect({
-            source: "3node",
-            target: "4node",
-            detachable: false
-
-        }, common);
-        jsPlumb.connect({
-            source: "4node",
-            target: "5node",
-            detachable: false
-
-        }, common);
-        jsPlumb.connect({
-            source: "5node",
-            target: "6node",
-            detachable: false
-
-        }, common);
-        jsPlumb.connect({
-            source: "6node",
-            target: "7node",
-            detachable: false
-
-        }, common);
         // adding anchorpoints to nodes
         //    jsPlumb.addEndpoint($(".item"), {
         //        anchors: dynamicAnchors1

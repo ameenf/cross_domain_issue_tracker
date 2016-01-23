@@ -21,10 +21,10 @@ public class UserResource {
 	
 	@POST @Path("login")
 	public Response authenticate(
-			@FormParam("inputEmail") String email,
+			@FormParam("inputUsername") String username,
 			@FormParam("inputPassword") String password) {
 			return Response.status(200)
-				.entity(dao.authenticate(email, password))
+				.entity(dao.authenticate(username, password))
 				.build();
 
 	}
@@ -42,6 +42,15 @@ public class UserResource {
 	public User create(User user) {
 		System.out.println("creating user");
 		return dao.create(user);
+	}
+	
+	@PUT @Path("updatePassword")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response updatePassword(User user) {
+		System.out.println("Updating password");
+		return Response.status(200)
+				.entity(dao.updatePassword(user))
+				.build();
 	}
 	
 	@DELETE @Path("remove/{id}")
