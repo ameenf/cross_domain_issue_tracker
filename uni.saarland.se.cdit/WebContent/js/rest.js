@@ -115,7 +115,8 @@ function getTickets() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            // return result;
+            callbackGetTickets(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -145,7 +146,7 @@ function getTicketsByNodeId(nodeid) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            //return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -183,7 +184,7 @@ function getTicketsById(id) {
     })
 };
 
-function createTiwcket(title, description, prioId, typeId, nodeId, projId) {
+function createTicket(title, description, prioId, typeId, nodeId, projId) {
     var data = {
         "title": title,
         "creationDate": "",
@@ -359,7 +360,8 @@ function getWorkflow(projectId) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            //return result;
+            callbackGetWorkflow(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -380,7 +382,8 @@ function getStatus() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            //            return result;
+            callbackGetStatus(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -397,7 +400,8 @@ function getTypes() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            //return result;
+            callbackGetTypes(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -414,7 +418,8 @@ function getPriorities() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            //            return result;
+            callbackGetPriorities(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
