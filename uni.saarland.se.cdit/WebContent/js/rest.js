@@ -289,6 +289,22 @@ function login(email, pwd) {
         });
 };
 
+function getUsers() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
 function createUser(username, password) {
     var data = {
         "email": "",
@@ -316,11 +332,22 @@ function createUser(username, password) {
     })
 }
 
-function getUsers() {
+function updateUser(username, password) {
+    var data = {
+        "email": "",
+        "id": "",
+        "password": password,
+        "type": "",
+        "username": username,
+    }
+
     $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
-        dataType: 'json',
+        type: "PUT",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/updatePassword",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
         async: true,
         success: function (result) {
             return result;

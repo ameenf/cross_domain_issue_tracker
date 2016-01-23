@@ -25,6 +25,7 @@ function login(email, pwd) {
                 console.log(textStatus);
                 console.log(xhr);
                 if (result === "true") {
+                    Cookies.set('loggedin', 'true');
                     location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
                 }
             },
