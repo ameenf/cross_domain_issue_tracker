@@ -20,12 +20,18 @@ function login(email, pwd) {
             crossDomain: true,
             async: true,
             success: function (result, textStatus, xhr) {
+            	console.log("result: ")
                 console.log(result);
                 console.log(textStatus);
                 console.log(xhr);
-                location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
-                if (result) {
-
+                if (result == "false") {
+                	console.log("Login failed");
+                	$("#loginFailBox").show();
+                	$("#loginFailBox").css('color', 'red');
+                }else{
+                	location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
+                	console.log("Logging in");
+                	
                 }
             },
             error: function (a, b, c) {
@@ -44,7 +50,7 @@ function login(email, pwd) {
 //function get() {
 //    $.ajax({
 //            type: "GET",
-//            url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchById/1",
+//            url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchById/1",
 //            //       dataType: 'jsonp',
 //            //       jsonp: false,
 //            //       jsonpCallback: 'JSONPCallback',
