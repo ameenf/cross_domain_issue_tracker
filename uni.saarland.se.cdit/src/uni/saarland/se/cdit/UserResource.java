@@ -21,10 +21,10 @@ public class UserResource {
 	
 	@POST @Path("login")
 	public Response authenticate(
-			@FormParam("inputEmail") String email,
+			@FormParam("inputUsername") String username,
 			@FormParam("inputPassword") String password) {
 			return Response.status(200)
-				.entity(dao.authenticate(email, password))
+				.entity(dao.authenticate(username, password))
 				.build();
 
 	}

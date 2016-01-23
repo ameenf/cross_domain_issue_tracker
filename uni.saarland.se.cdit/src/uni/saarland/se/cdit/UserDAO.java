@@ -31,15 +31,15 @@ public class UserDAO {
         return list;
     }
 	
-	public boolean authenticate(String email, String pw){
+	public boolean authenticate(String username, String pw){
 		Connection c = null;
-		String sql = "SELECT users.users_password FROM users WHERE users.users_email = ?";
+		String sql = "SELECT users.users_password FROM users WHERE users.users_username = ?";
 		String password;
 		boolean success = false;
 		try {
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setString(1, email);
+			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
 				password = rs.getString("users_password");
