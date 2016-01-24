@@ -176,8 +176,8 @@ function getTicketsById(id) {
         dataType: 'json',
         async: true,
         success: function (result) {
-//            return result;
-        callbackGetTicketsById(result);
+            //            return result;
+            callbackGetTicketsById(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -265,20 +265,18 @@ function deleteTicket(id) {
 //////////////////////////////////////////////////Users////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function login(email, pwd) {
+function login(username, pwd) {
     $.ajax({
             type: "POST",
             url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
             data: {
-                inputEmail: email,
+                inputUsername: username,
                 inputPassword: pwd
             },
             crossDomain: true,
             async: true,
             success: function (result, textStatus, xhr) {
-                if (result === "true") {
-                    location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
-                }
+                callbackLogin(result);
             },
             error: function (a, b, c) {
                 console.log(a + " " + b + " " + c + "ERROR");
