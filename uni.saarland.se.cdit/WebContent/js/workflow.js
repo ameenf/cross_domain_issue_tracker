@@ -6,6 +6,8 @@ var ticketById = [];
 var allTypes = [];
 var allPriorities = [];
 var workflowNodes = [];
+var currentTicketIndex;
+var currentStatusId;
 var projectId = 1;
 var i = 0;
 var k = 0;
@@ -21,6 +23,9 @@ function listenerShowTicket() {
     // Enlarge a ticket
     $('.nodeTicket').on('click', function (e) {
         $('#ticketViewWrapper').toggle();
+        currentTicketIndex = $('.nodeTicket').index(this);
+        currentStatusId = allTicketInNode[$('.nodeTicket').index(this)].statusId;
+
         getTicketsById(allTicketInNode[$('.nodeTicket').index(this)].id);
         $('#myModal2').modal('toggle');
         $('#ticketView').fadeToggle('fast');
@@ -36,25 +41,101 @@ function listenerShowTicket() {
         //        console.log("7 " + allTicketInNode[$('.nodeTicket').index(this)].title);
         //        console.log("8 " + allTicketInNode[$('.nodeTicket').index(this)].typeId);
         $('#ticketView .form-horizontal').empty();
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><p class="form-control-static">' + allTicketInNode[$('.nodeTicket').index(this)].title + '</p></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><input type="text" class="form-control updTitle" value="' + allTicketInNode[$('.nodeTicket').index(this)].title + '" readonly></div></div>');
 
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><p class="form-control-static">' + allTicketInNode[$('.nodeTicket').index(this)].description + '</p></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><textarea class="form-control updDesc" readonly>' + allTicketInNode[$('.nodeTicket').index(this)].description + '</textarea></div></div>');
 
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><p class="form-control-static">' + allTicketInNode[$('.nodeTicket').index(this)].creationDate + '</p></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><input type="text" class="form-control updCreat" value="' + allTicketInNode[$('.nodeTicket').index(this)].creationDate + '" readonly></div></div>');
 
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Priority</label><div class="col-sm-10"><p class="form-control-static">' + allPriorities[allTicketInNode[$('.nodeTicket').index(this)].projectId - 1].title + '</p></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Priority</label><div class="col-sm-10"><select id="updPrioritylist" class="form-control" disabled></select></div></div>');
+        for (var key in allPriorities) {
+            if (allPriorities[allTicketInNode[$('.nodeTicket').index(this)].priorityId - 1].title == allPriorities[key].title)
+                $('#updPrioritylist').append('<option value="' + allPriorities[key].id + '" selected>' + allPriorities[key].title + '</option>');
+            else
+                $('#updPrioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
+        }
 
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Type</label><div class="col-sm-10"><p class="form-control-static">' + allTypes[allTicketInNode[$('.nodeTicket').index(this)].typeId - 1].title + '</p></div></div>');
-        $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default">Close</button>');
 
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updType">Type</label><div class="col-sm-10"><select id="updTypelist" class="form-control" disabled></select></div></div>');
+        for (var key in allTypes) {
+            if (allTypes[allTicketInNode[$('.nodeTicket').index(this)].typeId - 1].title == allTypes[key].title)
+                $('#updTypelist').append('<option value="' + allTypes[key].id + '" selected>' + allTypes[key].title + '</option>');
+            else
+                $('#updTypelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
+        }
 
+        $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default closeTicket">Close</button><button id="updateTicket" type="button" class="btn btn-primary">Update Ticket</button><button type="button" class="btn btn-default editTicket"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>');
 
-
-        $('#ticketView .btn').on('click', function (e) {
-            console.log("BTN");
+        $('#ticketView .closeTicket').on('click', function (e) {
+            console.log("CLOSE TICKET BTN");
             $('#ticketView').fadeOut('fast');
             $('#ticketViewWrapper').fadeOut('fast');
         });
+
+        $('#ticketView .editTicket').on('click', function (e) {
+            console.log("EDIT TICKET BTN");
+
+            console.log('Edit ticket' + allTicketInNode[currentTicketIndex].title);
+            $('#ticketView p').toggleClass('form-control-static form-control');
+
+            if ($('#ticketView input').attr('readonly') && $('#ticketView select').attr('disabled') && $('#ticketView textarea').attr('readonly')) {
+                $('#ticketView input').removeAttr('readonly');
+                $('#ticketView select').removeAttr('disabled');
+                $('#ticketView textarea').removeAttr('readonly');
+            } else {
+                $('#ticketView input').attr('readonly', '');
+                $('#ticketView select').attr('disabled', '');
+                $('#ticketView textarea').attr('readonly', '');
+            }
+            $('#updateTicket').toggle();
+        });
+
+        $('#updateTicket').on('click', function (e) {
+            console.log("UPDATE TICKET BTN");
+            console.log($(".updTitle").val());
+            console.log($(".updDesc").html());
+
+            var elem = document.getElementById("updPrioritylist");
+            var prioId = elem.options[elem.selectedIndex].value;
+            console.log("NEW PRIOID: " + prioId);
+
+            var elem = document.getElementById("updTypelist");
+            var typeId = elem.options[elem.selectedIndex].value;
+            console.log("NEW PRIOID: " + typeId);
+
+            var data = {
+                "id": allTicketInNode[currentTicketIndex].id,
+                "creationDate": $(".updCreat").val(),
+                "title": $(".updTitle").val(),
+                "description": $(".updDesc").html(),
+                "priorityId": prioId,
+                "typeId": typeId,
+                "statusId": currentStatusId,
+                "projectId": projectId
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    console.log("TICKET UPDATED!");
+                    console.log(result);
+                    //                    updateAmountTicketsNodes(nodeId);
+                    $('#ticketView').fadeOut('fast');
+                    $('#ticketViewWrapper').fadeOut('fast');
+                },
+                error: function (a, b, c) {
+                    console.log(a + " " + b + " " + c + "ERROR");
+                    document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+                }
+            })
+        });
+
     });
 
     $('#ticketViewWrapper').on('click', function (e) {
@@ -89,10 +170,7 @@ function listener() {
         $('#myModal1 .modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
-
     $('.showNode').on('click', function (e) {
-        console.log("shownode");
-
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
@@ -100,9 +178,7 @@ function listener() {
         getAllTicketsNodes(nodeId);
     });
 
-    $('#closeTicket').on('click', function (e) {
 
-    });
     // Submit a ticket to the database
     $('#submitTicket').on('click', function (e) {
         var elem = document.getElementById("prioritylist");
@@ -194,21 +270,6 @@ function callbackGetStatus(result) {
     console.log("callbackGetStatus");
     allNodes = result;
 }
-//function getStatus() {
-//    $.ajax({
-//        type: "GET",
-//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
-//        dataType: 'json',
-//        async: true,
-//        success: function (result) {
-//            allNodes = result;
-//        },
-//        error: function (a, b, c) {
-//            console.log(a + " " + b + " " + c + "ERROR");
-//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-//        }
-//    })
-//}
 
 // Callback to get all types in the DB
 function callbackGetTypes(result) {
@@ -218,24 +279,7 @@ function callbackGetTypes(result) {
         $('#typelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
     }
 }
-//function getTypes() {
-//    $.ajax({
-//        type: "GET",
-//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/type",
-//        dataType: 'json',
-//        async: true,
-//        success: function (result) {
-//            allTypes = result;
-//            for (var key in result) {
-//                $('#typelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
-//            }
-//        },
-//        error: function (a, b, c) {
-//            console.log(a + " " + b + " " + c + "ERROR");
-//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-//        }
-//    })
-//}
+
 
 // Get all priorites in the DB
 function callbackGetPriorities(result) {
@@ -245,24 +289,7 @@ function callbackGetPriorities(result) {
         $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
     }
 }
-//function getPriorities() {
-//    $.ajax({
-//        type: "GET",
-//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/priority",
-//        dataType: 'json',
-//        async: true,
-//        success: function (result) {
-//            allPriorities = result;
-//            for (var key in result) {
-//                $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
-//            }
-//        },
-//        error: function (a, b, c) {
-//            console.log(a + " " + b + " " + c + "ERROR");
-//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-//        }
-//    })
-//}
+
 
 function callbackGetTicketsById(result) {
     ticketById = result;
@@ -372,23 +399,23 @@ function startJsplumb() {
 
         // ******************************************** ZOOM ********************************************
         //Zoom the container on mousewheel
-        $('#diagramContainer').bind('mousewheel', function () {
-            var stage = $(this);
-            var scaleData = getZoom(stage);
-            console.log(scaleData)
-            if (event.wheelDelta < 0) {
-                //Zoom out
-                setZoom(scaleData.curScale * '.9', stage);
-            } else if (event.wheelDelta > 1) {
-                //Zoom in
-                setZoom(scaleData.curScale * '1.1', stage);
-            }
-            jsPlumb.repaintEverything();
-            console.log("ALL REPAINTED");
-            return false;
-            event.stopPropagation();
-
-        });
+        //        $('#diagramContainer').bind('mousewheel', function () {
+        //            var stage = $(this);
+        //            var scaleData = getZoom(stage);
+        //            console.log(scaleData)
+        //            if (event.wheelDelta < 0) {
+        //                //Zoom out
+        //                setZoom(scaleData.curScale * '.9', stage);
+        //            } else if (event.wheelDelta > 1) {
+        //                //Zoom in
+        //                setZoom(scaleData.curScale * '1.1', stage);
+        //            }
+        //            jsPlumb.repaintEverything();
+        //            console.log("ALL REPAINTED");
+        //            return false;
+        //            event.stopPropagation();
+        //
+        //        });
 
 
         // Set the zoom and scale the overview
