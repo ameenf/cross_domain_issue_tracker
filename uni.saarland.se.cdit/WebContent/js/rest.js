@@ -146,7 +146,7 @@ function getTicketsByNodeId(nodeid) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            //return result;
+            return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -176,7 +176,8 @@ function getTicketsById(id) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+//            return result;
+        callbackGetTicketsById(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");

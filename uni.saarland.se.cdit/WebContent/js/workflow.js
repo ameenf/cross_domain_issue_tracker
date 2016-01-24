@@ -2,6 +2,7 @@
 var allNodes = [];
 var allTickets = [];
 var allTicketInNode = [];
+var ticketById = [];
 var allTypes = [];
 var allPriorities = [];
 var workflowNodes = [];
@@ -15,6 +16,55 @@ $(document).ready(function () {
     getTypes();
     getPriorities();
 });
+
+function listenerShowTicket() {
+    // Enlarge a ticket
+    $('.nodeTicket').on('click', function (e) {
+        $('#ticketViewWrapper').toggle();
+        getTicketsById(allTicketInNode[$('.nodeTicket').index(this)].id);
+        $('#myModal2').modal('toggle');
+        $('#ticketView').fadeToggle('fast');
+        //        $('#ticketView').append('<div id="ticket');
+
+        //        console.log("0 " + $('.nodeTicket').index(this));
+        //        console.log("1 " + allTicketInNode[$('.nodeTicket').index(this)].creationDate);
+        //        console.log("2 " + allTicketInNode[$('.nodeTicket').index(this)].description);
+        //        console.log("3 " + allTicketInNode[$('.nodeTicket').index(this)].id);
+        //        console.log("4 " + allTicketInNode[$('.nodeTicket').index(this)].priorityId);
+        //        console.log("5 " + allTicketInNode[$('.nodeTicket').index(this)].projectId);
+        //        console.log("6 " + allTicketInNode[$('.nodeTicket').index(this)].statusId);
+        //        console.log("7 " + allTicketInNode[$('.nodeTicket').index(this)].title);
+        //        console.log("8 " + allTicketInNode[$('.nodeTicket').index(this)].typeId);
+        $('#ticketView .form-horizontal').empty();
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><p class="form-control-static">' + allTicketInNode[$('.nodeTicket').index(this)].title + '</p></div></div>');
+
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><p class="form-control-static">' + allTicketInNode[$('.nodeTicket').index(this)].description + '</p></div></div>');
+
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><p class="form-control-static">' + allTicketInNode[$('.nodeTicket').index(this)].creationDate + '</p></div></div>');
+
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Priority</label><div class="col-sm-10"><p class="form-control-static">' + allPriorities[allTicketInNode[$('.nodeTicket').index(this)].projectId - 1].title + '</p></div></div>');
+
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Type</label><div class="col-sm-10"><p class="form-control-static">' + allTypes[allTicketInNode[$('.nodeTicket').index(this)].typeId - 1].title + '</p></div></div>');
+        $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default">Close</button>');
+
+
+
+
+        $('#ticketView .btn').on('click', function (e) {
+            console.log("BTN");
+            $('#ticketView').fadeOut('fast');
+            $('#ticketViewWrapper').fadeOut('fast');
+        });
+    });
+
+    $('#ticketViewWrapper').on('click', function (e) {
+        $('#ticketView').fadeOut('fast');
+        $('#ticketViewWrapper').fadeOut('fast');
+    });
+
+}
+
+
 
 function listener() {
     var currentdate = new Date();
@@ -39,7 +89,10 @@ function listener() {
         $('#myModal1 .modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
+
     $('.showNode').on('click', function (e) {
+        console.log("shownode");
+
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
@@ -88,6 +141,8 @@ function listener() {
             }
         })
     });
+
+
 }
 
 // Callback to get all tickets
@@ -209,6 +264,10 @@ function callbackGetPriorities(result) {
 //    })
 //}
 
+function callbackGetTicketsById(result) {
+    ticketById = result;
+}
+
 // get all tickets for showing all within a node  
 function getAllTicketsNodes(nodeId) {
     $.ajax({
@@ -223,12 +282,8 @@ function getAllTicketsNodes(nodeId) {
                 //        Load tickets into Nodes
                 $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"></div>');
                 $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].id + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
-
-                //        
-                //                            $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"><div id="' + allTicketInNode[key].id +
-                //                        allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div></div>');
             }
-
+            listenerShowTicket();
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
