@@ -5,7 +5,8 @@
 function getProjects() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
+        //        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
+        url: baseurl + "rest/projects",
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -22,7 +23,8 @@ function getProjects() {
 function getProjectsFromUser(userid) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/searchByUser/" + userid,
+        //        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/searchByUser/" + userid,
+        url: baseurl + "rest/projects/searchByUser/" + userid,
         dataType: 'json',
         async: true,
         success: function (result) {

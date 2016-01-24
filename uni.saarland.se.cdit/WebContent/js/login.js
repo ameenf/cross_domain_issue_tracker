@@ -15,7 +15,7 @@ function callbackLogin(result) {
         $("#loginFailBox").css('color', 'red');
     } else {
         Cookies.set('loggedin', 'true');
-        location.href = 'http://localhost:8080/uni.saarland.se.cdit/projects.html';
+        changePage("projects.html")
         console.log("Logging in");
     }
 }
