@@ -268,26 +268,34 @@ function deleteTicket(id) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function login(username, pwd) {
+
+
+    var data = {
+        username: username,
+        password: pwd
+    }
+
+    //    var data = {
+    //        username: "admin",
+    //        password: "admin"
+    //    }
+
     $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
-            data: {
-                inputUsername: username,
-                inputPassword: pwd
-            },
-            crossDomain: true,
-            async: true,
-            success: function (result, textStatus, xhr) {
-                callbackLogin(result);
-            },
-            error: function (a, b, c) {
-                console.log(a + " " + b + " " + c + "ERROR");
-                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            }
-        })
-        .fail(function (e) {
-            console.log(e.msg + "ERROR");
-        });
+        type: "POST",
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
+        data: JSON.stringify(data),
+        //        data: data,
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackSuccessLogin(result);
+        },
+        error: function (a, b, c) {
+            callbackFailedLogin(a, b, c);
+        }
+    })
 };
 
 function getUsers() {

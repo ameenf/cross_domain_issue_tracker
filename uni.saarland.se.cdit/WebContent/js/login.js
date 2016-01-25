@@ -6,7 +6,7 @@ $(document).ready(function () {
 });
 
 
-function callbackLogin(result) {
+function callbackSuccessLogin(result) {
     console.log("result: ")
     console.log(result);
     if (result == "false") {
@@ -18,4 +18,8 @@ function callbackLogin(result) {
         changePage("projects.html")
         console.log("Logging in");
     }
+}
+
+function callbackFailedLogin(a, b, c) {
+    console.log(a + " - " + b + " - " + c);
 }
