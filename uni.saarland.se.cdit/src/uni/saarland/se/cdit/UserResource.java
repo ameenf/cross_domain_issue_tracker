@@ -20,11 +20,10 @@ public class UserResource {
 	UserDAO dao = new UserDAO();
 	
 	@POST @Path("login")
-	public Response authenticate(
-			@FormParam("inputUsername") String username,
-			@FormParam("inputPassword") String password) {
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response authenticate(User user) {
 			return Response.status(200)
-				.entity(dao.authenticate(username, password))
+				.entity(dao.authenticate(user))
 				.build();
 
 	}
