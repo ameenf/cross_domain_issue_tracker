@@ -5,9 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class UserDAO {
 
@@ -37,17 +41,18 @@ public class UserDAO {
 		String password;
 		boolean success = false;
 		try {
+			String hashed_pw = toHash(pw);
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()){
 				password = rs.getString("users_password");
-				if(pw.equals(password)){
+				if(hashed_pw.equals(password)){
 					success = true;
 				}
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
@@ -66,7 +71,8 @@ public class UserDAO {
             ps = c.prepareStatement(statement, new String[] { "users_id" });
             
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+            
+            ps.setString(2, toHash(user.getPassword()));
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getType());
             ps.executeUpdate();
@@ -92,11 +98,11 @@ public class UserDAO {
             										  "SET users_password = ? " +
             										  "WHERE users.users_id = ?");
             
-            ps.setString(1, user.getPassword());
+            ps.setString(1, toHash(user.getPassword()));
             ps.setInt(2, user.getId());
             int count = ps.executeUpdate();
             return count == 1;
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
 		} finally {
@@ -126,4 +132,12 @@ public class UserDAO {
 		user.setUsername(rs.getString("users_username"));
         return user;
     }
+	
+	protected String toHash(String password) throws NoSuchAlgorithmException{
+		
+		MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte byteData[] = md.digest();
+		return DatatypeConverter.printHexBinary(byteData);
+	}
 }
