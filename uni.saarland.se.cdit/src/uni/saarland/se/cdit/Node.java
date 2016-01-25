@@ -10,6 +10,7 @@ public class Node {
 	private int targetNodeId ;
 	private int positionX;
 	private int positionY;
+	private int ticketsCount;
 	/**
 	 * @return the id
 	 */
@@ -81,6 +82,18 @@ public class Node {
 	 */
 	public void setPositionY(int positionY) {
 		this.positionY = positionY;
+	}
+	/**
+	 * @return the ticketsCount
+	 */
+	public int getTicketsCount() {
+		return ticketsCount;
+	}
+	/**
+	 * @param ticketsCount the ticketsCount to set
+	 */
+	public void setTicketsCount(int ticketsCount) {
+		this.ticketsCount = ticketsCount;
 	}
 
 

@@ -16,13 +16,22 @@ public class NodeDAO {
     	String sql = "SELECT node_id, project_id, source_node_id, target_node_id, x_pos, y_pos "+
     				 "FROM nodes "+
     				 "WHERE project_id = ?";
+    	String ticketsCountSql = "SELECT COUNT(t.ticket_id) FROM ticket as t WHERE t.project_id = ? AND t.status_id = ?";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
+            ps = c.prepareStatement(ticketsCountSql);
+            int i = 0;
             while (rs.next()) {
-                list.add(processRow(rs));
+            	list.add(processRow(rs));
+                ps.setInt(1, id);
+                ps.setInt(2, list.get(i).getId());
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	list.get(i).setTicketsCount(rs2.getInt(1));
+                i++;
             }
                         
         } catch (SQLException e) {
@@ -44,4 +53,5 @@ public class NodeDAO {
 		workflow.setPositionY(rs.getInt("y_pos"));
         return workflow;
     }
+	
 }
