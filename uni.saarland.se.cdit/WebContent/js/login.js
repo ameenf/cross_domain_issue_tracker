@@ -9,14 +9,14 @@ $(document).ready(function () {
 function callbackSuccessLogin(result) {
     console.log("result: ")
     console.log(result);
-    if (result == "false") {
-        console.log("Login failed");
-        $("#loginFailBox").show();
-        $("#loginFailBox").css('color', 'red');
-    } else {
+    if (result == true) {
         Cookies.set('loggedin', 'true');
         changePage("projects.html")
         console.log("Logging in");
+    } else {
+        console.log("Login failed");
+        $("#loginFailBox").show();
+        $("#loginFailBox").css('color', 'red');
     }
 }
 

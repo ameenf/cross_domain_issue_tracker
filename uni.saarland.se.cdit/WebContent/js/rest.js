@@ -1,10 +1,5 @@
 var port = 8080;
 var baseurl = 'http://localhost:' + port + '/uni.saarland.se.cdit/';
-
-function changePage(newurl) {
-    location.href = baseurl + newurl;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Projects/////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,8 +292,6 @@ function deleteTicket(id) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function login(username, pwd) {
-
-
     var data = {
         username: username,
         password: pwd
@@ -317,6 +310,7 @@ function login(username, pwd) {
         data: JSON.stringify(data),
         //        data: data,
         contentType: "application/json; charset=utf-8",
+        //contentType: "application/x-www-form-urlencoded",
         crossDomain: true,
         dataType: "json",
         async: true,
