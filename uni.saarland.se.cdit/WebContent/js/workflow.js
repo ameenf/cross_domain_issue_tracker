@@ -10,6 +10,7 @@ var currentTicketIndex;
 var currentStatusId;
 var projectId = 1;
 var editModeTemp = false;
+var nodeIndex;
 
 $(document).ready(function () {
     getTickets(); // Get the amount of tickets and store number in node
@@ -136,7 +137,6 @@ function listenerShowTicket() {
                 success: function (result) {
                     console.log("TICKET UPDATED!");
                     console.log(result);
-                    //                    updateAmountTicketsNodes(nodeId);
                     $('#ticketView').fadeOut('fast');
                     $('#ticketViewWrapper').fadeOut('fast');
                 },
@@ -169,6 +169,8 @@ function listener() {
         $('#myModal1').modal('toggle');
         nodename = $(this).next().html();
         nodeId = $(this).parent().attr("id").charAt(0);
+        nodeIndex = $(this).parent().index();
+
         var found = 0;
         for (var i = 0; i < allNodes.length; i++) {
             if (allNodes[i].title == nodename) {
@@ -186,6 +188,8 @@ function listener() {
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
         var nodeId = $(this).parent().attr("id").charAt(0);
+
+
         getAllTicketsNodes(nodeId);
     });
 
@@ -204,29 +208,31 @@ function listener() {
             "description": $("#input_new_desc").val(),
             "priorityId": prioId,
             "typeId": typeId,
-            "statusId": nodeId,
+            "statusId": workflowNodes[nodeIndex].sourceNodeId,
             "projectId": 1
         }
 
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: "json",
-            async: true,
-            success: function (result) {
-                console.log("SUCCESS!");
-                console.log(result);
-                updateAmountTicketsNodes(nodeId);
-                $('#myModal1').modal('toggle');
-            },
-            error: function (a, b, c) {
-                console.log(a + " " + b + " " + c + "ERROR");
-                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            }
-        })
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    dataType: "json",
+                    async: true,
+                    success: function (result) {
+                        console.log("SUCCESS!");
+                        console.log(result);
+                        getWorkflow(projectId);
+                        //$('#' + result[key].id + 'node .amountTickets').html();
+                        //  updateAmountTicketsNodes(nodeId);
+                        $('#myModal1').modal('toggle');
+                    },
+                    error: function (a, b, c) {
+                        console.log(a + " " + b + " " + c + "ERROR");
+                        document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+                    }
+                })
     });
 
 
@@ -251,23 +257,23 @@ function callbackGetWorkflow(result) {
         $('#' + result[key].id + 'node').append('<div class="showNode"></div>');
         $('#' + result[key].id + 'node .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
         $('#' + result[key].id + 'node .showNode').after('<div class="amountTickets"></div>');
-        //        console.log("nodeid: " + allNodes[result[key].sourceNodeId - 1].id);
-        updateAmountTicketsNodes(allNodes[result[key].sourceNodeId - 1].id);
-        getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
+        $('#' + result[key].id + 'node .amountTickets').html(result[key].ticketsCount);
+        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
+        //getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
     }
     startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
     listener(); // Activate the listener after create HTML content
 }
 
-function updateAmountTicketsNodes(nodeId) {
+function updateAmountTicketsNodes(projectId) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
+        url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
         dataType: 'json',
         async: true,
         success: function (result) {
-            allTicketInNode = result;
-            $('#' + nodeId + 'node .amountTickets').html(allTicketInNode.length);
+            workflowNodes = result;
+            $('#' + nodeId + 'node .amountTickets').html(workflowNodes[nodeId]);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
