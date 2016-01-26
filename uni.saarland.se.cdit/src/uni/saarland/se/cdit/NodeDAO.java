@@ -27,7 +27,7 @@ public class NodeDAO {
             while (rs.next()) {
             	list.add(processRow(rs));
                 ps.setInt(1, id);
-                ps.setInt(2, list.get(i).getId());
+                ps.setInt(2, list.get(i).getSourceNodeId());
                 ResultSet rs2 = ps.executeQuery();
                 if(rs2.next())
                 	list.get(i).setTicketsCount(rs2.getInt(1));
