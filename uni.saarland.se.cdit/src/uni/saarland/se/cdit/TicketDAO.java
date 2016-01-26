@@ -335,7 +335,6 @@ public class TicketDAO {
 				len = rs.getRow();
 				rs.beforeFirst();
 			}
-			System.out.println(len);
 			ids = new int[len];
 			for(int i = 0;rs.next();i++){
 				ids[i] = rs.getInt(1);

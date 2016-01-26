@@ -15,8 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor;
-import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor.CommonMediaTypes;
+
+
+import org.glassfish.jersey.server.JSONP;
 
 	
 	@Path("/tickets")
@@ -86,12 +87,13 @@ import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor.Commo
 			return dao.remove(id);
 		}
 		
+		@JSONP
 		@GET @Path("test")
 		public Response test(@HeaderParam("user-agent") String str, @HeaderParam("Content-Type") String str2){
 			Hello.counter++;
 			System.out.println(counter);
 			ResponseBuilder response = Response.ok((Object) "{\"user-agent\":\""+String.valueOf(Hello.counter)+"\", \"content-type\":\""+str2+"\"}"); 
-			response.header("Content-Type", "application/json");
+			response.header("Content-Type", "application/javascript");
 		    return response.build();
 		}
 

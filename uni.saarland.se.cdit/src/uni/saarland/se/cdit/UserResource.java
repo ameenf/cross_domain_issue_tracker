@@ -22,9 +22,7 @@ public class UserResource {
 	@POST @Path("login")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response authenticate(User user) {
-			return Response.status(200)
-				.entity(dao.authenticate(user))
-				.build();
+			return Response.status(dao.authenticate(user)?200:401).build();
 
 	}
 	

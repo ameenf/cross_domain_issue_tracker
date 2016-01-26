@@ -40,6 +40,14 @@ import javax.ws.rs.core.MediaType;
 			return dao.create(project);
 		}
 		
+		@PUT @Path("addUsers")
+		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		public Project addUsers(Project project) {
+			System.out.println("adding users to project");
+			return dao.addUsers(project);
+		}
+		
 		@PUT @Path("update")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

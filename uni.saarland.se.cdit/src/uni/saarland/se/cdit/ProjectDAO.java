@@ -40,6 +40,35 @@ public class ProjectDAO {
         return list;
     }
 	
+	public Project findById(int id) {
+        Project project = new Project();
+        Connection c = null;
+    	String sql = "SELECT * FROM project WHERE project_id=? ORDER BY project_id";
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement s = c.prepareStatement(sql);
+            s.setInt(1, id);
+            ResultSet rs = s.executeQuery();
+            sql = "SELECT users_id FROM project_users WHERE project_id = ?";
+            PreparedStatement ps = c.prepareStatement(sql, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            if (rs.next()) {
+                project = processRow(rs);
+                ps.setInt(1, id);
+                ResultSet rs2 = ps.executeQuery();
+                if(rs2.next())
+                	project.setUsers(getIds(rs2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return project;
+    }
+	
 	public List<Project> findByUser(int id) {
         List<Project> list = new ArrayList<Project>();
         Connection c = null;
@@ -107,6 +136,29 @@ public class ProjectDAO {
         return project;
     }
 	
+	public Project addUsers(Project project) {
+        Connection c = null;
+        String statement = "INSERT INTO project_users(project_id, users_id) VALUES (?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            int users[] = project.getUsers();
+            if(users!=null){
+            	PreparedStatement ps = c.prepareStatement(statement);
+            	for(int i=0;i<users.length;i++){
+            		ps.setInt(1, project.getId());
+                    ps.setInt(2, users[i]);
+                    ps.executeUpdate();
+            	}
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return findById(project.getId());
+    }
+	
 	public Project update(Project project) {
         Connection c = null;
         try {
@@ -168,7 +220,6 @@ public class ProjectDAO {
 				len = rs.getRow();
 				rs.beforeFirst();
 			}
-			System.out.println(len);
 			ids = new int[len];
 			for(int i = 0;rs.next();i++){
 				ids[i] = rs.getInt(1);
