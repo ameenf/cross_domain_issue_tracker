@@ -19,14 +19,16 @@ public class ProjectDAO {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(sql);
             sql = "SELECT users_id FROM project_users WHERE project_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = c.prepareStatement(sql, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
             int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
                 ps.setInt(1, list.get(i).getId());
                 ResultSet rs2 = ps.executeQuery();
                 if(rs2.next())
-                	list.get(i).setUsers(getUserIds(rs2));
+                	list.get(i).setUsers(getIds(rs2));
                 i++;
             }
         } catch (SQLException e) {
@@ -57,7 +59,7 @@ public class ProjectDAO {
                 ps.setInt(1, list.get(i).getId());
                 ResultSet rs2 = ps.executeQuery();
                 if(rs2.next())
-                	list.get(i).setUsers(getUserIds(rs2));
+                	list.get(i).setUsers(getIds(rs2));
                 i++;
             }
                         
@@ -157,17 +159,24 @@ public class ProjectDAO {
         return users;
     }*/
 	
-	protected int[] getUserIds(ResultSet rs){
-		int[] users = null;
+	
+	protected int[] getIds(ResultSet rs){
+		int[] ids = null;
 		try {
-			users = new int[rs.getRow()];
+			int len = 0;
+			if(rs.last()){
+				len = rs.getRow();
+				rs.beforeFirst();
+			}
+			System.out.println(len);
+			ids = new int[len];
 			for(int i = 0;rs.next();i++){
-            	users[i] = rs.getInt(1);
+				ids[i] = rs.getInt(1);
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return users;
+		return ids;
 	}
 }
