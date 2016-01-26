@@ -9,14 +9,25 @@ var workflowNodes = [];
 var currentTicketIndex;
 var currentStatusId;
 var projectId = 1;
-var i = 0;
-var k = 0;
+var editModeTemp = false;
 
 $(document).ready(function () {
     getTickets(); // Get the amount of tickets and store number in node
     getStatus();
     getTypes();
     getPriorities();
+});
+// If user leaves workflow, the position of the nodes will be updated
+$(window).unload(function () {
+    console.log("unload function");
+    for (var key in workflowNodes) {
+        var locationNodes = [];
+        var posLeft = $('#' + workflowNodes[key].id + 'node').position().left;
+        var posRight = $('#' + workflowNodes[key].id + 'node').position().right;
+        console.log("New left " + (100 * $('#' + workflowNodes[key].id + 'node').position().left) / $('#diagramContainer').width());
+        console.log("New top " + (100 * $('#' + workflowNodes[key].id + 'node').position().top) / $('#diagramContainer').height());
+        // TODO: REST CALL TO UPDATE IN DB
+    }
 });
 
 function listenerShowTicket() {
@@ -328,39 +339,99 @@ function startJsplumb() {
 
         // Default setting of connections
         var common = {
-                connector: ["StateMachine"], // Form of the line between connected nodes
-                endpoint: "Dot", // Form of the anchorpoint
-                anchor: ["TopCenter", "RightMiddle", "BottomCenter", "LeftMiddle"],
-                overlays: [["Arrow", {
-                        width: 20,
-                        length: 20,
-                        location: 1,
-                        foldback: 1,
-                        id: "arrow"
+            connector: ["StateMachine"], // Form of the line between connected nodes
+            endpoint: "Dot", // Form of the anchorpoint
+            anchor: ["TopCenter", "RightMiddle", "BottomCenter", "LeftMiddle"],
+            overlays: [["Arrow", {
+                    width: 20,
+                    length: 20,
+                    location: 1,
+                    foldback: 1,
+                    id: "arrow"
             }],
                        ["Label", {
-                        labelStyle: {
-                            fillStyle: "white",
-                            font: "15px sans-serif",
-                            color: "rgba(97, 170, 224, 0.72)",
-                        },
-                        label: "", // Name of the label at the arrow
-                        location: 0.5, // Position of the label at the arrow
+                    labelStyle: {
+                        fillStyle: "white",
+                        font: "15px sans-serif",
+                        color: "rgba(97, 170, 224, 0.72)",
+                    },
+                    label: "", // Name of the label at the arrow
+                    location: 0.5, // Position of the label at the arrow
                 }]
                       ],
+            paintStyle: {
+                strokeStyle: "rgba(51, 122, 183, 1)",
+                lineWidth: 5
+            },
+            endpointStyle: {
+                fillStyle: "rgba(49, 49, 49, 0)"
+            },
+            isSource: true,
+            isTarget: true,
+            ConnectionsDetachable: false,
+            ReattachConnections: false
+        }
+
+        jsPlumb.registerEndpointTypes({
+            "basic": {
                 paintStyle: {
-                    strokeStyle: "gray",
-                    lineWidth: 5
-                },
-                endpointStyle: {
-                    fillStyle: "rgba(211, 211, 211, 0.7)"
-                },
-                isSource: true,
-                isTarget: true,
-                ConnectionsDetachable: false,
-                ReattachConnections: false
+                    fillStyle: "blue"
+                }
+            },
+            "selected": {
+                paintStyle: {
+                    fillStyle: "red"
+                }
             }
-            // Anchors can switch position
+        });
+
+        var adminCommon = {
+            connector: ["StateMachine"], // Form of the line between connected nodes
+            endpoint: "Dot", // Form of the anchorpoint
+            anchor: ["TopCenter", "RightMiddle", "BottomCenter", "LeftMiddle"],
+            overlays: [["Arrow", {
+                    width: 20,
+                    length: 20,
+                    location: 1,
+                    foldback: 1,
+                    id: "arrow"
+            }],
+                       ["Label", {
+                    labelStyle: {
+                        fillStyle: "white",
+                        font: "15px sans-serif",
+                        color: "rgba(97, 170, 224, 0.72)",
+                    },
+                    label: "", // Name of the label at the arrow
+                    location: 0.5, // Position of the label at the arrow
+                }]
+                      ],
+            paintStyle: {
+                strokeStyle: "rgba(51, 122, 183, 1)",
+                lineWidth: 5
+            },
+            endpointStyle: {
+                fillStyle: "rgba(49, 49, 49, 1)"
+            },
+            isSource: true,
+            isTarget: true,
+            ConnectionsDetachable: false,
+            ReattachConnections: false
+        }
+
+        jsPlumb.registerEndpointTypes({
+            "basic": {
+                paintStyle: {
+                    fillStyle: "blue"
+                }
+            },
+            "selected": {
+                paintStyle: {
+                    fillStyle: "red"
+                }
+            }
+        });
+        // Anchors can switch position
         var dynamicAnchors1 = ["Left", "Right", "Top", "Bottom"];
         var dynamicAnchors2 = ["Right", "Left", "Top", "Bottom"];
 
@@ -368,13 +439,23 @@ function startJsplumb() {
         for (var i = 0; i < workflowNodes.length; i++) {
             var sourceName = workflowNodes[i].id;
             var targetName = workflowNodes[i].targetNodeId;
-            jsPlumb.connect({
+            var arrConnect = [];
+            arrConnect[i] = jsPlumb.connect({
                 source: sourceName + "node",
                 target: targetName + "node",
                 detachable: false
+
             }, common);
+
         }
 
+        function end() {
+
+            $('#1node').endpoints[0].setPaintStyle({
+                fillStyle: "FF0000"
+            });
+
+        }
         // adding anchorpoints to nodes
         //    jsPlumb.addEndpoint($(".item"), {
         //        anchors: dynamicAnchors1
@@ -460,7 +541,15 @@ function startJsplumb() {
             };
         }
 
-
-
+        $('.switchEditMode').bootstrapSwitch();
+        $('.switchEditMode').bootstrapSwitch('labelText', 'Edit Mode');
+        $('.switchEditMode').on('switchChange.bootstrapSwitch', function (event, state) {
+            if (editModeTemp == false)
+                editModeTemp = true;
+            else
+                editModeTemp = false;
+            end();
+        });
     });
+
 }

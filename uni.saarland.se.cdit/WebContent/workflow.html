@@ -13,6 +13,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/bootstrap-switch.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
@@ -51,6 +52,7 @@
     </nav>
 
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
@@ -129,7 +131,9 @@
                     </span>
                 </div>
 
-
+                <div id="swEditMode">
+                    <input type="checkbox" class="switchEditMode">
+                </div>
 
                 <!-- Workflow Graph Content -->
                 <div id="diagramContainer">
@@ -183,6 +187,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="js/jsPlumb-2.0.5-min.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
     <script src="js/rest.js"></script>
     <script src="js/workflow.js"></script>
     <script src="js/workflowFilter.js"></script>
