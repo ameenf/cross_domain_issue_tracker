@@ -1,5 +1,3 @@
-var port = 8080;
-var baseurl = 'http://localhost:' + port + '/uni.saarland.se.cdit/';
 $(document).ready(function () {
     //Check for authentication
     if ((Cookies.get('loggedin') == "true") || (window.location = "index.html")) {
