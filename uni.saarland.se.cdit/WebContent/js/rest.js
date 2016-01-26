@@ -54,7 +54,9 @@ function createProject(desc, title, users) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
+        url: baseurl + "rest/projects",
+
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -80,7 +82,9 @@ function updateProject(desc, id, title, users) {
 
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/update",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/update",
+        url: baseurl + "rest/projects/update",
+
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -99,7 +103,9 @@ function updateProject(desc, id, title, users) {
 function deleteProject(id) {
     $.ajax({
         type: "DELETE",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/remove/" + id,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/remove/" + id,
+        url: baseurl + "rest/projects/remove/" + id,
+
         crossDomain: true,
         dataType: "json",
         async: true,
@@ -120,7 +126,9 @@ function deleteProject(id) {
 function getTickets() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        url: baseurl + "rest/tickets",
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -136,7 +144,9 @@ function getTickets() {
 function getTicketsByTitle(title) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchByTitle/" + title,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchByTitle/" + title,
+        url: baseurl + "rest/tickets/searchByTitle/" + title,
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -151,7 +161,9 @@ function getTicketsByTitle(title) {
 function getTicketsByNodeId(nodeid) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeid,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeid,
+        url: baseurl + "rest/tickets/getNodeTickets/" + nodeid,
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -166,7 +178,9 @@ function getTicketsByNodeId(nodeid) {
 function getTicketsByType(type) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchByType/" + type,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchByType/" + type,
+        url: baseurl + "rest/tickets/searchByType/" + type,
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -181,7 +195,9 @@ function getTicketsByType(type) {
 function getTicketsById(id) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchById/" + id,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchById/" + id,
+        url: baseurl + "rest/tickets/searchById/" + id,
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -207,7 +223,9 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+        url: baseurl + "rest/tickets/",
+
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -237,7 +255,9 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
 
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
+        url: baseurl + "rest/tickets/update",
+
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -256,7 +276,9 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
 function deleteTicket(id) {
     $.ajax({
         type: "DELETE",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/remove/" + id,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/remove/" + id,
+        url: baseurl + "rest/tickets/remove/" + id,
+
         crossDomain: true,
         dataType: "json",
         async: true,
@@ -289,7 +311,9 @@ function login(username, pwd) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
+        url: baseurl + "rest/users/login",
+
         data: JSON.stringify(data),
         //        data: data,
         contentType: "application/json; charset=utf-8",
@@ -308,7 +332,9 @@ function login(username, pwd) {
 function getUsers() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        url: baseurl + "rest/users",
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -332,7 +358,9 @@ function createUser(username, password) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        url: baseurl + "rest/users",
+
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -359,7 +387,9 @@ function updateUser(username, password) {
 
     $.ajax({
         type: "PUT",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/updatePassword",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/updatePassword",
+        url: baseurl + "rest/users/updatePassword",
+
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
@@ -378,7 +408,9 @@ function updateUser(username, password) {
 function deleteUser(id) {
     $.ajax({
         type: "DELETE",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/remove/" + id,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/remove/" + id,
+        url: baseurl + "rest/users/remove/" + id,
+
         crossDomain: true,
         dataType: "json",
         async: true,
@@ -399,7 +431,9 @@ function deleteUser(id) {
 function getWorkflow(projectId) {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        url: baseurl + "rest/workflow/getProjectWorkflow/" + projectId,
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -421,7 +455,9 @@ function getWorkflow(projectId) {
 function getStatus() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+        url: baseurl + "rest/general/status",
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -439,7 +475,9 @@ function getStatus() {
 function getTypes() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/type",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/type",
+        url: baseurl + "rest/general/type",
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -457,7 +495,9 @@ function getTypes() {
 function getPriorities() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/priority",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/general/priority",
+
         dataType: 'json',
         async: true,
         success: function (result) {
