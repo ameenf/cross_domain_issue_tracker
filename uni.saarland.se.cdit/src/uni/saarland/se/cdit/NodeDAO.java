@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,26 @@ public class NodeDAO {
 		}
         return list;
     }
+	
+	public Node updateNodePosition(Node node){
+		Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE nodes " +
+            										  "SET x_pos=?, y_pos=? " +
+            										  "WHERE node_id=?");
+            ps.setInt(1, node.getPositionX());
+            ps.setInt(2, node.getPositionY());
+            ps.setInt(3, node.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return node;
+	}
 	
 	protected Node processRow(ResultSet rs) throws SQLException {
 		Node workflow = new Node();

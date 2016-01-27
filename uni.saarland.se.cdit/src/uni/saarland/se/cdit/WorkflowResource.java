@@ -23,4 +23,12 @@ public class WorkflowResource {
 		System.out.println("findById " + id);
 		return dao.getWorkflow(Integer.parseInt(id));
 	}
+	
+	@PUT @Path("updatePosition")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Node updateNodePosition(Node node){
+		System.out.println("updating position");
+		return dao.updateNodePosition(node);
+	}
 }
