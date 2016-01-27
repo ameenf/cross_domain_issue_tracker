@@ -188,11 +188,8 @@ function listener() {
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
         var nodeId = $(this).parent().attr("id").charAt(0);
-
-
         getAllTicketsNodes(nodeId);
     });
-
 
     // Submit a ticket to the database
     $('#submitTicket').on('click', function (e) {
@@ -212,29 +209,25 @@ function listener() {
             "projectId": 1
         }
 
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
-                    data: JSON.stringify(data),
-                    contentType: "application/json; charset=utf-8",
-                    crossDomain: true,
-                    dataType: "json",
-                    async: true,
-                    success: function (result) {
-                        console.log("SUCCESS!");
-                        console.log(result);
-                        getWorkflow(projectId);
-                        //$('#' + result[key].id + 'node .amountTickets').html();
-                        //  updateAmountTicketsNodes(nodeId);
-                        $('#myModal1').modal('toggle');
-                    },
-                    error: function (a, b, c) {
-                        console.log(a + " " + b + " " + c + "ERROR");
-                        document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-                    }
-                })
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                console.log("SUCCESS!");
+                $('#' + workflowNodes[nodeIndex].id + 'node .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
+                $('#myModal1').modal('toggle');
+            },
+            error: function (a, b, c) {
+                console.log(a + " " + b + " " + c + "ERROR");
+                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            }
+        })
     });
-
 
 }
 
@@ -258,7 +251,7 @@ function callbackGetWorkflow(result) {
         $('#' + result[key].id + 'node .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
         $('#' + result[key].id + 'node .showNode').after('<div class="amountTickets"></div>');
         $('#' + result[key].id + 'node .amountTickets').html(result[key].ticketsCount);
-        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
+//        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
         //getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
     }
     startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
