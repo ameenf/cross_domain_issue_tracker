@@ -1,6 +1,7 @@
 "use strict";
 var allUsers = [];
 var filteredTickets = [];
+var projectToDelete;
 
 $(document).ready(function () {
     console.log("projectmanagement.js");
@@ -32,10 +33,18 @@ $(document).ready(function () {
     });
 
     $('.users').on('click', '#b_deleteProject', function () {
+        console.log("closestclass");
+        console.log($('#b_deleteProject').closest("li").attr('class'));
+        var str = $('#b_deleteProject').closest("li").attr('class');
+        console.log(str.split("itemRow user"));
+        var split = str.split("itemRow user");
+        projectToDelete = split[1];
         openModalDeleteProject();
     });
 
-    $('#deleteProject').on('click', function () {});
+    $('#deleteProject').on('click', function () {
+        deleteProject(projectToDelete);
+    });
 
 
 

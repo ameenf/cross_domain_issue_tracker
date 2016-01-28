@@ -7,19 +7,16 @@ $(document).ready(function () {
 
 
 function callbackSuccessLogin(result) {
-    console.log("result: ")
-    console.log(result);
-    if (result == true) {
-        Cookies.set('loggedin', 'true');
-        changePage("projects.html")
-        console.log("Logging in");
-    } else {
-        console.log("Login failed");
-        $("#loginFailBox").show();
-        $("#loginFailBox").css('color', 'red');
-    }
+    Cookies.set('loggedin', 'true');
+    changePage("projects.html")
+    console.log("Logging in");
 }
 
 function callbackFailedLogin(a, b, c) {
     console.log(a + " - " + b + " - " + c);
+    console.log(a);
+
+    console.log("Login failed");
+    $("#loginFailBox").show();
+    $("#loginFailBox").css('color', 'red');
 }

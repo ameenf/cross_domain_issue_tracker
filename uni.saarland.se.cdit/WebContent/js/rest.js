@@ -302,6 +302,8 @@ function login(username, pwd) {
     //        password: "admin"
     //    }
 
+    console.log(data);
+    console.log(JSON.stringify(data));
     $.ajax({
         type: "POST",
         //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
@@ -312,7 +314,7 @@ function login(username, pwd) {
         contentType: "application/json; charset=utf-8",
         //contentType: "application/x-www-form-urlencoded",
         crossDomain: true,
-        dataType: "json",
+        //dataType: "text json",
         async: true,
         success: function (result) {
             callbackSuccessLogin(result);
