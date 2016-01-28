@@ -16,8 +16,15 @@ $(document).ready(function () {
     });
 
     $('.b_addUser').on('click', function (e) {
-        openModalCreateUser();
+        //openModalCreateUser();
+        testAddUser();
     });
+
+    $('#b_closeAddUser').on('click', function (e) {
+        testAddUser();
+    });
+
+
 
     $('#createUser').on('click', function (e) {
         createUser();
@@ -37,6 +44,13 @@ $(document).ready(function () {
 
     getUsers();
 });
+
+function testAddUser() {
+    console.log("testAddUser");
+    $(".testExpandable").slideToggle("slow", function () {
+        $("#s_newUserIcon").toggleClass("glyphicon-plus glyphicon-minus");
+    });
+}
 
 function openIssue(e) {
     e.preventDefault(); //Prevents link from forwarding
@@ -76,7 +90,7 @@ function getUsers() {
             for (var key in result) {
                 $('.users').append('<li class="itemRow user' + result[key].id + '"></li>');
                 $('.user' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result[key].id + '"></div>');
-                $('.innerUser' + result[key].id).append('<div class="itemTag"></div>');
+                $('.innerUser' + result[key].id).append('<div class="itemTag">' + result[key].username.substring(0, 1) + '</div>');
                 $('.innerUser' + result[key].id).append('<a class="itemName" href="profile.html">' + result[key].username + '</a>');
                 $('.innerUser' + result[key].id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
                 $('.innerUser' + result[key].id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');

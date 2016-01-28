@@ -23,7 +23,7 @@ $(document).ready(function () {
     });
 
     $('#createUser').on('click', function (e) {
-        createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), "")
+        createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), [1, 4, 5])
     });
 
 
@@ -87,9 +87,10 @@ function getUsers() {
             console.log(result);
             allUsers = result;
             for (var key in result) {
+                var randomColor = Math.floor(Math.random() * 16777215).toString(16);
                 $('.users').append('<li class="itemRow user' + result[key].id + '"></li>');
                 $('.user' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result[key].id + '"></div>');
-                $('.innerUser' + result[key].id).append('<div class="itemTag"></div>');
+                $('.innerUser' + result[key].id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + result[key].title.substring(0, 1) + '</div>');
                 $('.innerUser' + result[key].id).append('<a class="itemName" href="">' + result[key].title + '</a>');
 
                 $('.innerUser' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
