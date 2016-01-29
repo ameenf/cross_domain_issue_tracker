@@ -1,9 +1,12 @@
 "use strict";
 var allUsers = [];
 var filteredTickets = [];
+var allProjects = [];
 
 $(document).ready(function () {
     console.log("users.js");
+
+    getProjects();
 
     //Clickhandler for an element in the issues list
     $('.issue').on('click', function (e) {
@@ -27,7 +30,15 @@ $(document).ready(function () {
 
 
     $('#createUser').on('click', function (e) {
-        createUser();
+        //createUser();      
+        console.log($("#i_password").val());
+        console.log($("#i_password").val().length);
+        if ($("#i_name").val().length > 0 && $("#i_password").val().length > 0) {
+            createUser($("#i_name").val(), $("#i_password").val());
+        } else {
+            console.log("Wrong input");
+        }
+
     });
 
 
@@ -45,11 +56,51 @@ $(document).ready(function () {
     getUsers();
 });
 
+function callbackCreateUser(result) {
+    console.log(result);
+    var elem = document.getElementById("dd_addUserProjectList");
+    var projectid = elem.options[elem.selectedIndex].value;
+    console.log(projectid);
+    $(".testExpandable").slideUp();
+
+    $("#s_newUserIcon").toggleClass("glyphicon-plus glyphicon-minus");
+    $("#s_newUserIcon").removeClass("glyphicon-minus");
+    $("#s_newUserIcon").addClass("glyphicon-plus");
+
+
+
+    $('.users').append('<li class="itemRow user' + result.id + '"></li>');
+    $('.user' + result.id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result.id + '"></div>');
+    $('.innerUser' + result.id).append('<div class="itemTag">' + result.username.substring(0, 1) + '</div>');
+    $('.innerUser' + result.id).append('<a class="itemName" href="profile.html">' + result.username + '</a>');
+    $('.innerUser' + result.id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
+    $('.innerUser' + result.id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+
+
+
+}
+
 function testAddUser() {
     console.log("testAddUser");
+
+    console.log(allProjects.length);
+
+    for (var key in allProjects) {
+        //        $('#dd_addUserProjectList').append('<li class="b_addUserProjectList"><a>' + allProjects[key].title + '</a></li>');
+        $('#dd_addUserProjectList').append('<option value="' + allProjects[key].id + '" selected="">' + allProjects[key].title + '</option>');
+
+    }
     $(".testExpandable").slideToggle("slow", function () {
         $("#s_newUserIcon").toggleClass("glyphicon-plus glyphicon-minus");
+
+
     });
+
+
+}
+
+function callbackGetProjects(result) {
+    allProjects = result;
 }
 
 function openIssue(e) {
@@ -131,34 +182,34 @@ function openModalCreateUser() {
     })
 }
 
-function createUser() {
-    var data = {
-        "email": $("#i_email").val(),
-        "id": "",
-        "password": "test",
-        "type": "",
-        "username": $("#i_name").val(),
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        crossDomain: true,
-        dataType: "json",
-        async: true,
-        success: function (result) {
-            console.log("SUCCESS!");
-            console.log(result);
-            $('#myModal').modal('toggle');
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
-}
+//function createUser() {
+//    var data = {
+//        "email": $("#i_email").val(),
+//        "id": "",
+//        "password": "test",
+//        "type": "",
+//        "username": $("#i_name").val(),
+//    }
+//
+//    $.ajax({
+//        type: "POST",
+//        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+//        data: JSON.stringify(data),
+//        contentType: "application/json; charset=utf-8",
+//        crossDomain: true,
+//        dataType: "json",
+//        async: true,
+//        success: function (result) {
+//            console.log("SUCCESS!");
+//            console.log(result);
+//            $('#myModal').modal('toggle');
+//        },
+//        error: function (a, b, c) {
+//            console.log(a + " " + b + " " + c + "ERROR");
+//            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+//        }
+//    })
+//}
 
 function getProjectsFromUser() {
     $.ajax({

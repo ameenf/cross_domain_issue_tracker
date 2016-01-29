@@ -83,14 +83,18 @@
                 </div>
 
                 <div class="testExpandable">
+                    <div class="dialog-header">
+                        <h4 class="modal-title" id="ml_addUser">Add a new user</h4>
+                    </div>
                     <div class="modal-body">
                         Name :
                         <input type="text" class="form-control" id="i_name">
-                        <br> E-Mail :
-                        <input type="text" class="form-control" id="i_email">
+                        <br> Password :
+                        <input type="text" class="form-control" id="i_password">
 
                         <br>
 
+                        <!--
                         <div class="dropdown">
                             Project :
                             <button class="btn btn-default dropdown-toggle" type="button" id="dd_addUserProjectListTitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -100,9 +104,18 @@
                             <ul id="dd_addUserProjectList" class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             </ul>
                         </div>
+-->
+                        Project:
+                        <select id="dd_addUserProjectList" class="form-control">
+                            <!--
+<option value="1" selected="">High</option>
+<option value="2">Low</option>
+<option value="3">Normal</option>
+-->
+                        </select>
                     </div>
-                    <div class="modal-footer">
-                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="dialog-footer">
+                        <!--                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
                         <button id="createUser" type="submit" class="btn btn-primary">Add User</button>
                     </div>
                 </div>
@@ -197,6 +210,7 @@
 -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="js/rest.js"></script>
     <script src="js/usermanagement.js"></script>
 </body>
 

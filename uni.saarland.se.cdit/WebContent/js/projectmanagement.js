@@ -93,12 +93,11 @@ function getUsers() {
                 $('.innerUser' + result[key].id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + result[key].title.substring(0, 1) + '</div>');
                 $('.innerUser' + result[key].id).append('<a class="itemName" href="">' + result[key].title + '</a>');
 
-                $('.innerUser' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                $('.innerUser' + result[key].id).append('<div class="inneruserlist innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
+                for (var keyy in result[key].users) {
+                    console.log("for");
+                    $('.innerUserlist' + result[key].id).append('<span title="' + result[key].users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+                }
 
                 $('.innerUser' + result[key].id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
 

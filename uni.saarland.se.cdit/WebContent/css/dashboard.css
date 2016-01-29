@@ -127,3 +127,17 @@ body {
 .nav_secondlevel {
     margin-left: 20px;
 }
+
+.dialog-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.dialog-footer {
+        display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}

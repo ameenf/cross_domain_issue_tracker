@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 function callbackGetProjects(result) {
     console.log("callbackGetProjects");
+    console.log(result);
     allProjects = result;
     for (var key in result) {
         $('.projects').append('<li class="itemRow project' + result[key].id + '"></li>');
@@ -16,11 +17,10 @@ function callbackGetProjects(result) {
         $('.innerProject' + result[key].id).append('<div class="itemTag"></div>');
         $('.innerProject' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
         //                $('.innerProject' + result[key].id).append('<div class="itemInfo">' + result[key].description + '</div>');
-        $('.innerProject' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
-        $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-        $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-        $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-        $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-        $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+        $('.innerProject' + result[key].id).append('<div class="inneruserlist innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
+        for (var keyy in result[key].users) {
+            console.log("for");
+            $('.innerUserlist' + result[key].id).append('<span title="' + result[key].users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+        }
     }
 }
