@@ -19,16 +19,45 @@ $(document).ready(function () {
     getPriorities();
 });
 // If user leaves workflow, the position of the nodes will be updated
-$(window).unload(function () {
+$(window).unload(function (e) {
+
     console.log("unload function");
-    for (var key in workflowNodes) {
-        var locationNodes = [];
-        var posLeft = $('#' + workflowNodes[key].id + 'node').position().left;
-        var posRight = $('#' + workflowNodes[key].id + 'node').position().right;
-        console.log("New left " + (100 * $('#' + workflowNodes[key].id + 'node').position().left) / $('#diagramContainer').width());
-        console.log("New top " + (100 * $('#' + workflowNodes[key].id + 'node').position().top) / $('#diagramContainer').height());
+
+    $.each(workflowNodes, function (index, value) {
+
+        //            console.log("each " + workflowNodes[key].id + " ");
+        //        console.log("each " + workflowNodes[index].id + " " + value);
+        var posLeft = (100 * $('#' + workflowNodes[index].id).position().left) / $('#diagramContainer').width(); // posX
+        var posTop = (100 * $('#' + workflowNodes[index].id).position().top) / $('#diagramContainer').height(); // posY
+        console.log("New left " + workflowNodes[index].id + " " + value.id + " " + posLeft + " | " + index);
+        console.log("New t o p " + " " + posTop + " | " + index);
         // TODO: REST CALL TO UPDATE IN DB
-    }
+        var data = {
+            "id": workflowNodes[index].id,
+            "positionX": posLeft,
+            "positionY": posTop
+        }
+        e.preventDefault();
+
+        $.ajax({
+            type: "PUT",
+            url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/updatePosition",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                console.log("WORKFLOW UPDATED!");
+                console.log(result);
+            },
+            error: function (a, b, c) {
+                console.log(a + " " + b + " " + c + "ERROR");
+                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            }
+        })
+
+    });
 });
 
 function listenerShowTicket() {
@@ -219,7 +248,7 @@ function listener() {
             async: true,
             success: function (result) {
                 console.log("SUCCESS!");
-                $('#' + workflowNodes[nodeIndex].id + 'node .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
+                $('#' + workflowNodes[nodeIndex].id + ' .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
                 $('#myModal1').modal('toggle');
             },
             error: function (a, b, c) {
@@ -243,15 +272,15 @@ function callbackGetWorkflow(result) {
     console.log("callbackGetWorkflow");
     workflowNodes = result;
     for (var key in result) {
-        $('.bgRaster').append('<div id="' + result[key].id + 'node" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionX + '%></div>');
-        $('#' + result[key].id + 'node').append('<div class="addTicket"></div>');
-        $('#' + result[key].id + 'node .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
-        $('#' + result[key].id + 'node').append('<div class="topTitle">' + allNodes[result[key].sourceNodeId - 1].title + '</div>');
-        $('#' + result[key].id + 'node').append('<div class="showNode"></div>');
-        $('#' + result[key].id + 'node .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
-        $('#' + result[key].id + 'node .showNode').after('<div class="amountTickets"></div>');
-        $('#' + result[key].id + 'node .amountTickets').html(result[key].ticketsCount);
-//        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
+        $('.bgRaster').append('<div id="' + result[key].id + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
+        $('#' + result[key].id).append('<div class="addTicket"></div>');
+        $('#' + result[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+        $('#' + result[key].id).append('<div class="topTitle">' + allNodes[result[key].sourceNodeId - 1].title + '</div>');
+        $('#' + result[key].id).append('<div class="showNode"></div>');
+        $('#' + result[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
+        $('#' + result[key].id + ' .showNode').after('<div class="amountTickets"></div>');
+        $('#' + result[key].id + ' .amountTickets').html(result[key].ticketsCount);
+        //        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
         //getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
     }
     startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
@@ -266,7 +295,7 @@ function updateAmountTicketsNodes(projectId) {
         async: true,
         success: function (result) {
             workflowNodes = result;
-            $('#' + nodeId + 'node .amountTickets').html(workflowNodes[nodeId]);
+            $('#' + nodeId + ' .amountTickets').html(workflowNodes[nodeId]);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -440,8 +469,8 @@ function startJsplumb() {
             var targetName = workflowNodes[i].targetNodeId;
             var arrConnect = [];
             arrConnect[i] = jsPlumb.connect({
-                source: sourceName + "node",
-                target: targetName + "node",
+                source: sourceName + "", // + "" has to be stated here, otherwise the nodes won't connect, dunno why
+                target: targetName + "",
                 detachable: false
 
             }, common);
