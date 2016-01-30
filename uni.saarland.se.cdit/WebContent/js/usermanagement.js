@@ -1,6 +1,7 @@
 "use strict";
 var allUsers = [];
 var allProjects = [];
+var usertoDelete;
 
 $(document).ready(function () {
     console.log("users.js");
@@ -10,9 +11,9 @@ $(document).ready(function () {
     getUsers();
 
     //Clickhandler for an element in the issues list
-    $('.issue').on('click', function (e) {
-        openIssue(e);
-    });
+//    $('.itemName').on('click', function (e) {
+//        openUser(e);
+//    });
 
     //Changehandler for the search bar. Change something and press enter to call this
     $('.filterUsers').on('change', function () {
@@ -36,8 +37,23 @@ $(document).ready(function () {
     });
 
     $('.users').on('click', '#b_deleteUser', function () {
+        console.log($('#b_deleteUser'));
+        console.log($('#b_deleteUser').closest("li").attr('class'));
+        var str = $('#b_deleteUser').closest("li").attr('class');
+        console.log(str.split("itemRow user"));
+        var split = str.split("itemRow user");
+        console.log(split);
+        usertoDelete = split[1];
         openModalDeleteUser();
     });
+
+    $('#deleteUser').on('click', function () {
+        deleteUser(usertoDelete);
+        $('#m_deleteUser').modal('toggle');
+        $('#deleteUser').closest("li").remove();
+    });
+
+
 });
 
 function callbackCreateUser(result) {
@@ -72,9 +88,10 @@ function expandAddUser() {
 
 
 
-function openIssue(e) {
-    e.preventDefault(); //Prevents link from forwarding
+function openUser(e) {
+    //e.preventDefault(); //Prevents link from forwarding
     console.log('openIssue()');
+    changePage("user.html")
 }
 
 function filterUsers() {
@@ -95,7 +112,7 @@ function addUserRow(id, tag, username) {
     $('.users').append('<li class="itemRow user' + id + '"></li>');
     $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');
     $('.innerUser' + id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + tag + '</div>');
-    $('.innerUser' + id).append('<a class="itemName" href="profile.html">' + username + '</a>');
+    $('.innerUser' + id).append('<a class="itemName" href="user.html">' + username + '</a>');
     $('.innerUser' + id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
     $('.innerUser' + id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
 }

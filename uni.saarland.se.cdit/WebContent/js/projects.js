@@ -4,10 +4,10 @@ var filteredProjects = [];
 
 $(document).ready(function () {
     console.log("projects.js");
-    getProjects();
+    getProjectsFromUser(4);
 });
 
-function callbackGetProjects(result) {
+function callbackGetProjectsFromUser(result) {
     console.log("callbackGetProjects");
     console.log(result);
     allProjects = result;

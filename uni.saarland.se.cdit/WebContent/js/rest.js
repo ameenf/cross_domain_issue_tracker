@@ -30,7 +30,7 @@ function getProjectsFromUser(userid) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            callbackGetProjectsFromUser(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
