@@ -16,10 +16,8 @@ function callbackGetProjects(result) {
         $('.project' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerProject' + result[key].id + '"></div>');
         $('.innerProject' + result[key].id).append('<div class="itemTag"></div>');
         $('.innerProject' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
-        //                $('.innerProject' + result[key].id).append('<div class="itemInfo">' + result[key].description + '</div>');
         $('.innerProject' + result[key].id).append('<div class="inneruserlist innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
         for (var keyy in result[key].users) {
-            console.log("for");
             $('.innerUserlist' + result[key].id).append('<span title="' + result[key].users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
         }
     }
