@@ -97,6 +97,19 @@
     visibility: hidden;
 }
 
+.dropdown-menu {
+    min-width: 100px;
+}
+
+.col-sm-10 .label {
+    margin: .2em;
+    min-width: 35px;
+}
+
+#btnaddLabels {
+    display: none;
+}
+
 .modal-body {
     display: inline-block;
 }
@@ -116,6 +129,18 @@
     margin: 15px;
     border-radius: 5px;
     background: rgba(218, 218, 218, 0.5);
+}
+
+#ticketAdd {
+    display: none;
+    color: black;
+    padding: 15px;
+    margin: 15px;
+    position: absolute;
+    width: 80%;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 1011;
 }
 
 #ticketView {

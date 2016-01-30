@@ -5,6 +5,10 @@ var allTicketInNode = [];
 var ticketById = [];
 var allTypes = [];
 var allPriorities = [];
+var allLabels = [];
+var allUsers = [];
+var optionsLabel = [];
+var optionsUser = [];
 var workflowNodes = [];
 var currentTicketIndex;
 var currentStatusId;
@@ -17,6 +21,20 @@ $(document).ready(function () {
     getStatus();
     getTypes();
     getPriorities();
+    getUsers();
+    //getLabels(); --> TODO
+    allLabels[0] = {
+        id: "1",
+        title: "First"
+    };
+    allLabels[1] = {
+        id: "2",
+        title: "Second"
+    };
+    allLabels[2] = {
+        id: "3",
+        title: "Third"
+    };
 });
 // If user leaves workflow, the position of the nodes will be updated
 $(window).unload(function (e) {
@@ -71,24 +89,19 @@ function listenerShowTicket() {
         $('#myModal2').modal('toggle');
         $('#ticketView').fadeToggle('fast');
         //        $('#ticketView').append('<div id="ticket');
-
-        //        console.log("0 " + $('.nodeTicket').index(this));
-        //        console.log("1 " + allTicketInNode[$('.nodeTicket').index(this)].creationDate);
-        //        console.log("2 " + allTicketInNode[$('.nodeTicket').index(this)].description);
-        //        console.log("3 " + allTicketInNode[$('.nodeTicket').index(this)].id);
-        //        console.log("4 " + allTicketInNode[$('.nodeTicket').index(this)].priorityId);
-        //        console.log("5 " + allTicketInNode[$('.nodeTicket').index(this)].projectId);
-        //        console.log("6 " + allTicketInNode[$('.nodeTicket').index(this)].statusId);
-        //        console.log("7 " + allTicketInNode[$('.nodeTicket').index(this)].title);
-        //        console.log("8 " + allTicketInNode[$('.nodeTicket').index(this)].typeId);
+        // Title
         $('#ticketView .form-horizontal').empty();
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><input type="text" class="form-control updTitle" value="' + allTicketInNode[$('.nodeTicket').index(this)].title + '" readonly></div></div>');
 
+        //Description
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><textarea class="form-control updDesc" readonly>' + allTicketInNode[$('.nodeTicket').index(this)].description + '</textarea></div></div>');
 
+        // Creation date
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><input type="text" class="form-control updCreat" value="' + allTicketInNode[$('.nodeTicket').index(this)].creationDate + '" readonly></div></div>');
 
+        // Priority
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Priority</label><div class="col-sm-10"><select id="updPrioritylist" class="form-control" disabled></select></div></div>');
+        // TODO geht das nich auch mit id?
         for (var key in allPriorities) {
             if (allPriorities[allTicketInNode[$('.nodeTicket').index(this)].priorityId - 1].title == allPriorities[key].title)
                 $('#updPrioritylist').append('<option value="' + allPriorities[key].id + '" selected>' + allPriorities[key].title + '</option>');
@@ -96,8 +109,9 @@ function listenerShowTicket() {
                 $('#updPrioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
         }
 
-
+        // Type
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updType">Type</label><div class="col-sm-10"><select id="updTypelist" class="form-control" disabled></select></div></div>');
+        // TODO geht das nich auch mit id?
         for (var key in allTypes) {
             if (allTypes[allTicketInNode[$('.nodeTicket').index(this)].typeId - 1].title == allTypes[key].title)
                 $('#updTypelist').append('<option value="' + allTypes[key].id + '" selected>' + allTypes[key].title + '</option>');
@@ -105,7 +119,73 @@ function listenerShowTicket() {
                 $('#updTypelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
         }
 
+        // Label
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updLabel"></label><div class="col-sm-10"></div></div>');
+        // + button to add label
+        $('.updLabel + .col-sm-10').append('<span class="label label-success" id="btnaddLabels" data-toggle="popover" title="Select label" data-placement="top">+</span><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
+
+        var templab = []
+        templab = allTicketInNode[$('.nodeTicket').index(this)].labels;
+        $.each(allLabels, function (key, value) {
+
+            if (templab == null) {
+
+            } else if (templab[key] == allLabels[key].id) {
+                $('.updLabel + .col-sm-10').append('<span class="label label-primary">' + allLabels[key].title + '</span>');
+            }
+            $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox"/>' + allLabels[key].title + '</label>');
+        });
+
+        $('#btnaddLabels').popover({
+            html: true,
+            title: 'Select labels',
+            content: function () {
+                return $('#btnaddLabels + .popover').html();
+            }
+        });
+
+        $('body').on('click', '.labelCheck', function () {
+            console.log($('.labelCheck').index(this) + " " + $(this).prop('checked'));
+        });
+
+
+        // Users
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updUsers"></label><div class="col-sm-10"></div></div>');
+        // + button to add user
+        $('.updUsers + .col-sm-10').append('<button class="btn btn-default" id="btnUpdUsers" type="button" data-toggle="popover" title="Select users" data-placement="top"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
+
+        var tempuser = []
+        tempuser = allTicketInNode[$('.nodeTicket').index(this)].users;
+        $.each(allUsers, function (key, value) {
+            if (tempuser == null) {
+                console.log("NULL")
+            } else if (tempuser[key] == allUsers[key].id) {
+                $('.updUsers + .col-sm-10').append('<span class="label label-primary">' + allUsers[key].username + '</span>');
+            }
+            $('#btnUpdUsers + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox"/>' + allUsers[key].username + '</label>');
+        });
+
+
+        $('#btnUpdUsers').popover({
+            html: true,
+            title: 'Select users',
+            content: function () {
+                return $('#btnUpdUsers + .popover').html();
+            }
+        });
+
+
+        // Files
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles"></label><div class="col-sm-10"></div></div>');
+        $('.updFiles + .col-sm-10').append('<button class="btn btn-default" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
+
+        // adding buttons
         $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default closeTicket">Close</button><button id="updateTicket" type="button" class="btn btn-primary">Update Ticket</button><button type="button" class="btn btn-default editTicket"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>');
+
+
+
+
+
 
         $('#ticketView .closeTicket').on('click', function (e) {
             console.log("CLOSE TICKET BTN");
@@ -118,7 +198,7 @@ function listenerShowTicket() {
 
             console.log('Edit ticket' + allTicketInNode[currentTicketIndex].title);
             $('#ticketView p').toggleClass('form-control-static form-control');
-
+            $('#btnaddLabels').toggle();
             if ($('#ticketView input').attr('readonly') && $('#ticketView select').attr('disabled') && $('#ticketView textarea').attr('readonly')) {
                 $('#ticketView input').removeAttr('readonly');
                 $('#ticketView select').removeAttr('disabled');
@@ -128,8 +208,12 @@ function listenerShowTicket() {
                 $('#ticketView select').attr('disabled', '');
                 $('#ticketView textarea').attr('readonly', '');
             }
+
             $('#updateTicket').toggle();
         });
+
+
+
 
         $('#updateTicket').on('click', function (e) {
             console.log("UPDATE TICKET BTN");
@@ -179,13 +263,11 @@ function listenerShowTicket() {
     });
 
     $('#ticketViewWrapper').on('click', function (e) {
+        $('#ticketAdd').fadeOut('fast');
         $('#ticketView').fadeOut('fast');
         $('#ticketViewWrapper').fadeOut('fast');
     });
-
 }
-
-
 
 function listener() {
     var currentdate = new Date();
@@ -195,7 +277,10 @@ function listener() {
     var nodeId;
     // Open dialog to create a ticket
     $('.addTicket').on('click', function (e) {
-        $('#myModal1').modal('toggle');
+        //$('#myModal1').modal('toggle');
+        $('#ticketAdd').fadeToggle('fast');
+        $('#ticketViewWrapper').fadeToggle('fast');
+
         nodename = $(this).next().html();
         nodeId = $(this).parent().attr("id").charAt(0);
         nodeIndex = $(this).parent().index();
@@ -209,7 +294,12 @@ function listener() {
         }
         //        console.log("nodename: " + nodename);
         //console.log("nodeID: " + nodeId);
-        $('#myModal1 .modal-title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
+        $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
+    });
+
+    $('#closeTicket').on('click', function (e) {
+        $('#ticketAdd').fadeOut('fast');
+        $('#ticketViewWrapper').fadeOut('fast');
     });
 
     $('.showNode').on('click', function (e) {
@@ -249,13 +339,69 @@ function listener() {
             success: function (result) {
                 console.log("SUCCESS!");
                 $('#' + workflowNodes[nodeIndex].id + ' .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
-                $('#myModal1').modal('toggle');
+                //$('#myModal1').modal('toggle');
+                $('#ticketAdd').fadeOut('fast');
+                $('#ticketViewWrapper').fadeOut('fast');
             },
             error: function (a, b, c) {
                 console.log(a + " " + b + " " + c + "ERROR");
                 document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             }
         })
+    });
+
+    $('.dropdown-menu.dropdownLabels a').on('click', function (event) {
+
+        var $target = $(event.currentTarget),
+            val = $target.attr('data-value'),
+            $inp = $target.find('input'),
+            idx;
+
+        if ((idx = optionsLabel.indexOf(val)) > -1) {
+            optionsLabel.splice(idx, 1);
+            setTimeout(function () {
+                $inp.prop('checked', false)
+            }, 0);
+        } else {
+            optionsLabel.push(val);
+            setTimeout(function () {
+                $inp.prop('checked', true)
+            }, 0);
+        }
+
+        $(event.target).blur();
+
+        console.log(optionsLabel);
+        return false;
+    });
+
+    $('.dropdown-menu.dropdownUsers a').on('click', function (event) {
+
+        var $target = $(event.currentTarget),
+            val = $target.attr('data-value'),
+            $inp = $target.find('input'),
+            idx;
+
+        if ((idx = optionsUser.indexOf(val)) > -1) {
+            optionsUser.splice(idx, 1);
+            setTimeout(function () {
+                $inp.prop('checked', false)
+            }, 0);
+        } else {
+            optionsUser.push(val);
+            setTimeout(function () {
+                $inp.prop('checked', true)
+            }, 0);
+        }
+
+        $(event.target).blur();
+
+        console.log(optionsUser);
+        return false;
+    });
+
+    $('#btnFileUpload').on('click', function (event) {
+        // select file and upload 
     });
 
 }
@@ -285,6 +431,7 @@ function callbackGetWorkflow(result) {
     }
     startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
     listener(); // Activate the listener after create HTML content
+
 }
 
 function updateAmountTicketsNodes(projectId) {
@@ -320,12 +467,29 @@ function callbackGetTypes(result) {
 }
 
 
-// Get all priorites in the DB
+// Get all priorites
 function callbackGetPriorities(result) {
     console.log("callbackGetTypes");
     allPriorities = result;
     for (var key in result) {
         $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
+    }
+}
+// Get all labels 
+function callbackGetLabels(result) {
+    console.log("callbackGetLabels");
+    allLabels = result;
+    for (var key in result) {
+        $('#labellist').append('<option value="' + allLabel[key].id + '">' + allLabel[key].title + '</option>');
+    }
+}
+// Get all labels 
+function callbackGetUsers(result) {
+    console.log("callbackGetUsers");
+    allUsers = result;
+    for (var key in result) {
+        $('.dropdown-menu.dropdownUsers').append('<li><a href="#" class="small" data-value="' + result[key].id + '" tabIndex="-1"><input type="checkbox" id="user' + result[key].id + '" /><label for="user' + result[key].id + '"><span></span>' + result[key].username + '</label></a></li>');
+        // 
     }
 }
 
