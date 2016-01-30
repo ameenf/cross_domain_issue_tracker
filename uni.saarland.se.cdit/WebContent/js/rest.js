@@ -362,8 +362,7 @@ function getUsers() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            callbackGetUsers(result);
-            //return result;
+            return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
