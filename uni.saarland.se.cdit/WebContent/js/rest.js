@@ -58,7 +58,7 @@ function createProject(desc, title, users) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackCreateProject(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -362,7 +362,7 @@ function getUsers() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            callbackGetUser(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
