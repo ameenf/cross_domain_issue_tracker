@@ -21,8 +21,13 @@ public class UserResource {
 	
 	@POST @Path("login")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response authenticate(User user) {
-			return Response.status(dao.authenticate(user)?200:401).build();
+		boolean success = dao.authenticate(user);
+		if(success)
+			return Response.status(200).entity(dao.getUserId(user)).build();
+		else
+			return Response.status(401).entity(new ErrorHandler("Wrong username or password.")).build();
 
 	}
 	

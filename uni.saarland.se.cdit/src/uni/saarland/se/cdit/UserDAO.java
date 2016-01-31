@@ -62,6 +62,29 @@ public class UserDAO {
 		return success;
 	}
 	
+	public User getUserId(User user){
+		Connection c = null;
+		String sql = "SELECT users.users_id FROM users WHERE users.users_username = ?";
+		user.setPassword(null);
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, user.getUsername());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				user.setId( rs.getInt("users_id"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return user;
+		
+	}
+	
 	public User create(User user) {
         Connection c = null;
         PreparedStatement ps = null;
