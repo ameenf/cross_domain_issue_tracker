@@ -34,7 +34,6 @@ public class GeneralDAO {
         Type type = new Type();
         type.setId(rs.getInt("type_id"));
         type.setTitle(rs.getString("type_title"));
-        type.setDescription(rs.getString("type_description"));
         return type;
     }
 	
@@ -91,7 +90,34 @@ public class GeneralDAO {
 		Status status = new Status();
 		status.setId(rs.getInt("status_id"));
 		status.setTitle(rs.getString("status_title"));
-		status.setDescription(rs.getString("status_description"));
         return status;
+    }
+	
+	public List<Label> getAllLabels(){
+		List<Label> list = new ArrayList<Label>();
+        Connection c = null;
+    	String sql = "SELECT * FROM label ORDER BY label_id";
+        try {
+            c = ConnectionHelper.getConnection();
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                list.add(processLabelRow(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        
+        return list;
+	}
+	
+	protected Label processLabelRow(ResultSet rs) throws SQLException {
+		Label label = new Label();
+		label.setId(rs.getInt("label_id"));
+		label.setTitle(rs.getString("label_title"));
+        return label;
     }
 }
