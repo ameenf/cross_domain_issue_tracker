@@ -4,7 +4,7 @@ var filteredProjects = [];
 
 $(document).ready(function () {
     console.log("projects.js");
-    getProjectsFromUser(4);
+    getProjectsFromUser(1);
 });
 
 function callbackGetProjectsFromUser(result) {

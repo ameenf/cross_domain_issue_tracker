@@ -59,9 +59,12 @@
 }
 
 #updateTicket {
-    display: none;
     bottom: 0px;
     right: 0px;
+}
+
+.btnEdit {
+/*    display: none;*/
 }
 
 .topTitle {
@@ -104,10 +107,6 @@
 .col-sm-10 .label {
     margin: .2em;
     min-width: 35px;
-}
-
-#btnaddLabels {
-    display: none;
 }
 
 .modal-body {

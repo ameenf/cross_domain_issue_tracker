@@ -80,7 +80,7 @@ $(window).unload(function (e) {
 
 function listenerShowTicket() {
     // Enlarge a ticket
-    $('.nodeTicket').on('click', function (e) {
+    $('.nodeTicket').off().on('click', function (e) {
         $('#ticketViewWrapper').toggle();
         currentTicketIndex = $('.nodeTicket').index(this);
         currentStatusId = allTicketInNode[$('.nodeTicket').index(this)].statusId;
@@ -126,14 +126,14 @@ function listenerShowTicket() {
 
         var templab = []
         templab = allTicketInNode[$('.nodeTicket').index(this)].labels;
+
         $.each(allLabels, function (key, value) {
-
-            if (templab == null) {
-
-            } else if (templab[key] == allLabels[key].id) {
-                $('.updLabel + .col-sm-10').append('<span class="label label-primary">' + allLabels[key].title + '</span>');
+            if (templab == null) {} else if (templab[key] == allLabels[key].id) {
+                $('.updLabel + .col-sm-10').append('<span class="label label-primary  ' + allLabels[key].title + allLabels[key].id + '">' + allLabels[key].title + '</span>');
+                $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox" checked/>' + allLabels[key].title + '</label>');
+            } else {
+                $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox"/>' + allLabels[key].title + '</label>');
             }
-            $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox"/>' + allLabels[key].title + '</label>');
         });
 
         $('#btnaddLabels').popover({
@@ -144,27 +144,36 @@ function listenerShowTicket() {
             }
         });
 
-        $('body').on('click', '.labelCheck', function () {
+        $('body').off().on('click', '.labelCheck', function () {
             console.log($('.labelCheck').index(this) + " " + $(this).prop('checked'));
+            if ($(this).prop('checked') == true) {
+                $('.updLabel + .col-sm-10').append('<span class="label label-primary ' + allLabels[$('.labelCheck').index(this)].title + allLabels[$('.labelCheck').index(this)].id + '">' + allLabels[$('.labelCheck').index(this)].title + '</span>');
+
+            } else {
+                $('.' + allLabels[$('.labelCheck').index(this)].title + allLabels[$('.labelCheck').index(this)].id).remove();
+            }
         });
 
 
         // Users
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updUsers"></label><div class="col-sm-10"></div></div>');
         // + button to add user
-        $('.updUsers + .col-sm-10').append('<button class="btn btn-default" id="btnUpdUsers" type="button" data-toggle="popover" title="Select users" data-placement="top"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
+        $('.updUsers + .col-sm-10').append('<button class="btn btn-default btnEdit" id="btnUpdUsers" type="button" data-toggle="popover" title="Select users" data-placement="top"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
 
+        // add existing user in a ticket as default icon
         var tempuser = []
         tempuser = allTicketInNode[$('.nodeTicket').index(this)].users;
-        $.each(allUsers, function (key, value) {
-            if (tempuser == null) {
-                console.log("NULL")
-            } else if (tempuser[key] == allUsers[key].id) {
-                $('.updUsers + .col-sm-10').append('<span class="label label-primary">' + allUsers[key].username + '</span>');
-            }
-            $('#btnUpdUsers + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox"/>' + allUsers[key].username + '</label>');
-        });
 
+        $.each(allUsers, function (key, value) {
+            if (tempuser == null) {} else if (tempuser[key] == allUsers[key].id) {
+                var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+                $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[key].id + '" style="background-color:#' + randomColor + '">' + allUsers[key].username.substring(0, 1) + '</div>');
+                $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox" checked/>' + allUsers[key].username + '</label>');
+            } else {
+                $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox"/>' + allUsers[key].username + '</label>');
+            }
+
+        });
 
         $('#btnUpdUsers').popover({
             html: true,
@@ -174,31 +183,39 @@ function listenerShowTicket() {
             }
         });
 
+        $('body').on('click', '.userCheck', function () {
+            console.log($('.userCheck').index(this) + " " + $(this).prop('checked'));
+            var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+            if ($(this).prop('checked') == true) {
+                $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[$('.userCheck').index(this)].id + '" style="background-color:#' + randomColor + '">' + allUsers[$('.userCheck').index(this)].username.substring(0, 1) + '</div>');
+            } else {
+
+                $('.itemTag.' + allUsers[$('.userCheck').index(this)].id).remove();
+
+            }
+
+        });
 
         // Files
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles"></label><div class="col-sm-10"></div></div>');
-        $('.updFiles + .col-sm-10').append('<button class="btn btn-default" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
+        $('.updFiles + .col-sm-10').append('<button class="btn btn-default btnEdit" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
 
         // adding buttons
-        $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default closeTicket">Close</button><button id="updateTicket" type="button" class="btn btn-primary">Update Ticket</button><button type="button" class="btn btn-default editTicket"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>');
+        $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default closeTicket">Close</button><button id="updateTicket" type="button" class="btn btn-primary btnEdit">Update Ticket</button><button type="button" class="btn btn-default editTicket"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>');
 
 
-
-
-
-
-        $('#ticketView .closeTicket').on('click', function (e) {
+        $('#ticketView .closeTicket').off().on('click', function (e) {
             console.log("CLOSE TICKET BTN");
             $('#ticketView').fadeOut('fast');
             $('#ticketViewWrapper').fadeOut('fast');
         });
 
-        $('#ticketView .editTicket').on('click', function (e) {
+        $('#ticketView .editTicket').off().on('click', function (e) {
             console.log("EDIT TICKET BTN");
 
             console.log('Edit ticket' + allTicketInNode[currentTicketIndex].title);
             $('#ticketView p').toggleClass('form-control-static form-control');
-            $('#btnaddLabels').toggle();
+            $('.btnEdit').toggle();
             if ($('#ticketView input').attr('readonly') && $('#ticketView select').attr('disabled') && $('#ticketView textarea').attr('readonly')) {
                 $('#ticketView input').removeAttr('readonly');
                 $('#ticketView select').removeAttr('disabled');
@@ -208,14 +225,9 @@ function listenerShowTicket() {
                 $('#ticketView select').attr('disabled', '');
                 $('#ticketView textarea').attr('readonly', '');
             }
-
-            $('#updateTicket').toggle();
         });
 
-
-
-
-        $('#updateTicket').on('click', function (e) {
+        $('#updateTicket').off().on('click', function (e) {
             console.log("UPDATE TICKET BTN");
             console.log($(".updTitle").val());
             console.log($(".updDesc").html());
@@ -262,7 +274,7 @@ function listenerShowTicket() {
 
     });
 
-    $('#ticketViewWrapper').on('click', function (e) {
+    $('#ticketViewWrapper').off().on('click', function (e) {
         $('#ticketAdd').fadeOut('fast');
         $('#ticketView').fadeOut('fast');
         $('#ticketViewWrapper').fadeOut('fast');
@@ -276,7 +288,7 @@ function listener() {
     var nodename;
     var nodeId;
     // Open dialog to create a ticket
-    $('.addTicket').on('click', function (e) {
+    $('.addTicket').off().on('click', function (e) {
         //$('#myModal1').modal('toggle');
         $('#ticketAdd').fadeToggle('fast');
         $('#ticketViewWrapper').fadeToggle('fast');
@@ -297,12 +309,12 @@ function listener() {
         $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
-    $('#closeTicket').on('click', function (e) {
+    $('#closeTicket').off().on('click', function (e) {
         $('#ticketAdd').fadeOut('fast');
         $('#ticketViewWrapper').fadeOut('fast');
     });
 
-    $('.showNode').on('click', function (e) {
+    $('.showNode').off().on('click', function (e) {
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
@@ -311,7 +323,7 @@ function listener() {
     });
 
     // Submit a ticket to the database
-    $('#submitTicket').on('click', function (e) {
+    $('#submitTicket').off().on('click', function (e) {
         var elem = document.getElementById("prioritylist");
         var prioId = elem.options[elem.selectedIndex].value;
 
@@ -350,7 +362,7 @@ function listener() {
         })
     });
 
-    $('.dropdown-menu.dropdownLabels a').on('click', function (event) {
+    $('.dropdown-menu.dropdownLabels a').off().on('click', function (event) {
 
         var $target = $(event.currentTarget),
             val = $target.attr('data-value'),
@@ -375,7 +387,7 @@ function listener() {
         return false;
     });
 
-    $('.dropdown-menu.dropdownUsers a').on('click', function (event) {
+    $('.dropdown-menu.dropdownUsers a').off().on('click', function (event) {
 
         var $target = $(event.currentTarget),
             val = $target.attr('data-value'),
@@ -400,7 +412,7 @@ function listener() {
         return false;
     });
 
-    $('#btnFileUpload').on('click', function (event) {
+    $('#btnFileUpload').off().on('click', function (event) {
         // select file and upload 
     });
 
@@ -735,7 +747,7 @@ function startJsplumb() {
 
         $('.switchEditMode').bootstrapSwitch();
         $('.switchEditMode').bootstrapSwitch('labelText', 'Edit Mode');
-        $('.switchEditMode').on('switchChange.bootstrapSwitch', function (event, state) {
+        $('.switchEditMode').off().on('switchChange.bootstrapSwitch', function (event, state) {
             if (editModeTemp == false)
                 editModeTemp = true;
             else

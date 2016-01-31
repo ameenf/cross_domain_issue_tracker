@@ -8,14 +8,16 @@
 }
 
 .itemTag {
-    height: 50px;
-    width: 50px;
+    display: inline-block;
+    height: 35px;
+    width: 35px;
     border-radius: 50%;
     background-color: #B91D1D;
     color: white;
     text-align: center;
-    line-height: 50px;
-    font-size: 35px;
+    line-height: 35px;
+    font-size: 20px;
+    margin-left: 5px;
 }
 
 .itemName {
