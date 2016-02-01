@@ -87,14 +87,11 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.remove(id);
 		}
 		
-		@JSONP
+		@JSONP(callback = "callback", queryParam = "jsonpCallback")
 		@GET @Path("test")
-		public Response test(@HeaderParam("user-agent") String str, @HeaderParam("Content-Type") String str2){
-			Hello.counter++;
-			System.out.println(counter);
-			ResponseBuilder response = Response.ok((Object) "{\"user-agent\":\""+String.valueOf(Hello.counter)+"\", \"content-type\":\""+str2+"\"}"); 
-			response.header("Content-Type", "application/javascript");
-		    return response.build();
+		@Produces({ "application/javascript", MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		public String test(@HeaderParam("user-agent") String str, @HeaderParam("Content-Type") String str2){
+			return("{\"user-agent\":\""+str+"\", \"content-type\":\""+str2+"\"}");
 		}
 
 	}

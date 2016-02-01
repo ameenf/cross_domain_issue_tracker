@@ -4,14 +4,14 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: baseurl + "rest/tickets?callback=?",
+        url: "http://192.168.0.155:8080/uni.saarland.se.cdit/rest/tickets/test",
         crossDomain: true,
         type: "GET",
         contentType: "application/json; charset=utf-8",
         async: false,
         dataType: "jsonp",
-        jsonp: 'callback',
-        jsonpCallback: 'fnsuccesscallback',
+        jsonp: 'jsonpCallback',
+        jsonpCallback: 'MyCallback',
         success: function (result) {
             console.log("SUCCESS")
         },
@@ -26,6 +26,6 @@ $(document).ready(function () {
 
 });
 
-function fnsuccesscallback() {
+function MyCallback() {
     console.log("fnsuccesscallback");
 }
