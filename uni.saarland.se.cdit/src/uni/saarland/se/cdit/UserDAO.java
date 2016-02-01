@@ -35,6 +35,30 @@ public class UserDAO {
         return list;
     }
 	
+	public List<User> findByProjectId(int id) {
+        List<User> list = new ArrayList<User>();
+        Connection c = null;
+    	String sql = "SELECT u.users_id, u.users_username "+
+    				 "FROM users as u, project_users as p "+
+    				 "WHERE u.users_id = p.users_id AND p.project_id=? "+
+    				 "ORDER BY u.users_id";
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement s = c.prepareStatement(sql);
+            s.setInt(1, id);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                list.add(processRow(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return list;
+    }
+	
 	public boolean authenticate(User user){
 		Connection c = null;
 		String sql = "SELECT users.users_password FROM users WHERE users.users_username = ?";
@@ -60,6 +84,29 @@ public class UserDAO {
 		}
 		
 		return success;
+	}
+	
+	public User getUserId(User user){
+		Connection c = null;
+		String sql = "SELECT users.users_id FROM users WHERE users.users_username = ?";
+		user.setPassword(null);
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, user.getUsername());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				user.setId( rs.getInt("users_id"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return user;
+		
 	}
 	
 	public User create(User user) {

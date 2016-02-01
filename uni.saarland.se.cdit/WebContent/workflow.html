@@ -77,33 +77,85 @@
 
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <!-- Modal Add Ticket-->
-                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel"> </h4>
-                            </div>
-                            <div class="modal-body">
-                                Title :
-                                <input type="text" id="input_new_title">
-                                <br> Description :
-                                <input type="text" id="input_new_desc">
-                                <br> Priority :
-                                <select id="prioritylist">
-                                </select>
-                                <br> Type :
-                                <select id="typelist">
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="closeTicket" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
+                <!--  Add Ticket-->
+                <div id="ticketAdd">
+                    <div class="title"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Title</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="input_new_title" class="form-control">
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea id="input_new_desc" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Priority</label>
+                            <div class="col-sm-10">
+                                <select id="prioritylist" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Type</label>
+                            <div class="col-sm-10">
+                                <select id="typelist" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+                                <div class="btn-group">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Labels
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdownLabels">
+                                        <li>
+                                            <a href="#" class="small" data-value="option1" tabIndex="-1">
+                                                <input type="checkbox" id="check1" />
+                                                <label for="check1"><span></span>Option 1</label>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="small" data-value="option2" tabIndex="-1">
+                                                <input type="checkbox" id="check2" />
+                                                <label for="check2"><span></span>Option 2</label>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="small" data-value="option3" tabIndex="-1">
+                                                <input type="checkbox" id="check3" />
+                                                <label for="check3"><span></span>Option 3</label>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="btnAddUsers" data-toggle="dropdown">
+                                        Add Users
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdownUsers">
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-default" type="button" id="btnFileUpload">
+                                        <span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span> Add File
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button id="closeTicket" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                 </div>
+
+
+
                 <!-- Modal Show Node -->
                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">

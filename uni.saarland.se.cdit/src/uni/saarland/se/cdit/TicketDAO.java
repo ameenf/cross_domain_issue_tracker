@@ -51,13 +51,14 @@ public class TicketDAO {
     }
 	
 	public Ticket findById(int id) {
-    	String sql = "SELECT * FROM ticket WHERE ticket_id = ?";
+    	String sql = "SELECT * FROM ticket WHERE ticket_id = ? AND active=?";
         Ticket ticket = null;
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, id);
+            ps.setBoolean(2, true);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 ticket = processRow(rs);
@@ -92,12 +93,13 @@ public class TicketDAO {
         List<Ticket> list = new ArrayList<Ticket>();
         Connection c = null;
     	String sql = "SELECT * FROM ticket as e " +
-			"WHERE UPPER(ticket_title) LIKE ? " +	
+			"WHERE UPPER(ticket_title) LIKE ? AND active=?" +	
 			"ORDER BY ticket_title";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, "%" + title.toUpperCase() + "%");
+            ps.setBoolean(2, true);
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
@@ -134,12 +136,13 @@ public class TicketDAO {
         Connection c = null;
     	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description " + 
             "FROM ticket as t, type " +
-			"WHERE t.type_id = type.type_id and UPPER(type.type_title) LIKE ? " +	
+			"WHERE t.type_id = type.type_id AND UPPER(type.type_title) LIKE ? AND t.active=?" +	
 			"ORDER BY t.ticket_title";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, type.toUpperCase());
+            ps.setBoolean(2, true);
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
@@ -176,12 +179,13 @@ public class TicketDAO {
         Connection c = null;
     	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description " + 
             "FROM ticket as t, nodes as n " +
-			"WHERE n.node_id = ? AND t.status_id = n.source_node_id AND t.project_id = n.project_id " +	
+			"WHERE n.node_id = ? AND t.status_id = n.source_node_id AND t.project_id = n.project_id AND t.active = ? " +	
 			"ORDER BY t.ticket_id";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, id);
+            ps.setBoolean(2, true);
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
@@ -302,8 +306,9 @@ public class TicketDAO {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("DELETE FROM ticket WHERE ticket_id=?");
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("UPDATE ticket SET active=? WHERE ticket_id=?");
+            ps.setInt(2, id);
+            ps.setBoolean(1, false);
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {

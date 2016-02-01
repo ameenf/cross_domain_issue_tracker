@@ -30,7 +30,7 @@ function getProjectsFromUser(userid) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            callbackGetProjectsFromUser(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -58,7 +58,7 @@ function createProject(desc, title, users) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackCreateProject(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -87,6 +87,34 @@ function updateProject(desc, id, title, users) {
         async: true,
         success: function (result) {
             return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+
+
+function addUsers(id, users) {
+    var data = {
+        "id": id,
+        "users": users
+    }
+
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/update",
+        url: baseurl + "rest/projects/addUsers",
+
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackAddUsers(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -334,7 +362,8 @@ function getUsers() {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            callbackGetUsers(result);
+            //return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -363,7 +392,7 @@ function createUser(username, password) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackCreateUser(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");

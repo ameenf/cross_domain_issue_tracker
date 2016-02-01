@@ -1,12 +1,11 @@
 "use strict";
-var allUsers = [];
-var filteredTickets = [];
+var allProjects = [];
 var projectToDelete;
 
 $(document).ready(function () {
     console.log("projectmanagement.js");
 
-    getUsers();
+    getProjects();
 
     //Clickhandler for an element in the issues list
     $('.issue').on('click', function (e) {
@@ -15,21 +14,15 @@ $(document).ready(function () {
 
     //Changehandler for the search bar. Change something and press enter to call this
     $('.filterUsers').on('change', function () {
-        filterUsers();
+        filterProjects();
     });
 
     $('.b_addProject').on('click', function (e) {
-        openModalCreateUser();
+        expandAddProject();
     });
 
-    $('#createUser').on('click', function (e) {
+    $('#createProject').on('click', function (e) {
         createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), [1, 4, 5])
-    });
-
-
-    $('.b_addUserProjectList').on('click', function (e) {
-        console.log("LGODAGFJAPSOFD");
-        $('#dd_addUserProjectListTitle').text = "TEST";
     });
 
     $('.users').on('click', '#b_deleteProject', function () {
@@ -45,122 +38,67 @@ $(document).ready(function () {
     $('#deleteProject').on('click', function () {
         deleteProject(projectToDelete);
     });
-
-
-
-
-
 });
+
+
+function callbackCreateProject(result) {
+    console.log(result);
+
+    //After the user has been added, close the expanded view
+    $(".addProjectExpandable").slideUp();
+    $("#s_newProjectIcon").toggleClass("glyphicon-plus glyphicon-minus");
+    $("#s_newProjectIcon").removeClass("glyphicon-minus");
+    $("#s_newProjectIcon").addClass("glyphicon-plus");
+
+    addProjectRow(result.id, result.title.substring(0, 1), result.title, result.users);
+}
+
+function expandAddProject() {
+    console.log("ExpandAddUser");
+
+    //Toggle to switch icons
+    $(".addProjectExpandable").slideToggle("slow", function () {
+        $("#s_newProjectIcon").toggleClass("glyphicon-plus glyphicon-minus");
+    });
+}
+
 
 function openIssue(e) {
     e.preventDefault(); //Prevents link from forwarding
-    console.log('openIssue()');
+    console.log('openProject()');
 }
 
-function filterUsers() {
-    console.log('searchIssues()');
+function filterProjects() {
+    console.log('searchProjects()');
 
     var substring = $('.filterUsers').val();
-
     $('.users').empty();
-
-    for (var key in allUsers) {
-        if ((allUsers[key].username).indexOf(substring) > -1) {
-            filteredTickets.push(allUsers[key]);
-            console.log(allUsers[key].id);
-            $('.users').append('<li class="itemRow user' + allUsers[key].id + '"></li>');
-            $('.user' + allUsers[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + allUsers[key].id + '"></div>');
-            $('.innerUser' + allUsers[key].id).append('<div class="itemTag"></div>');
-            $('.innerUser' + allUsers[key].id).append('<a class="itemName" href="workflow.html">' + allUsers[key].username + '</a>');
-            $('.innerUser' + allUsers[key].id).append('<div class="itemInfo">' + allUsers[key].id + '</div>');
+    for (var key in allProjects) {
+        if ((allProjects[key].title).indexOf(substring) > -1) {
+            addProjectRow(allProjects[key].id, allProjects[key].title.substring(0, 1), allProjects[key].title, allProjects[key].users);
         }
     }
 }
 
-function getUsers() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-            allUsers = result;
-            for (var key in result) {
-                var randomColor = Math.floor(Math.random() * 16777215).toString(16);
-                $('.users').append('<li class="itemRow user' + result[key].id + '"></li>');
-                $('.user' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result[key].id + '"></div>');
-                $('.innerUser' + result[key].id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + result[key].title.substring(0, 1) + '</div>');
-                $('.innerUser' + result[key].id).append('<a class="itemName" href="">' + result[key].title + '</a>');
 
-                $('.innerUser' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-
-                $('.innerUser' + result[key].id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
-
-                //$('.innerUser' + result[key].id).append('<button id="b_deleteProject" type="button" class="btn btn-default b_deleteProject" aria-label="Left Align"> <span class="glyphicon glyphicon-trash b_deleteProject" aria-hidden = "true"></span></button>');
-
-
-
-
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
+function callbackGetProjects(result) {
+    console.log(result);
+    allProjects = result;
+    filterProjects();
 }
 
-function openModalCreateUser() {
-    $('#m_addProject').modal('toggle');
-
-
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-            $('#dd_addUserProjectList').empty();
-            for (var key in result) {
-                $('#dd_addUserProjectList').append('<li class="b_addUserProjectList"><a>' + result[key].title + '</a></li>');
-                //                $('#dd_addUserProjectList').append('<li><a href="#">Action</a></li>');
-
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
-}
-
-
-
-function getProjectsFromUser() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/searchByUser/" + userid,
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-
-            for (var key in result) {
-
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
+function addProjectRow(id, tag, title, users) {
+    console.log("addProjectRow");
+    var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    $('.users').append('<li class="itemRow user' + id + '"></li>');
+    $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');
+    $('.innerUser' + id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + tag + '</div>');
+    $('.innerUser' + id).append('<a class="itemName" href="">' + title + '</a>');
+    $('.innerUser' + id).append('<div class="inneruserlist innerUserlist' + id + ' "aria-hidden="true"></div>');
+    for (var keyy in users) {
+        $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    }
+    $('.innerUser' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
 }
 
 function openModalDeleteProject() {

@@ -38,4 +38,11 @@ public class GeneralResource {
 		return dao.getAllPriority();
 	}
 	
+	@GET @Path("/label")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public List<Label> getAllLabel() {
+		System.out.println("findAlllabels");
+		return dao.getAllLabels();
+	}
+	
 }
