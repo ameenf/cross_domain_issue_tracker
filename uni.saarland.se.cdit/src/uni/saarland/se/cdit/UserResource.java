@@ -38,6 +38,13 @@ public class UserResource {
 		return dao.getAll();
 	}
 	
+	@GET @Path("findByProject/{project_id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public List<User> findUsersByProject(@PathParam("project_id") int id) {
+		System.out.println("get users by project id");
+		return dao.findByProjectId(id);
+	}
+	
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
