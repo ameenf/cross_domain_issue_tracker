@@ -339,8 +339,8 @@ function login(username, pwd) {
 
         data: JSON.stringify(data),
         //        data: data,
-       // contentType: "application/json; charset=utf-8",
-        contentType: "application/x-www-form-urlencoded",
+        contentType: "application/json; charset=utf-8",
+        //contentType: "application/x-www-form-urlencoded",
         crossDomain: true,
         //dataType: "text json",
         async: true,

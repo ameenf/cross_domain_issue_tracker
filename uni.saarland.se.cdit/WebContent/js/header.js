@@ -5,6 +5,7 @@ $(document).ready(function () {
     $('.glyphicon-log-out').on('click', function (e) {
         console.log('click');
         Cookies.set('loggedin', 'false');
+        Cookies.get('userid', '');
         window.location = "index.html";
     });
 

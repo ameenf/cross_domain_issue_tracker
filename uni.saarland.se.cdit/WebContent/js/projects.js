@@ -4,7 +4,8 @@ var filteredProjects = [];
 
 $(document).ready(function () {
     console.log("projects.js");
-    getProjectsFromUser(1);
+
+    getProjectsFromUser(Cookies.get('userid'));
 });
 
 function callbackGetProjectsFromUser(result) {

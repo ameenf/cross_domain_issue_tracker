@@ -7,8 +7,11 @@ $(document).ready(function () {
 
 
 function callbackSuccessLogin(result) {
+    console.log(result);
     Cookies.set('loggedin', 'true');
+    Cookies.set('userid', result.id);
     changePage("projects.html")
+
     console.log("Logging in");
 }
 
