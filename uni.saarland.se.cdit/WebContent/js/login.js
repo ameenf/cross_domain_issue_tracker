@@ -18,5 +18,5 @@ function callbackFailedLogin(a, b, c) {
 
     console.log("Login failed");
     $("#loginFailBox").show();
-    $("#loginFailBox").css('color', 'red');
+   //$("#loginFailBox").css('color', 'red');
 }

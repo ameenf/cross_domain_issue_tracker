@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/profile.css">
 
 </head>
 
@@ -63,11 +64,67 @@
                 </ul>
 
             </div>
+            
+            <!-- actual content -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+            	<h1>User Profile</h1>
+            	<button type="button" id="cogBtn" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>
+            	
+				<div id="bodyLeft">	
+					<div>
+						<label class="col-sm-2 control-label fieldLabel">Name:</label><br>
+						<div class="col-sm-10 editField form-group"><input id="name" type="text" class="form-control updCreat" value="John" readonly></div>
+					</div>
+					<div>
+						<label class="col-sm-2 control-label fieldLabel">Experience:</label><br>
+						<div class="col-sm-10 editField form-group"><textarea id="experience" class="form-control updDesc" readonly>none</textarea></div>
+					</div>
+					
+					<div>
+						<label class="col-sm-2 control-label fieldLabel">Links:</label><br>
+						<div class="col-sm-10 editField form-group"><textarea id="links" class="form-control updDesc" readonly>e.g. Facebook </textarea></div>
+					</div>
+   				</div>
+   				<div id="bodyRight">
+					<div>
+						<label class="col-sm-2 control-label fieldLabel">Surname:</label><br>
+						<div class="col-sm-10 editField form-group"><input id="surname" type="text" class="form-control updCreat" value="Smith" readonly></div>
+					</div>
+					<div>						
+                        <label class="col-sm-2 control-label fieldLabel">Field of work:</label><br>
+                        <div class="col-sm-10 editField form-group"><select id="fow_list" class="form-control" disabled></select></div>
+					</div>
+					<!-- <div>
+						<p>Password:</p>
+						<input type="text" id="password">
+					</div> -->
+   				</div>
+   				
+   				<div id="editBtns">
+   					<button id="pwchange" type="button" class="btn btn-default editBtn" style="display: none">Change Password</button>
+   					
+   					<button id="cancel" type="button" class="btn btn-default editBtn" data-dismiss="modal" style="display: none">Cancel</button>
+   					<button id="save" type="submit" class="btn btn-default editBtn" style="display: none">Save Changes</button>   	
+                </div>
+                
+                <div id="changePW"  style="display: none">
+                	<label class="col-sm-2 control-label fieldLabel">Old Password:</label><br>
+                	<div class="col-sm-10 editField form-group"><input id="oldPW" type="password" class="form-control updCreat"></div>
+                	<label class="col-sm-2 control-label fieldLabel">New Password:</label><br>
+                	<div class="col-sm-10 editField form-group"><input id="newPW1" type="password" class="form-control updCreat"></div>
+                	<label class="col-sm-2 control-label fieldLabel">Repeat new Password:</label><br>
+                	<div class="col-sm-10 editField form-group"><input id="newPW2" type="password" class="form-control updCreat"></div>
+                	
+                	<button id="savePW" type="button" class="btn btn-default editBtn">Save Password</button>
+                </div>
             </div>
         </div>
     </div>
+    
+    
+    
+    
+    
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -79,6 +136,7 @@
     </script>
 -->
     <!-- Latest compiled and minified JavaScript -->
+    <script src="js/profile.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="js/header.js"></script>
 

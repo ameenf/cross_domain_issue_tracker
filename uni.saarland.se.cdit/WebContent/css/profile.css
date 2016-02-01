@@ -1,0 +1,30 @@
+#bodyLeft, #bodyRight, #changePW{
+	width: 50%;
+	float: left;
+}
+
+
+#cogBtn{
+	position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 10px;
+}
+
+#editBtns{
+	width: 100%;
+	float: left;
+}
+
+.editField, .fieldLabel{
+	float: left;
+	width: 100%;
+}
+
+#save, #cancel{
+	float: right;
+}
+
+.editBtn{
+	margin: 2px;
+}
