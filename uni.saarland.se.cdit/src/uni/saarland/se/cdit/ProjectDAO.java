@@ -13,7 +13,7 @@ public class ProjectDAO {
 	public List<Project> findAll() {
         List<Project> list = new ArrayList<Project>();
         Connection c = null;
-    	String sql = "SELECT * FROM project ORDER BY project_id";
+    	String sql = "SELECT * FROM project ORDER BY active desc";
         try {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
@@ -43,11 +43,12 @@ public class ProjectDAO {
 	public Project findById(int id) {
         Project project = new Project();
         Connection c = null;
-    	String sql = "SELECT * FROM project WHERE project_id=? ORDER BY project_id";
+    	String sql = "SELECT * FROM project WHERE project_id=? AND active=? ORDER BY project_id";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement s = c.prepareStatement(sql);
             s.setInt(1, id);
+            s.setBoolean(2, true);
             ResultSet rs = s.executeQuery();
             sql = "SELECT users_id FROM project_users WHERE project_id = ?";
             PreparedStatement ps = c.prepareStatement(sql, 
@@ -74,11 +75,12 @@ public class ProjectDAO {
         Connection c = null;
     	String sql = "SELECT * FROM project WHERE project_id" + 
     				 " IN (SELECT project_id FROM project_users WHERE users_id=?)"+
-    				 " ORDER BY project_id";
+    				 " AND active=? ORDER BY project_id";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, id);
+            ps.setBoolean(2, true);
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM project_users WHERE project_id = ?";
             ps = c.prepareStatement(sql, 
@@ -184,8 +186,9 @@ public class ProjectDAO {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("DELETE FROM project_users WHERE project_id=?;DELETE FROM project WHERE project_id=?");
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("UPDATE project "+
+            										  "SET active=? WHERE project_id=?");
+            ps.setBoolean(1, false);
             ps.setInt(2, id);
             int count = ps.executeUpdate();
             return count >= 1;
