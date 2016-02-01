@@ -81,7 +81,9 @@ public class ProjectDAO {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM project_users WHERE project_id = ?";
-            ps = c.prepareStatement(sql);
+            ps = c.prepareStatement(sql, 
+            		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+              		  ResultSet.CONCUR_READ_ONLY);
             int i = 0;
             while (rs.next()) {
                 list.add(processRow(rs));
