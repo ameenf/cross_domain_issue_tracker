@@ -9,7 +9,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,6 +37,13 @@ public class UserResource {
 		return dao.getAll();
 	}
 	
+	@GET @Path("getProfile/{user_id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public UserProfile getUserProfile(@PathParam("user_id") int id){
+		System.out.println("get user profile" + id);
+		return dao.getProfile(id);
+	}
+	
 	@GET @Path("findByProject/{project_id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public List<User> findUsersByProject(@PathParam("project_id") int id) {
@@ -51,6 +57,14 @@ public class UserResource {
 	public User create(User user) {
 		System.out.println("creating user");
 		return dao.create(user);
+	}
+	
+	@POST @Path("createProfile")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public UserProfile createProfile(UserProfile profile) {
+		System.out.println("creating user profile");
+		return dao.createProfile(profile);
 	}
 	
 	@PUT @Path("updatePassword")

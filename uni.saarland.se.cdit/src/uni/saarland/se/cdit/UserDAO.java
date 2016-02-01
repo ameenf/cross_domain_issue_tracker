@@ -35,6 +35,28 @@ public class UserDAO {
         return list;
     }
 	
+	public UserProfile getProfile(int id){
+		UserProfile profile = null;
+		Connection c = null;
+		String sql = "SELECT * FROM user_profile WHERE users_id = ?";
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				profile = processProfileRow(rs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		return profile;
+	}
+	
+
 	public List<User> findByProjectId(int id) {
         List<User> list = new ArrayList<User>();
         Connection c = null;
@@ -137,6 +159,37 @@ public class UserDAO {
         return user;
     }
 	
+	public UserProfile createProfile(UserProfile profile) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement= "INSERT INTO user_profile" +
+        				  "(users_id, firstname, lastname, field, experience, links) " +
+        				  "VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "profile_id" });
+            
+            ps.setInt(1, profile.getUserId());
+            ps.setString(2, profile.getFirstName());
+            ps.setString(3, profile.getLastName());
+            ps.setString(4, profile.getField());
+            ps.setString(5, profile.getExperience());
+            ps.setString(6, profile.getLinks());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            profile.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return profile;
+    }
+	
 	public boolean updatePassword(User user) {
         Connection c = null;
         try {
@@ -179,6 +232,18 @@ public class UserDAO {
 		user.setUsername(rs.getString("users_username"));
         return user;
     }
+	
+	private UserProfile processProfileRow(ResultSet rs) throws SQLException {
+		UserProfile profile = new UserProfile();
+		profile.setId(rs.getInt("profile_id"));
+		profile.setUserId(rs.getInt("users_id"));
+		profile.setFirstName(rs.getString("firstname"));
+		profile.setLastName(rs.getString("lastname"));
+		profile.setField(rs.getString("field"));
+		profile.setExperience(rs.getString("experience"));
+		profile.setLinks(rs.getString("links"));
+		return profile;
+	}
 	
 	protected String toHash(String password) throws NoSuchAlgorithmException{
 		
