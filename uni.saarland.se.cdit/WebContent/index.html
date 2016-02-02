@@ -2,7 +2,6 @@
 
 <head>
     <!-- jQuery start -->
-    <link rel="stylesheet" href="css/login.css">
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- jQuery end -->
 
@@ -16,6 +15,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
     <!-- Boostrap end -->
+    <link rel="stylesheet" href="css/login.css">
 
     
 
@@ -43,7 +43,7 @@
             <input type="submit" class="btn btn-lg btn-primary btn-block" id="login">
             <!--        </form>-->
         </div>
-        <div class="loginFailBox" style="display: none">
+        <div id="loginFailBox" class="loginFailBox">
             Wrong username/password combination!
             Please try again or contact the admin.
         </div>

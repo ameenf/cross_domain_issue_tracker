@@ -46,10 +46,9 @@ body {
 }
 
 
-.loginFailBox div{
+#loginFailBox, .loginFailBox{
     font-size: 28px;
     text-align: center;
-    
     color: red;
     margin: 9px;
 	padding: 8px;
