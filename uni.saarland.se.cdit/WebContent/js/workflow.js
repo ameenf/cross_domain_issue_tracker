@@ -22,19 +22,7 @@ $(document).ready(function () {
     getTypes();
     getPriorities();
     getUsers();
-    //getLabels(); --> TODO
-    allLabels[0] = {
-        id: "1",
-        title: "First"
-    };
-    allLabels[1] = {
-        id: "2",
-        title: "Second"
-    };
-    allLabels[2] = {
-        id: "3",
-        title: "Third"
-    };
+    getLabels();
 });
 // If user leaves workflow, the position of the nodes will be updated
 $(window).unload(function (e) {
@@ -42,14 +30,8 @@ $(window).unload(function (e) {
     console.log("unload function");
 
     $.each(workflowNodes, function (index, value) {
-
-        //            console.log("each " + workflowNodes[key].id + " ");
-        //        console.log("each " + workflowNodes[index].id + " " + value);
-        var posLeft = (100 * $('#' + workflowNodes[index].id).position().left) / $('#diagramContainer').width(); // posX
-        var posTop = (100 * $('#' + workflowNodes[index].id).position().top) / $('#diagramContainer').height(); // posY
-        console.log("New left " + workflowNodes[index].id + " " + value.id + " " + posLeft + " | " + index);
-        console.log("New t o p " + " " + posTop + " | " + index);
-        // TODO: REST CALL TO UPDATE IN DB
+        var posLeft = (100 * $('#' + workflowNodes[index].sourceNodeId).position().left) / $('#diagramContainer').width(); // posX
+        var posTop = (100 * $('#' + workflowNodes[index].sourceNodeId).position().top) / $('#diagramContainer').height(); // posY
         var data = {
             "id": workflowNodes[index].id,
             "positionX": posLeft,
@@ -124,11 +106,14 @@ function listenerShowTicket() {
         // + button to add label
         $('.updLabel + .col-sm-10').append('<span class="label label-success" id="btnaddLabels" data-toggle="popover" title="Select label" data-placement="top">+</span><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
 
-        var templab = []
-        templab = allTicketInNode[$('.nodeTicket').index(this)].labels;
-
+        var ticketLabel = []
+        ticketLabel = allTicketInNode[$('.nodeTicket').index(this)].labels;
         $.each(allLabels, function (key, value) {
-            if (templab == null) {} else if (templab[key] == allLabels[key].id) {
+            var found = $.inArray(allLabels[key].id, ticketLabel);
+
+            if (ticketLabel == null) {
+                console.log("LABEL NULL");
+            } else if (found != -1) {
                 $('.updLabel + .col-sm-10').append('<span class="label label-primary  ' + allLabels[key].title + allLabels[key].id + '">' + allLabels[key].title + '</span>');
                 $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox" checked/>' + allLabels[key].title + '</label>');
             } else {
@@ -144,35 +129,39 @@ function listenerShowTicket() {
             }
         });
 
+        // select labels and add labels in UI and in the checkboxlist
         $('body').off().on('click', '.labelCheck', function () {
-            console.log($('.labelCheck').index(this) + " " + $(this).prop('checked'));
-            if ($(this).prop('checked') == true) {
-                $('.updLabel + .col-sm-10').append('<span class="label label-primary ' + allLabels[$('.labelCheck').index(this)].title + allLabels[$('.labelCheck').index(this)].id + '">' + allLabels[$('.labelCheck').index(this)].title + '</span>');
+            var found = $.inArray(allLabels[$('.labelCheck').index(this)].id, ticketLabel);
 
+            if ($(this).prop('checked') == true) {
+                ticketLabel.push(allLabels[$('.labelCheck').index(this)].id);
+                $('.updLabel + .col-sm-10').append('<span class="label label-primary ' + allLabels[$('.labelCheck').index(this)].title + allLabels[$('.labelCheck').index(this)].id + '">' + allLabels[$('.labelCheck').index(this)].title + '</span>');
             } else {
+                ticketLabel.splice(found, 1);
                 $('.' + allLabels[$('.labelCheck').index(this)].title + allLabels[$('.labelCheck').index(this)].id).remove();
             }
+            console.log(ticketLabel);
         });
-
-
         // Users
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updUsers"></label><div class="col-sm-10"></div></div>');
         // + button to add user
         $('.updUsers + .col-sm-10').append('<button class="btn btn-default btnEdit" id="btnUpdUsers" type="button" data-toggle="popover" title="Select users" data-placement="top"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
 
-        // add existing user in a ticket as default icon
-        var tempuser = []
-        tempuser = allTicketInNode[$('.nodeTicket').index(this)].users;
-
+        // add existing user in a ticket as default icon and in the checkboxlist
+        var ticketUser = []
+        ticketUser = allTicketInNode[$('.nodeTicket').index(this)].users;
         $.each(allUsers, function (key, value) {
-            if (tempuser == null) {} else if (tempuser[key] == allUsers[key].id) {
+            var found = $.inArray(allUsers[key].id, ticketUser);
+
+            if (ticketUser == null) {
+                console.log("USER NULL");
+            } else if (found != -1) {
                 var randomColor = Math.floor(Math.random() * 16777215).toString(16);
                 $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[key].id + '" style="background-color:#' + randomColor + '">' + allUsers[key].username.substring(0, 1) + '</div>');
                 $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox" checked/>' + allUsers[key].username + '</label>');
             } else {
                 $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox"/>' + allUsers[key].username + '</label>');
             }
-
         });
 
         $('#btnUpdUsers').popover({
@@ -182,18 +171,18 @@ function listenerShowTicket() {
                 return $('#btnUpdUsers + .popover').html();
             }
         });
-
+        // select users and add users in UI
         $('body').on('click', '.userCheck', function () {
-            console.log($('.userCheck').index(this) + " " + $(this).prop('checked'));
+            var found = $.inArray(allUsers[$('.userCheck').index(this)].id, ticketUser);
+
             var randomColor = Math.floor(Math.random() * 16777215).toString(16);
             if ($(this).prop('checked') == true) {
+                ticketUser.push(allUsers[$('.userCheck').index(this)].id);
                 $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[$('.userCheck').index(this)].id + '" style="background-color:#' + randomColor + '">' + allUsers[$('.userCheck').index(this)].username.substring(0, 1) + '</div>');
             } else {
-
+                ticketUser.splice(found, 1);
                 $('.itemTag.' + allUsers[$('.userCheck').index(this)].id).remove();
-
             }
-
         });
 
         // Files
@@ -227,6 +216,7 @@ function listenerShowTicket() {
             }
         });
 
+        // Update the ticket
         $('#updateTicket').off().on('click', function (e) {
             console.log("UPDATE TICKET BTN");
             console.log($(".updTitle").val());
@@ -239,6 +229,8 @@ function listenerShowTicket() {
             var elem = document.getElementById("updTypelist");
             var typeId = elem.options[elem.selectedIndex].value;
             console.log("NEW PRIOID: " + typeId);
+            console.log("NEW LABELS: " + typeId);
+            console.log("NEW USERS: " + typeId);
 
             var data = {
                 "id": allTicketInNode[currentTicketIndex].id,
@@ -248,9 +240,13 @@ function listenerShowTicket() {
                 "priorityId": prioId,
                 "typeId": typeId,
                 "statusId": currentStatusId,
-                "projectId": projectId
+                "projectId": projectId,
+                "users": ticketUser,
+                "labels": ticketLabel
             }
-
+//            $.each(data, function (key, value) {
+//                console.log(data[key]);
+//            });
             $.ajax({
                 type: "PUT",
                 url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
@@ -289,23 +285,18 @@ function listener() {
     var nodeId;
     // Open dialog to create a ticket
     $('.addTicket').off().on('click', function (e) {
+        optionsLabel = [];
+        optionsUser = [];
+        var allInputs = $(":input");
+        allInputs.prop('checked', false);
         //$('#myModal1').modal('toggle');
         $('#ticketAdd').fadeToggle('fast');
         $('#ticketViewWrapper').fadeToggle('fast');
 
         nodename = $(this).next().html();
-        nodeId = $(this).parent().attr("id").charAt(0);
+        nodeId = workflowNodes[$(this).parent().index()].id;
         nodeIndex = $(this).parent().index();
 
-        var found = 0;
-        for (var i = 0; i < allNodes.length; i++) {
-            if (allNodes[i].title == nodename) {
-                found = i;
-                break;
-            }
-        }
-        //        console.log("nodename: " + nodename);
-        //console.log("nodeID: " + nodeId);
         $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
     });
 
@@ -314,11 +305,12 @@ function listener() {
         $('#ticketViewWrapper').fadeOut('fast');
     });
 
+    // Show nodes with tickets inside
     $('.showNode').off().on('click', function (e) {
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
-        var nodeId = $(this).parent().attr("id").charAt(0);
+        nodeId = workflowNodes[$(this).parent().index()].id;
         getAllTicketsNodes(nodeId);
     });
 
@@ -337,7 +329,9 @@ function listener() {
             "priorityId": prioId,
             "typeId": typeId,
             "statusId": workflowNodes[nodeIndex].sourceNodeId,
-            "projectId": 1
+            "projectId": 1,
+            "users": optionsUser,
+            "labels": optionsLabel
         }
 
         $.ajax({
@@ -350,7 +344,7 @@ function listener() {
             async: true,
             success: function (result) {
                 console.log("SUCCESS!");
-                $('#' + workflowNodes[nodeIndex].id + ' .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
+                $('#' + workflowNodes[nodeIndex].sourceNodeId + ' .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
                 //$('#myModal1').modal('toggle');
                 $('#ticketAdd').fadeOut('fast');
                 $('#ticketViewWrapper').fadeOut('fast');
@@ -430,14 +424,14 @@ function callbackGetWorkflow(result) {
     console.log("callbackGetWorkflow");
     workflowNodes = result;
     for (var key in result) {
-        $('.bgRaster').append('<div id="' + result[key].id + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
-        $('#' + result[key].id).append('<div class="addTicket"></div>');
-        $('#' + result[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
-        $('#' + result[key].id).append('<div class="topTitle">' + allNodes[result[key].sourceNodeId - 1].title + '</div>');
-        $('#' + result[key].id).append('<div class="showNode"></div>');
-        $('#' + result[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
-        $('#' + result[key].id + ' .showNode').after('<div class="amountTickets"></div>');
-        $('#' + result[key].id + ' .amountTickets').html(result[key].ticketsCount);
+        $('.bgRaster').append('<div id="' + result[key].sourceNodeId + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
+        $('#' + result[key].sourceNodeId).append('<div class="addTicket"></div>');
+        $('#' + result[key].sourceNodeId + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+        $('#' + result[key].sourceNodeId).append('<div class="topTitle">' + allNodes[result[key].sourceNodeId - 1].title + '</div>');
+        $('#' + result[key].sourceNodeId).append('<div class="showNode"></div>');
+        $('#' + result[key].sourceNodeId + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
+        $('#' + result[key].sourceNodeId + ' .showNode').after('<div class="amountTickets"></div>');
+        $('#' + result[key].sourceNodeId + ' .amountTickets').html(result[key].ticketsCount);
         //        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
         //getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
     }
@@ -492,10 +486,10 @@ function callbackGetLabels(result) {
     console.log("callbackGetLabels");
     allLabels = result;
     for (var key in result) {
-        $('#labellist').append('<option value="' + allLabel[key].id + '">' + allLabel[key].title + '</option>');
+        $('.dropdown-menu.dropdownLabels').append('<li><a href="#" class="small" data-value="' + result[key].id + '" tabIndex="-1"><input type="checkbox" id="label' + result[key].id + '" /><label for="label' + result[key].id + '"><span></span>' + result[key].title + '</label></a></li>');
     }
 }
-// Get all labels 
+// Get all Users 
 function callbackGetUsers(result) {
     console.log("callbackGetUsers");
     allUsers = result;
@@ -641,7 +635,7 @@ function startJsplumb() {
 
         // Connect nodes
         for (var i = 0; i < workflowNodes.length; i++) {
-            var sourceName = workflowNodes[i].id;
+            var sourceName = workflowNodes[i].sourceNodeId;
             var targetName = workflowNodes[i].targetNodeId;
             var arrConnect = [];
             arrConnect[i] = jsPlumb.connect({
