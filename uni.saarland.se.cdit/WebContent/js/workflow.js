@@ -10,6 +10,7 @@ var allUsers = [];
 var optionsLabel = [];
 var optionsUser = [];
 var workflowNodes = [];
+var feedbackTicket = [];
 var currentTicketIndex;
 var currentStatusId;
 var projectId = 1;
@@ -68,6 +69,7 @@ function listenerShowTicket() {
         currentStatusId = allTicketInNode[$('.nodeTicket').index(this)].statusId;
 
         getTicketsById(allTicketInNode[$('.nodeTicket').index(this)].id);
+        getTicketFeedback(allTicketInNode[$('.nodeTicket').index(this)].id);
         $('#myModal2').modal('toggle');
         $('#ticketView').fadeToggle('fast');
         //        $('#ticketView').append('<div id="ticket');
@@ -102,18 +104,18 @@ function listenerShowTicket() {
         }
 
         // Label
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updLabel"></label><div class="col-sm-10"></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updLabel">Labels</label><div class="col-sm-10"></div></div>');
         // + button to add label
-        $('.updLabel + .col-sm-10').append('<span class="label label-success" id="btnaddLabels" data-toggle="popover" title="Select label" data-placement="top">+</span><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
+        $('.updLabel + .col-sm-10').append('<span class="label label-success btnEdit" id="btnaddLabels" data-toggle="popover" title="Select label" data-placement="top">+</span><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
 
         var ticketLabel = []
         ticketLabel = allTicketInNode[$('.nodeTicket').index(this)].labels;
         $.each(allLabels, function (key, value) {
             var found = $.inArray(allLabels[key].id, ticketLabel);
 
-            if (ticketLabel == null) {
+           /* if (ticketLabel == null) {
                 console.log("LABEL NULL");
-            } else if (found != -1) {
+            } else */if (found != -1) {
                 $('.updLabel + .col-sm-10').append('<span class="label label-primary  ' + allLabels[key].title + allLabels[key].id + '">' + allLabels[key].title + '</span>');
                 $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox" checked/>' + allLabels[key].title + '</label>');
             } else {
@@ -143,19 +145,20 @@ function listenerShowTicket() {
             console.log(ticketLabel);
         });
         // Users
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updUsers"></label><div class="col-sm-10"></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updUsers">Users</label><div class="col-sm-10"></div></div>');
         // + button to add user
         $('.updUsers + .col-sm-10').append('<button class="btn btn-default btnEdit" id="btnUpdUsers" type="button" data-toggle="popover" title="Select users" data-placement="top"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
 
         // add existing user in a ticket as default icon and in the checkboxlist
         var ticketUser = []
         ticketUser = allTicketInNode[$('.nodeTicket').index(this)].users;
+        
         $.each(allUsers, function (key, value) {
             var found = $.inArray(allUsers[key].id, ticketUser);
-
-            if (ticketUser == null) {
+            
+            /*if (ticketUser == null) {
                 console.log("USER NULL");
-            } else if (found != -1) {
+            } else*/ if (found != -1) {
                 var randomColor = Math.floor(Math.random() * 16777215).toString(16);
                 $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[key].id + '" style="background-color:#' + randomColor + '">' + allUsers[key].username.substring(0, 1) + '</div>');
                 $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox" checked/>' + allUsers[key].username + '</label>');
@@ -177,6 +180,9 @@ function listenerShowTicket() {
 
             var randomColor = Math.floor(Math.random() * 16777215).toString(16);
             if ($(this).prop('checked') == true) {
+                console.log(allUsers[$('.userCheck').index(this)].id);
+                console.log(ticketUser);
+                console.log(allUsers);
                 ticketUser.push(allUsers[$('.userCheck').index(this)].id);
                 $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[$('.userCheck').index(this)].id + '" style="background-color:#' + randomColor + '">' + allUsers[$('.userCheck').index(this)].username.substring(0, 1) + '</div>');
             } else {
@@ -186,13 +192,16 @@ function listenerShowTicket() {
         });
 
         // Files
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles"></label><div class="col-sm-10"></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add File</label><div class="col-sm-10"></div></div>');
         $('.updFiles + .col-sm-10').append('<button class="btn btn-default btnEdit" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
 
         // adding buttons
         $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default closeTicket">Close</button><button id="updateTicket" type="button" class="btn btn-primary btnEdit">Update Ticket</button><button type="button" class="btn btn-default editTicket"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>');
 
-
+        // Feedback
+         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add comment</label><div class="col-sm-10"></div></div>');
+        
+        // close button to close the ticket
         $('#ticketView .closeTicket').off().on('click', function (e) {
             console.log("CLOSE TICKET BTN");
             $('#ticketView').fadeOut('fast');
@@ -481,6 +490,14 @@ function callbackGetPriorities(result) {
         $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
     }
 }
+function callbackGetTicketFeedback(result){
+    console.log("callbackGetTicketFeedback")
+    feedbackTicket = result;
+    for(var key in result){
+        console.log("FEEDBACK: " + feedbackTicket[key].feedbackText + " | " + feedbackTicket[key].id);
+    }
+}
+
 // Get all labels 
 function callbackGetLabels(result) {
     console.log("callbackGetLabels");

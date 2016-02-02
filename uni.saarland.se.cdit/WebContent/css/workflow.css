@@ -64,7 +64,7 @@
 }
 
 .btnEdit {
-/*    display: none;*/
+    display: none;
 }
 
 .topTitle {
@@ -84,7 +84,14 @@
     border-radius: 50%;
     background-color: aqua;*/
 }
-
+.divider {
+  height: 1px;
+  width:100%;
+  display:block; /* for use on default inline elements like span */
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
 .glyphicon-plus {}
 
 .glyphicon-th-large {}

@@ -233,6 +233,23 @@ function getTicketsById(id) {
     })
 };
 
+function getTicketFeedback(id) {
+    $.ajax({
+        type: "GET",
+        url: baseurl + "rest/feedback/getTicketFeedback/" + id,
+
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetTicketFeedback(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+        }
+    })
+};
+
 function createTicket(title, description, prioId, typeId, nodeId, projId) {
     var data = {
         "title": title,
