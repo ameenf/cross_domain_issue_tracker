@@ -4,27 +4,27 @@
 $('#cogBtn').on('click', function (e) {
     console.log("EDIT PROFILE BTN");
 
-    if ($('#name').attr('readonly')){
-    	console.log("unlocking...");
-    	$('#name').removeAttr('readonly');
-    	$('#surname').removeAttr('readonly');
-    	$('#links').removeAttr('readonly');
-    	$('#experience').removeAttr('readonly');
-    	$('#fow_list').removeAttr('disabled');
-    }else{
-    	console.log("locking...");
-    	
-    	$('#name').attr('readonly', '');
-    	$('#surname').attr('readonly', '');
-    	$('#links').attr('readonly', '');
-    	$('#experience').attr('readonly', '');
-    	$('#fow_list').attr('disabled', '');	
+    if ($('#name').attr('readonly')) {
+        console.log("unlocking...");
+        $('#name').removeAttr('readonly');
+        $('#surname').removeAttr('readonly');
+        $('#links').removeAttr('readonly');
+        $('#experience').removeAttr('readonly');
+        $('#fow_list').removeAttr('disabled');
+    } else {
+        console.log("locking...");
+
+        $('#name').attr('readonly', '');
+        $('#surname').attr('readonly', '');
+        $('#links').attr('readonly', '');
+        $('#experience').attr('readonly', '');
+        $('#fow_list').attr('disabled', '');
     }
     $('#cancel').toggle()
     $('#save').toggle()
     $('#pwchange').toggle()
 
-   // $('#updateTicket').toggle();
+    // $('#updateTicket').toggle();
 });
 
 
@@ -39,3 +39,8 @@ $('#savePW').on('click', function (e) {
     $('#pwchange').toggle()
     $('#changePW').toggle()
 });
+
+
+function callbackupdateProfile(result) {
+
+}

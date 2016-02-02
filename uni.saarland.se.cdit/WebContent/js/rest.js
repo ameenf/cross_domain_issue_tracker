@@ -449,6 +449,26 @@ function deleteUser(id) {
     })
 }
 
+
+function getProfiles(id) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/remove/" + id,
+        url: baseurl + "rest/users/getProfile/" + id,
+
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackupdateProfile(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Workflow/////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

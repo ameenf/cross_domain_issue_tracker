@@ -38,6 +38,13 @@ $(document).ready(function () {
     $('#deleteProject').on('click', function () {
         deleteProject(projectToDelete);
     });
+
+    $('.addUserToProject').on('click', function () {
+        console.log("Test");
+        console.log($(this).next().html());
+        $('.usertaglist').append($(this).next().html());
+    });
+
 });
 
 

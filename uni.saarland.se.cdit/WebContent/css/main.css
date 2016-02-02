@@ -24,3 +24,7 @@
 .warningtext {
     font-size: 20px;
 }
+
+.flexwrap {
+    flex-wrap: wrap;
+}

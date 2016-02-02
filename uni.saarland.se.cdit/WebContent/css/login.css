@@ -47,9 +47,8 @@ body {
 
 
 #loginFailBox, .loginFailBox{
-    font-size: 20px;
+    font-size: 28px;
     text-align: center;
-    display: none;
     color: red;
     margin: 9px;
 	padding: 8px;
