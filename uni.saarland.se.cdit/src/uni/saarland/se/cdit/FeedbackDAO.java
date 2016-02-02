@@ -36,13 +36,14 @@ public class FeedbackDAO {
 	public Feedback create(Feedback feedback) {
         Connection c = null;
         PreparedStatement ps = null;
-        String statement= "INSERT INTO feedback(feedback_text, ticket_id) VALUES (?, ?)";
+        String statement= "INSERT INTO feedback(feedback_text, ticket_id, user_id) VALUES (?, ?)";
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement, new String[] { "feedback_id", "feedback_date" });
             
             ps.setString(1, feedback.getFeedbackText());
             ps.setInt(2, feedback.getTicketId());
+            ps.setInt(3, feedback.getUserId());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
@@ -65,11 +66,10 @@ public class FeedbackDAO {
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE feedback " +
-            										  "SET feedback_text=?, feedback_date=? " +
+            										  "SET feedback_text=?" +
             										  "WHERE feedback_id=?");
             ps.setString(1, feedback.getFeedbackText());
-            ps.setTimestamp(2, Timestamp.valueOf(feedback.getFeedbackDate()));
-            ps.setInt(3, feedback.getId());
+            ps.setInt(2, feedback.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -99,6 +99,7 @@ public class FeedbackDAO {
 	protected Feedback processRow(ResultSet rs) throws SQLException {
 		Feedback feedback = new Feedback();
 		feedback.setId(rs.getInt("feedback_id"));
+		feedback.setUserId(rs.getInt("user_id"));
 		feedback.setFeedbackDate(rs.getString("feedback_date"));
 		feedback.setTicketId(rs.getInt("ticket_id"));
 		feedback.setFeedbackText(rs.getString("feedback_text"));

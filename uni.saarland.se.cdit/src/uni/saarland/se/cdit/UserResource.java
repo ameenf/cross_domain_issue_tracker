@@ -2,6 +2,7 @@ package uni.saarland.se.cdit;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,6 +20,7 @@ import org.glassfish.jersey.server.JSONP;
 public class UserResource {
 
 	UserDAO dao = new UserDAO();
+	
 	
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("login")

@@ -6,6 +6,7 @@ public class Feedback {
 
     private int id;
     private int ticketId;
+    private int userId;
     private String feedbackDate;
     private String feedbackText;  
     
@@ -39,5 +40,19 @@ public class Feedback {
 
 	public void setTicketId(int ticketId) {
 		this.ticketId = ticketId;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }
