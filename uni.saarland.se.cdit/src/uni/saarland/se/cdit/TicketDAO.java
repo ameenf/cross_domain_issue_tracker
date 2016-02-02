@@ -279,6 +279,7 @@ public class TicketDAO {
 	
 	public Ticket update(Ticket ticket) {
         Connection c = null;
+        int ticketId = ticket.getId();
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE ticket " +
@@ -293,6 +294,38 @@ public class TicketDAO {
             ps.setInt(7, ticket.getProjectId());
             ps.setInt(8, ticket.getId());
             ps.executeUpdate();
+            int users[] = ticket.getUsers();
+            
+            String statement = "DELETE FROM tickets_users WHERE ticket_id = ?";
+            ps = c.prepareStatement(statement);
+            ps.setInt(1, ticketId);
+            ps.executeUpdate();
+            
+            if(users!=null){
+	        	statement = "INSERT INTO tickets_users(ticket_id, users_id) VALUES (?, ?)";
+	        	ps = c.prepareStatement(statement);
+	        	for(int i=0;i<users.length;i++){
+	        		ps.setInt(1, ticketId);
+	                ps.setInt(2, users[i]);
+	                ps.executeUpdate();
+	        	}
+            }
+            int labels[] = ticket.getLabels();
+            
+            statement = "DELETE FROM tickets_labels WHERE ticket_id = ?";
+            ps = c.prepareStatement(statement);
+            ps.setInt(1, ticketId);
+            ps.executeUpdate();
+            
+            if(labels!=null){
+            	statement = "INSERT INTO tickets_labels(ticket_id, label_id) VALUES (?, ?)";
+            	ps = c.prepareStatement(statement);
+            	for(int i=0;i<labels.length;i++){
+            		ps.setInt(1, ticketId);
+                    ps.setInt(2, labels[i]);
+                    ps.executeUpdate();
+            	}
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
