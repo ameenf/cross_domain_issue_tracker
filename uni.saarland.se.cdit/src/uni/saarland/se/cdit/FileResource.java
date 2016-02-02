@@ -2,6 +2,8 @@ package uni.saarland.se.cdit;
 
 import java.io.File;
 import java.io.InputStream;
+
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,6 +19,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor;
 
 @Path("/files")
+@PermitAll
 public class FileResource {
 	
 	FileDAO dao = new FileDAO();

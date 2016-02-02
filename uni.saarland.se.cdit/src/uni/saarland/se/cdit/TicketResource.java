@@ -2,6 +2,7 @@ package uni.saarland.se.cdit;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,6 +22,7 @@ import org.glassfish.jersey.server.JSONP;
 
 	
 	@Path("/tickets")
+	@PermitAll
 	public class TicketResource {
 
 		TicketDAO dao = new TicketDAO();

@@ -2,6 +2,7 @@ package uni.saarland.se.cdit;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/general")
+@PermitAll
 public class GeneralResource {
 
 	GeneralDAO dao = new GeneralDAO();
