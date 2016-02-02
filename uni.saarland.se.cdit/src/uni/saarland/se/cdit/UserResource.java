@@ -13,11 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.JSONP;
+
 @Path("/users")
 public class UserResource {
 
 	UserDAO dao = new UserDAO();
 	
+	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("login")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

@@ -17,7 +17,7 @@ public class NodeDAO {
     	String sql = "SELECT node_id, project_id, source_node_id, target_node_id, x_pos, y_pos "+
     				 "FROM nodes "+
     				 "WHERE project_id = ?";
-    	String ticketsCountSql = "SELECT COUNT(t.ticket_id) FROM ticket as t WHERE t.project_id = ? AND t.status_id = ?";
+    	String ticketsCountSql = "SELECT COUNT(t.ticket_id) FROM ticket as t WHERE t.project_id = ? AND t.status_id = ? AND t.active=?";
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement(sql);
@@ -29,6 +29,7 @@ public class NodeDAO {
             	list.add(processRow(rs));
                 ps.setInt(1, id);
                 ps.setInt(2, list.get(i).getSourceNodeId());
+                ps.setBoolean(3, true);
                 ResultSet rs2 = ps.executeQuery();
                 if(rs2.next())
                 	list.get(i).setTicketsCount(rs2.getInt(1));
