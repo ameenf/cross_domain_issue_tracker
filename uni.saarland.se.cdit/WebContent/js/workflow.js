@@ -13,8 +13,7 @@ var workflowNodes = [];
 var feedbackTicket = [];
 var currentTicketIndex;
 var currentStatusId;
-var projectId = 1;
-var editModeTemp = false;
+var projectId = 1; // add prject id here
 var nodeIndex;
 
 $(document).ready(function () {
@@ -109,13 +108,14 @@ function listenerShowTicket() {
         $('.updLabel + .col-sm-10').append('<span class="label label-success btnEdit" id="btnaddLabels" data-toggle="popover" title="Select label" data-placement="top">+</span><div class="popover"><div class="col-sm-6 checkbox"></div></div>');
 
         var ticketLabel = []
-        ticketLabel = allTicketInNode[$('.nodeTicket').index(this)].labels;
+        if (allTicketInNode[$('.nodeTicket').index(this)].labels == null) {
+            ticketLabel = []
+        } else {
+            ticketLabel = allTicketInNode[$('.nodeTicket').index(this)].labels;
+        }
         $.each(allLabels, function (key, value) {
             var found = $.inArray(allLabels[key].id, ticketLabel);
-
-           /* if (ticketLabel == null) {
-                console.log("LABEL NULL");
-            } else */if (found != -1) {
+            if (found != -1) {
                 $('.updLabel + .col-sm-10').append('<span class="label label-primary  ' + allLabels[key].title + allLabels[key].id + '">' + allLabels[key].title + '</span>');
                 $('#btnaddLabels + .popover .checkbox').append('<label><input class="labelCheck" type="checkbox" checked/>' + allLabels[key].title + '</label>');
             } else {
@@ -151,16 +151,16 @@ function listenerShowTicket() {
 
         // add existing user in a ticket as default icon and in the checkboxlist
         var ticketUser = []
-        ticketUser = allTicketInNode[$('.nodeTicket').index(this)].users;
-        
+        if (allTicketInNode[$('.nodeTicket').index(this)].users == null) {
+            ticketUser = []
+        } else {
+            ticketUser = allTicketInNode[$('.nodeTicket').index(this)].users;
+        }
         $.each(allUsers, function (key, value) {
             var found = $.inArray(allUsers[key].id, ticketUser);
-            
-            /*if (ticketUser == null) {
-                console.log("USER NULL");
-            } else*/ if (found != -1) {
+            if (found != -1) {
                 var randomColor = Math.floor(Math.random() * 16777215).toString(16);
-                $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[key].id + '" style="background-color:#' + randomColor + '">' + allUsers[key].username.substring(0, 1) + '</div>');
+                $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[key].id + '" style="background-color:#' + randomColor + '" title="' + allUsers[key].username + '">' + allUsers[key].username.substring(0, 1) + '</div>');
                 $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox" checked/>' + allUsers[key].username + '</label>');
             } else {
                 $('#btnUpdUsers + .popover .checkbox').append('<label><input class="userCheck" id="check' + allUsers[key].id + '" type="checkbox"/>' + allUsers[key].username + '</label>');
@@ -184,7 +184,7 @@ function listenerShowTicket() {
                 console.log(ticketUser);
                 console.log(allUsers);
                 ticketUser.push(allUsers[$('.userCheck').index(this)].id);
-                $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[$('.userCheck').index(this)].id + '" style="background-color:#' + randomColor + '">' + allUsers[$('.userCheck').index(this)].username.substring(0, 1) + '</div>');
+                $('.updUsers + .col-sm-10').append('<div class="itemTag ' + allUsers[$('.userCheck').index(this)].id + '" style="background-color:#' + randomColor + '" title="' + allUsers[$('.userCheck').index(this)].username + '">' + allUsers[$('.userCheck').index(this)].username.substring(0, 1) + '</div>');
             } else {
                 ticketUser.splice(found, 1);
                 $('.itemTag.' + allUsers[$('.userCheck').index(this)].id).remove();
@@ -195,12 +195,16 @@ function listenerShowTicket() {
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add File</label><div class="col-sm-10"></div></div>');
         $('.updFiles + .col-sm-10').append('<button class="btn btn-default btnEdit" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
 
+        // Feedback
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add comment</label><div class="col-sm-10"></div></div>');
+
+        // TODO: add here comment section with usericon, username and his commment. Further a user can add comments and existing comments should be modifiable.
+
         // adding buttons
         $('#ticketView .form-horizontal').append('<button type="button" class="btn btn-default closeTicket">Close</button><button id="updateTicket" type="button" class="btn btn-primary btnEdit">Update Ticket</button><button type="button" class="btn btn-default editTicket"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button>');
 
-        // Feedback
-         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add comment</label><div class="col-sm-10"></div></div>');
-        
+
+
         // close button to close the ticket
         $('#ticketView .closeTicket').off().on('click', function (e) {
             console.log("CLOSE TICKET BTN");
@@ -242,20 +246,20 @@ function listenerShowTicket() {
             console.log("NEW USERS: " + typeId);
 
             var data = {
-                "id": allTicketInNode[currentTicketIndex].id,
-                "creationDate": $(".updCreat").val(),
-                "title": $(".updTitle").val(),
-                "description": $(".updDesc").html(),
-                "priorityId": prioId,
-                "typeId": typeId,
-                "statusId": currentStatusId,
-                "projectId": projectId,
-                "users": ticketUser,
-                "labels": ticketLabel
-            }
-//            $.each(data, function (key, value) {
-//                console.log(data[key]);
-//            });
+                    "id": allTicketInNode[currentTicketIndex].id,
+                    "creationDate": $(".updCreat").val(),
+                    "title": $(".updTitle").val(),
+                    "description": $(".updDesc").html(),
+                    "priorityId": prioId,
+                    "typeId": typeId,
+                    "statusId": currentStatusId,
+                    "projectId": projectId,
+                    "users": ticketUser,
+                    "labels": ticketLabel
+                }
+                //            $.each(data, function (key, value) {
+                //                console.log(data[key]);
+                //            });
             $.ajax({
                 type: "PUT",
                 url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
@@ -490,10 +494,11 @@ function callbackGetPriorities(result) {
         $('#prioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
     }
 }
-function callbackGetTicketFeedback(result){
+
+function callbackGetTicketFeedback(result) {
     console.log("callbackGetTicketFeedback")
     feedbackTicket = result;
-    for(var key in result){
+    for (var key in result) {
         console.log("FEEDBACK: " + feedbackTicket[key].feedbackText + " | " + feedbackTicket[key].id);
     }
 }
@@ -666,7 +671,7 @@ function startJsplumb() {
 
         function end() {
 
-            $('#1node').endpoints[0].setPaintStyle({
+            $('#1').endpoints[0].setPaintStyle({
                 fillStyle: "FF0000"
             });
 
@@ -756,13 +761,9 @@ function startJsplumb() {
             };
         }
 
-        $('.switchEditMode').bootstrapSwitch();
-        $('.switchEditMode').bootstrapSwitch('labelText', 'Edit Mode');
-        $('.switchEditMode').off().on('switchChange.bootstrapSwitch', function (event, state) {
-            if (editModeTemp == false)
-                editModeTemp = true;
-            else
-                editModeTemp = false;
+        $('.switchEditMode').off().on('click', function () {
+            console.log("click: " + $(this).prop('checked'));
+
             end();
         });
     });
