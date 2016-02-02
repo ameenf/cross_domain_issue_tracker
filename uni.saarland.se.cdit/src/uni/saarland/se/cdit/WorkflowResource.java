@@ -14,7 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/workflow")
-@PermitAll
 public class WorkflowResource {
 	
 	NodeDAO dao = new NodeDAO();

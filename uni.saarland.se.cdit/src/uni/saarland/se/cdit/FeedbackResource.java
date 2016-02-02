@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 
 	
 @Path("/feedback")
-@PermitAll
 public class FeedbackResource {
 
 	FeedbackDAO dao = new FeedbackDAO();

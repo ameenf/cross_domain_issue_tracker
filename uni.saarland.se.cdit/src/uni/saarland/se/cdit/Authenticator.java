@@ -16,7 +16,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.internal.util.Base64;
 
-@Provider
+//@Provider
 public class Authenticator implements ContainerRequestFilter{
 	
 	@Context
@@ -32,8 +32,8 @@ public class Authenticator implements ContainerRequestFilter{
 		User user = new User();
 		Method method = resourceInfo.getResourceMethod();
 		Class<?> resource = resourceInfo.getResourceClass();
-		if(resource.isAnnotationPresent(PermitAll.class))
-			return;
+		//if(resource.isAnnotationPresent(PermitAll.class))
+		//	return;
 		if(method.isAnnotationPresent(PermitAll.class))
 			return;
 		//Get request headers

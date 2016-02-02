@@ -17,11 +17,10 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.JSONP;
 
 @Path("/users")
-@PermitAll
 public class UserResource {
 
 	UserDAO dao = new UserDAO();
-	
+	@PermitAll
 	//@JSONP(queryParam="jsonpCallback")
 	@POST @Path("login")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

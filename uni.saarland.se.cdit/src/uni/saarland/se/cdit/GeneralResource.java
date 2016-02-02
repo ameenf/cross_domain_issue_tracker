@@ -14,7 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/general")
-@PermitAll
 public class GeneralResource {
 
 	GeneralDAO dao = new GeneralDAO();

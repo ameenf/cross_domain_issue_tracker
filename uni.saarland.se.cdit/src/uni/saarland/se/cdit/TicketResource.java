@@ -22,7 +22,6 @@ import org.glassfish.jersey.server.JSONP;
 
 	
 	@Path("/tickets")
-	@PermitAll
 	public class TicketResource {
 
 		TicketDAO dao = new TicketDAO();

@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 
 	
 	@Path("/projects")
-	@PermitAll
 	public class ProjectResource {
 
 		ProjectDAO dao = new ProjectDAO();

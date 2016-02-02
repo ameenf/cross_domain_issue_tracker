@@ -19,7 +19,6 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor;
 
 @Path("/files")
-@PermitAll
 public class FileResource {
 	
 	FileDAO dao = new FileDAO();
