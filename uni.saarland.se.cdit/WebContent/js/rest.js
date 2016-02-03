@@ -10,7 +10,7 @@ function getProjects() {
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
-        //        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
+        //        url: "http://localhost:8990/uni.saarland.se.cdit/rest/projects",
         url: baseurl + "rest/projects",
         dataType: 'json',
         async: true,
@@ -31,7 +31,7 @@ function getProjectsFromUser(userid) {
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
-        //        url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/searchByUser/" + userid,
+        //        url: "http://localhost:8990/uni.saarland.se.cdit/rest/projects/searchByUser/" + userid,
         url: baseurl + "rest/projects/searchByUser/" + userid,
         dataType: 'json',
         async: true,
@@ -55,7 +55,7 @@ function createProject(desc, title, users) {
 
     $.ajax({
         type: "POST",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/projects",
         url: baseurl + "rest/projects",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -85,7 +85,7 @@ function updateProject(desc, id, title, users) {
 
     $.ajax({
         type: "PUT",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/update",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/projects/update",
         url: baseurl + "rest/projects/update",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -115,7 +115,7 @@ function addUsers(id, users) {
 
     $.ajax({
         type: "PUT",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/update",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/projects/update",
         url: baseurl + "rest/projects/addUsers",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -138,7 +138,7 @@ function addUsers(id, users) {
 function deleteProject(id) {
     $.ajax({
         type: "DELETE",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/projects/remove/" + id,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/projects/remove/" + id,
         url: baseurl + "rest/projects/remove/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -163,7 +163,7 @@ function deleteProject(id) {
 function getTickets() {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets",
         url: baseurl + "rest/tickets",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -183,7 +183,7 @@ function getTickets() {
 function getTicketsByTitle(title) {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchByTitle/" + title,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchByTitle/" + title,
         url: baseurl + "rest/tickets/searchByTitle/" + title,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -202,7 +202,7 @@ function getTicketsByTitle(title) {
 function getTicketsByNodeId(nodeid) {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeid,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeid,
         url: baseurl + "rest/tickets/getNodeTickets/" + nodeid,
 
         dataType: 'json',
@@ -219,7 +219,7 @@ function getTicketsByNodeId(nodeid) {
 function getTicketsByType(type) {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchByType/" + type,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchByType/" + type,
         url: baseurl + "rest/tickets/searchByType/" + type,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -238,7 +238,7 @@ function getTicketsByType(type) {
 function getTicketsById(id) {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/searchById/" + id,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchById/" + id,
         url: baseurl + "rest/tickets/searchById/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -287,7 +287,7 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
 
     $.ajax({
         type: "POST",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/",
         url: baseurl + "rest/tickets/",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -321,7 +321,7 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
 
     $.ajax({
         type: "PUT",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/update",
         url: baseurl + "rest/tickets/update",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -344,7 +344,7 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
 function deleteTicket(id) {
     $.ajax({
         type: "DELETE",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/remove/" + id,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/remove/" + id,
         url: baseurl + "rest/tickets/remove/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -381,7 +381,7 @@ function login(username, pwd) {
     console.log(JSON.stringify(data));
     $.ajax({
         type: "POST",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/login",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/login",
         url: baseurl + "rest/users/login",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + pwd));
@@ -405,7 +405,7 @@ function login(username, pwd) {
 function getUsers() {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users",
         url: baseurl + "rest/users",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -434,7 +434,7 @@ function createUser(username, password) {
 
     $.ajax({
         type: "POST",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users",
         url: baseurl + "rest/users",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -454,10 +454,10 @@ function createUser(username, password) {
     })
 }
 
-function updateUser(username, password) {
+function updateUser(username, id, password) {
     var data = {
         "email": "",
-        "id": "",
+        "id": id,
         "password": password,
         "type": "",
         "username": username,
@@ -465,7 +465,7 @@ function updateUser(username, password) {
 
     $.ajax({
         type: "PUT",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/updatePassword",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
         url: baseurl + "rest/users/updatePassword",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -488,7 +488,7 @@ function updateUser(username, password) {
 function deleteUser(id) {
     $.ajax({
         type: "DELETE",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/remove/" + id,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
         url: baseurl + "rest/users/remove/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -510,7 +510,49 @@ function deleteUser(id) {
 function getProfiles(id) {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/users/remove/" + id,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
+        url: baseurl + "rest/users/getProfile/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackupdateProfile(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+function updateProfile(data) {
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
+        url: baseurl + "rest/users/getProfile/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackupdateProfile(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        }
+    })
+}
+
+function updatePW(id, pw) {
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
         url: baseurl + "rest/users/getProfile/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -535,7 +577,7 @@ function getProfiles(id) {
 function getWorkflow(projectId) {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
         url: baseurl + "rest/workflow/getProjectWorkflow/" + projectId,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -561,7 +603,7 @@ function getWorkflow(projectId) {
 function getStatus() {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
         url: baseurl + "rest/general/status",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -583,7 +625,7 @@ function getStatus() {
 function getTypes() {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/type",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/type",
         url: baseurl + "rest/general/type",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -605,7 +647,7 @@ function getTypes() {
 function getPriorities() {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/priority",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
         url: baseurl + "rest/general/priority",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -627,7 +669,7 @@ function getPriorities() {
 function getLabels() {
     $.ajax({
         type: "GET",
-        //url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/priority",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
         url: baseurl + "rest/general/label",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
