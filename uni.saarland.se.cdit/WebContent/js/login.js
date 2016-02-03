@@ -1,6 +1,8 @@
 $(document).ready(function () {
     console.log("login.js");
     $("#login").on("click", function () {
+        Cookies.set('username', $("#inputEmail").val());
+        Cookies.set('password', $("#inputPassword").val());
         login($("#inputEmail").val(), $("#inputPassword").val());
     });
 });
