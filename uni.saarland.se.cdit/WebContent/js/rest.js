@@ -45,7 +45,7 @@ function getProjectsFromUser(userid) {
     })
 }
 
-function createProject(desc, title, users) {
+function createProject(title, desc, users) {
     var data = {
         "description": desc,
         "id": "",

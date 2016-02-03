@@ -1,4 +1,8 @@
+.addUserToProject {
+    margin: 10px;
+}
 
-.b_user {
-    
+.usertaglist {
+    height: 25px;
+    line-height: 25px;
 }
