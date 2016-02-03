@@ -2,6 +2,7 @@
 var allProjects = [];
 var projectToDelete;
 var userList = [];
+var userNames = [];
 
 $(document).ready(function () {
     console.log("projectmanagement.js");
@@ -43,6 +44,9 @@ $(document).ready(function () {
 
     $('.scrollContainer').on('click', '.addUserToProject', function () {
         console.log("Test");
+        console.log($(this.firstChild).attr('class'));
+
+
         console.log($(this));
         console.log($(this).next().attr('class'));
         //        console.log($(this.attr('class')));
@@ -50,10 +54,37 @@ $(document).ready(function () {
         console.log(str);
         console.log(str.split("userName userid"));
         var split = str.split("userName userid");
-        userList.push(split[1]);
+
+        $('.usertaglist').empty();
+
+
+        if ($(this.firstChild).attr('class') === 'glyphicon glyphicon-plus') {
+            console.log("add");
+            userList.push(split[1]);
+            userNames.push($(this).next().html());
+        } else if ($(this.firstChild).attr('class') === 'glyphicon glyphicon-minus') {
+            console.log("min");
+            var index = userList.indexOf(split[1]);
+            if (index > -1) {
+                userList.splice(index, 1);
+            }
+
+            var index1 = userNames.indexOf($(this).next().html());
+            if (index > -1) {
+                userNames.splice(index, 1);
+            }
+
+
+        }
+        $(this.firstChild).toggleClass("glyphicon-plus glyphicon-minus");
+        $(this).toggleClass("btn-success btn-danger");
+
         console.log(userList);
         console.log($(this).next().html());
-        $('.usertaglist').append($(this).next().html() + ' ; ');
+        for (var key in userNames) {
+            $('.usertaglist').append(userNames[key] + ' ; ');
+        }
+
     });
 
 });
@@ -79,7 +110,7 @@ function callbackGetUsers(result) {
     for (var key in result) {
         console.log("Fot loop");
         $('.scrollContainer').append('<div id="useritem" class = "flexrow centeritems col-md-4 useritem' + result[key].id + '">');
-        $('.useritem' + result[key].id).append('<button type="button" class="btn btn-default addUserToProject addUserToProject' + result[key].id + '">');
+        $('.useritem' + result[key].id).append('<button type="button" class="btn btn-success addUserToProject addUserToProject' + result[key].id + '">');
         $('.addUserToProject' + result[key].id).append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
         $('.useritem' + result[key].id).append('<div class="userName userid' + result[key].id + '">' + result[key].username + '</div>');
     }

@@ -1,3 +1,8 @@
 .addUserToProject {
     margin: 10px;
 }
+
+.usertaglist {
+    height: 25px;
+    line-height: 25px;
+}
