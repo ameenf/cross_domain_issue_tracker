@@ -1,11 +1,13 @@
 "use strict";
 var allProjects = [];
 var projectToDelete;
+var userList = [];
 
 $(document).ready(function () {
     console.log("projectmanagement.js");
 
     getProjects();
+    getUsers();
 
     //Clickhandler for an element in the issues list
     $('.issue').on('click', function (e) {
@@ -22,7 +24,7 @@ $(document).ready(function () {
     });
 
     $('#createProject').on('click', function (e) {
-        createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), [1, 4, 5])
+        createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), userList);
     });
 
     $('.users').on('click', '#b_deleteProject', function () {
@@ -39,10 +41,19 @@ $(document).ready(function () {
         deleteProject(projectToDelete);
     });
 
-    $('.addUserToProject').on('click', function () {
+    $('.scrollContainer').on('click', '.addUserToProject', function () {
         console.log("Test");
+        console.log($(this));
+        console.log($(this).next().attr('class'));
+        //        console.log($(this.attr('class')));
+        var str = $(this).next().attr('class')
+        console.log(str);
+        console.log(str.split("userName userid"));
+        var split = str.split("userName userid");
+        userList.push(split[1]);
+        console.log(userList);
         console.log($(this).next().html());
-        $('.usertaglist').append($(this).next().html());
+        $('.usertaglist').append($(this).next().html() + ' ; ');
     });
 
 });
@@ -58,6 +69,20 @@ function callbackCreateProject(result) {
     $("#s_newProjectIcon").addClass("glyphicon-plus");
 
     addProjectRow(result.id, result.title.substring(0, 1), result.title, result.users);
+}
+
+function callbackGetUsers(result) {
+
+    console.log("Users:");
+    console.log(result);
+
+    for (var key in result) {
+        console.log("Fot loop");
+        $('.scrollContainer').append('<div id="useritem" class = "flexrow centeritems col-md-4 useritem' + result[key].id + '">');
+        $('.useritem' + result[key].id).append('<button type="button" class="btn btn-default addUserToProject addUserToProject' + result[key].id + '">');
+        $('.addUserToProject' + result[key].id).append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+        $('.useritem' + result[key].id).append('<div class="userName userid' + result[key].id + '">' + result[key].username + '</div>');
+    }
 }
 
 function expandAddProject() {
