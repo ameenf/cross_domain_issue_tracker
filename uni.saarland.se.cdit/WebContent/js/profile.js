@@ -107,6 +107,9 @@ $(document).ready(function () {
                 $('#errorOld').hide();
                 
                 updateUser(Cookies.get('username'), Cookies.get('userid'), pw);
+                $('#pwchange').toggle();
+                $('#changePW').toggle();
+                console.log("PW saved");
                 
             }else{
                 $('#errorOld').show();
@@ -126,3 +129,4 @@ function callbackupdateProfile(result) {
     $('#field').val(result.field);
     $('#links').val(result.links);   
 }
+
