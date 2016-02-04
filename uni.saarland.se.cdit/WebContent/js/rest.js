@@ -21,7 +21,7 @@ function getProjects() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -44,7 +44,7 @@ function getProjectsFromUser(userid) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -77,7 +77,7 @@ function createProject(title, desc, users) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -110,7 +110,7 @@ function updateProject(desc, id, title, users) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -143,7 +143,7 @@ function addUsers(id, users) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -167,7 +167,7 @@ function deleteProject(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -202,10 +202,11 @@ function getTicketsByTitle(title) {
     $.ajax({
         type: "GET",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchByTitle/" + title,
-        url: baseurl + "rest/tickets/searchByTitle/" + title,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
+        url: baseurl + "rest/tickets/searchByTitle/" + title,
+
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -222,7 +223,9 @@ function getTicketsByNodeId(nodeid) {
         type: "GET",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeid,
         url: baseurl + "rest/tickets/getNodeTickets/" + nodeid,
-
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -321,7 +324,7 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -358,7 +361,7 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -382,7 +385,7 @@ function deleteTicket(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -446,7 +449,7 @@ function getUsers() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c === "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -480,7 +483,7 @@ function createUser(username, password) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -514,7 +517,7 @@ function updateUser(username, id, password) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -538,7 +541,7 @@ function deleteUser(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -563,7 +566,7 @@ function getProfiles(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -587,7 +590,7 @@ function updateProfile(data) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -616,7 +619,7 @@ function getWorkflow(projectId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -645,7 +648,7 @@ function getStatus() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -670,7 +673,7 @@ function getTypes() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -695,7 +698,7 @@ function getPriorities() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -720,7 +723,7 @@ function getLabels() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if ( c = "Unauthorized"){
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }

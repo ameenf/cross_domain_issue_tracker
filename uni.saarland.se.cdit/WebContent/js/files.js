@@ -10,10 +10,10 @@ $(document).ready(function () {
         openIssue(e);
     });
 
-    //Changehandler for the search bar. Change something and press enter to call this
-    $('.filterIssues').on('change', function () {
-        filterIssues();
-    });
+    //    //Changehandler for the search bar. Change something and press enter to call this
+    //    $('.filterIssues').on('change', function () {
+    //        filterIssues();
+    //    });
 
     getTickets();
 });
@@ -21,53 +21,4 @@ $(document).ready(function () {
 function openIssue(e) {
     e.preventDefault(); //Prevents link from forwarding
     console.log('openIssue()');
-}
-
-function filterIssues() {
-    console.log('searchIssues()');
-
-    var substring = $('.filterIssues').val();
-
-    $('.issues').empty();
-
-    for (var key in allTickets) {
-        if ((allTickets[key].title).indexOf(substring) > -1) {
-            filteredTickets.push(allTickets[key]);
-            console.log(allTickets[key].id);
-            $('.issues').append('<li class="itemRow issue' + allTickets[key].id + '"></li>');
-            $('.issue' + allTickets[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + allTickets[key].id + '"></div>');
-            $('.innerIssue' + allTickets[key].id).append('<div class="itemTag"></div>');
-            $('.innerIssue' + allTickets[key].id).append('<a class="itemName" href="workflow.html">' + allTickets[key].title + '</a>');
-            $('.innerIssue' + allTickets[key].id).append('<div class="itemInfo">' + allTickets[key].description + '</div>');
-        }
-
-    }
-}
-
-function getTickets() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-            allTickets = result;
-            for (var key in result) {
-                //        Load tickets into Issues-List
-                $('.issues').append('<li class="itemRow issue' + result[key].id + '"></li>');
-                $('.issue' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + result[key].id + '"></div>');
-                $('.innerIssue' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
-                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + '01.01.2016' + '</div>');
-                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + '5 MB' + '</div>');
-                $('.innerIssue' + result[key].id).append('<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
-
-
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
 }

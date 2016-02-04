@@ -37,6 +37,7 @@ $(document).ready(function () {
 function openIssue(e) {
     e.preventDefault(); //Prevents link from forwarding
     console.log('openIssue()');
+    getUsers();
 }
 
 function filterUsers() {
@@ -59,28 +60,16 @@ function filterUsers() {
     }
 }
 
-function getUsers() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/users",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-            allUsers = result;
-            for (var key in result) {
-                $('.users').append('<li class="itemRow user' + result[key].id + '"></li>');
-                $('.user' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result[key].id + '"></div>');
-                $('.innerUser' + result[key].id).append('<div class="itemTag"></div>');
-                $('.innerUser' + result[key].id).append('<a class="itemName" href="profile.html">' + result[key].username + '</a>');
-                $('.innerUser' + result[key].id).append('<div class="itemInfo">' + result[key].id + '</div>');
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
+function callbackGetUsers(result) {
+    console.log(result);
+    allUsers = result;
+    for (var key in result) {
+        $('.users').append('<li class="itemRow user' + result[key].id + '"></li>');
+        $('.user' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerUser' + result[key].id + '"></div>');
+        $('.innerUser' + result[key].id).append('<div class="itemTag"></div>');
+        $('.innerUser' + result[key].id).append('<a class="itemName" href="profile.html">' + result[key].username + '</a>');
+        $('.innerUser' + result[key].id).append('<div class="itemInfo">' + result[key].id + '</div>');
+    }
 }
 
 function openModalCreateUser() {
