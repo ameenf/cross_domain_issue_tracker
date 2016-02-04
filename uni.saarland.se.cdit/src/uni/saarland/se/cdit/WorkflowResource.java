@@ -13,28 +13,33 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.server.JSONP;
+
 @Path("/workflow")
 public class WorkflowResource {
 	
 	NodeDAO dao = new NodeDAO();
 	
+	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getProjectWorkflow/{id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Node> getWorkflow(@PathParam("id") String id) {
 		System.out.println("findById " + id);
 		return dao.getWorkflow(Integer.parseInt(id));
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getWorkflow/{id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<NodeTest> getFlow(@PathParam("id") String id) {
 		System.out.println("findById " + id);
 		return dao.getFlow(Integer.parseInt(id));
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@PUT @Path("updatePosition")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Node updateNodePosition(Node node){
 		System.out.println("updating position");
 		return dao.updateNodePosition(node);

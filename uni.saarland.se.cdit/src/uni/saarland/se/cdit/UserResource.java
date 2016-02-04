@@ -21,10 +21,10 @@ public class UserResource {
 
 	UserDAO dao = new UserDAO();
 	@PermitAll
-	//@JSONP(queryParam="jsonpCallback")
+	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("login")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Response authenticate(User user) {
 		boolean success = dao.authenticate(user);
 		if(success)
@@ -34,38 +34,43 @@ public class UserResource {
 
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<User> getAllUsers() {
 		System.out.println("getAll");
 		return dao.getAll();
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getProfile/{user_id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public UserProfile getUserProfile(@PathParam("user_id") int id){
 		System.out.println("get user profile" + id);
 		return dao.getProfile(id);
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("findByProject/{project_id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<User> findUsersByProject(@PathParam("project_id") int id) {
 		System.out.println("get users by project id");
 		return dao.findByProjectId(id);
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public User create(User user) {
 		System.out.println("creating user");
 		return dao.create(user);
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("createProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public UserProfile createProfile(UserProfile profile) {
 		System.out.println("creating user profile");
 		return dao.createProfile(profile);
@@ -89,8 +94,9 @@ public class UserResource {
 				.build();
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("remove/{id}")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public boolean remove(@PathParam("id") int id) {
 		return dao.remove(id);
 	}

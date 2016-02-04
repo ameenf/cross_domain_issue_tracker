@@ -27,55 +27,59 @@ import org.glassfish.jersey.server.JSONP;
 		TicketDAO dao = new TicketDAO();
 		int counter = 0;
 		
+		@JSONP(queryParam = "jsonpCallback")
 		@GET
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public List<Ticket> findAll() {
 			System.out.println("findAll");
 			return dao.findAll();
 		}
 		
-		
+		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("searchByTitle/{query}")
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public List<Ticket> findByTitle(@PathParam("query") String query) {
 			System.out.println("findByTitle: " + query);
 			return dao.findByTitle(query);
 		}
 		
+		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("getNodeTickets/{id}")
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public List<Ticket> getNodeTickets(@PathParam("id") String id) {
 			System.out.println("findByNode: " + id);
 			return dao.findByNode(Integer.parseInt(id));
 		}
 		
+		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("searchByType/{query}")
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public List<Ticket> findByType(@PathParam("query") String query) {
 			System.out.println("findByType: " + query);
 			return dao.findByType(query);
 		}
 
+		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("searchById/{id}")
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public Ticket findById(@PathParam("id") String id) {
 			System.out.println("findById " + id);
 			return dao.findById(Integer.parseInt(id));
 		}
 	
-
+		@JSONP(queryParam = "jsonpCallback")
 		@POST
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public Ticket create(Ticket ticket) {
 			System.out.println("creating ticket");
 			return dao.create(ticket);
 		}
 		
-
+		@JSONP(queryParam = "jsonpCallback")
 		@PUT @Path("update")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public Ticket update(Ticket ticket) {
 			System.out.println("Updating ticket: " + ticket.getTitle());
 			dao.update(ticket);
@@ -83,14 +87,14 @@ import org.glassfish.jersey.server.JSONP;
 		}
 		
 		@DELETE @Path("remove/{id}")
-		@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public boolean remove(@PathParam("id") int id) {
 			return dao.remove(id);
 		}
 		
 		@JSONP(callback = "callback", queryParam = "jsonpCallback")
 		@GET @Path("test")
-		@Produces({ "application/javascript", MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript",  MediaType.APPLICATION_XML })
 		public String test(@HeaderParam("user-agent") String str, @HeaderParam("Content-Type") String str2){
 			return("{\"user-agent\":\""+str+"\", \"content-type\":\""+str2+"\"}");
 		}

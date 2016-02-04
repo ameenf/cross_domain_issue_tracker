@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.file.DefaultMediaTypePredictor;
+import org.glassfish.jersey.server.JSONP;
 
 @Path("/files")
 public class FileResource {
@@ -41,9 +42,10 @@ public class FileResource {
 		return Response.status(200).entity(output).build();
 	}
 	
+	@JSONP(queryParam="jsonpCallback")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Attachment create(Attachment file) {
 		System.out.println("creating file");
 		return file;
