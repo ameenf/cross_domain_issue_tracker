@@ -25,7 +25,7 @@
         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switchEditMode" id="myonoffswitch">
         <label class="onoffswitch-label" for="myonoffswitch"></label>
     </div>
-    
+
     <form class="form-horizontal">
         <div class="nodeForm form-group form-group-sm has-feedback">
             <label class="col-sm-1 control-label" for="nodeTitle">Node Title</label>
@@ -33,10 +33,18 @@
                 <input type="text" id="nodeTitleInput" class="form-control">
             </div>
         </div>
-    <button id="addNode" type="button" class="btn btn-default">Add Node</button>
+        <button id="addNode" type="button" class="btn btn-default">Add Node</button>
     </form>
 
+    <div class="alertPlaceholder">
+        <div id="connectionExistsAlert" class="alert alert-info">
+            <strong>Info!</strong> This connection already exists!
+        </div>
+    </div>
     <div id="diagramContainer">
+
+
+
         <!-- Show Ticket -->
         <div class="bgRaster">
             <div id="1" class="item" style="top:50px">

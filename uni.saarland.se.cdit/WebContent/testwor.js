@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     startJsplumb();
     //    $('.switchEditMode').click();
 });
@@ -89,13 +90,17 @@ function startJsplumb() {
                 for (var key in arrConnect) {
                     arrConnect[key].toggleType("edit");
                 }
+                var firstNode;
                 // connect 2 nodes together
                 $(".item").off().on('click', function () {
                     if (srcClick == "") {
                         srcClick = $(this).attr("id");
+                        firstNode = $(this);
+                        firstNode.addClass('borderHighlight');
                         console.log("set src: " + $(this).attr("id"));
                     } else if (srcClick == $(this).attr("id")) {
                         srcClick = "";
+                        firstNode.removeClass('borderHighlight');
                         console.log("make src empty: " + $(this).attr("id"));
                     } else if (trgClick == "") {
                         trgClick = $(this).attr("id");
@@ -107,10 +112,23 @@ function startJsplumb() {
                         }
                         if (found == true) {
                             console.log("already set!");
+
+
+                            //                            $("#connectionExistsAlert").alert('open');
+                            $("#connectionExistsAlert").show();
+                            $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
+                                //                                $("#connectionExistsAlert").alert('close');
+                                $("#connectionExistsAlert").hide();
+                            });
+
+
+
                             srcClick = "";
                             trgClick = "";
                             console.log("make both empty");
                             found = false;
+                            firstNode.removeClass('borderHighlight');
+
                         } else {
                             arrConnect.push(jsPlumb.connect({
                                 type: "edit",
@@ -121,6 +139,7 @@ function startJsplumb() {
                             srcClick = "";
                             trgClick = "";
                             console.log("make both empty");
+                            firstNode.removeClass('borderHighlight');
                         }
                     }
                 });
