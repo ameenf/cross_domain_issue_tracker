@@ -1,4 +1,4 @@
-var port = 8080;
+var port = 8990;
 var baseurl = 'http://localhost:' + port + '/uni.saarland.se.cdit/';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Projects/////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ function getProjects() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -44,7 +44,7 @@ function getProjectsFromUser(userid) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -77,7 +77,7 @@ function createProject(title, desc, users) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -110,7 +110,7 @@ function updateProject(desc, id, title, users) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -143,7 +143,7 @@ function addUsers(id, users) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -167,7 +167,7 @@ function deleteProject(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -324,7 +324,7 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -361,7 +361,7 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -385,7 +385,7 @@ function deleteTicket(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -490,6 +490,7 @@ function createUser(username, password) {
     })
 }
 
+
 function updateUser(username, id, password) {
     var data = {
         "email": "",
@@ -517,7 +518,7 @@ function updateUser(username, id, password) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -541,7 +542,7 @@ function deleteUser(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -549,7 +550,7 @@ function deleteUser(id) {
 }
 
 
-function getProfiles(id) {
+function getProfile(id) {
     $.ajax({
         type: "GET",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
@@ -566,7 +567,43 @@ function getProfiles(id) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+function createProfile(id) {
+    var data = {
+        "firstName": "",
+        "lastName": "",
+        "experience": "",
+        "field": "",
+        "links": "",
+        "id": id,       
+        "userId": id, 
+    }
+
+    $.ajax({
+        type: "POST",
+        url: baseurl + "rest/users/createProfile",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            console.log(result);
+            //callbackCreateProfile(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -575,22 +612,25 @@ function getProfiles(id) {
 
 function updateProfile(data) {
     $.ajax({
-        type: "POST",
+        type: "PUT",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
-        url: baseurl + "rest/users/getProfile/" + id,
+        url: baseurl + "rest/users/updateProfile",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
         crossDomain: true,
         dataType: "json",
         async: true,
         success: function (result) {
-            callbackupdateProfile(result);
+            callbackupdateProfile(data);
+            console.log("Profile updated!");
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -619,7 +659,7 @@ function getWorkflow(projectId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -648,7 +688,7 @@ function getStatus() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -673,7 +713,7 @@ function getTypes() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -698,7 +738,7 @@ function getPriorities() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
@@ -723,7 +763,7 @@ function getLabels() {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }

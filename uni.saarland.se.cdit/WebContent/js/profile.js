@@ -6,7 +6,7 @@ $(document).ready(function () {
     userid = Cookies.get('userid')
     console.log("User ID " + userid);
     
-    getProfiles(userid);
+    getProfile(userid);
     
     $('#cogBtn').on('click', function (e) {
         console.log("EDIT PROFILE BTN");
@@ -30,10 +30,10 @@ $(document).ready(function () {
             $('#field').attr('readonly', '');
             //$('#field').attr('disabled', '');
         }*/
-        $('#cancel').toggle();
-        $('#save').toggle();
-        $('#pwchange').toggle();
-        $('#cogBtn').toggle();
+        $('#cancel').show();
+        $('#save').show();
+        $('#pwchange').show();
+        $('#cogBtn').hide();
 
         // $('#updateTicket').toggle();
     });
@@ -48,12 +48,12 @@ $(document).ready(function () {
         $('#experience').attr('readonly', '');
         $('#field').attr('readonly', '');
     
-        $('#cancel').toggle();
-        $('#save').toggle();
-        $('#pwchange').toggle();
-        $('#cogBtn').toggle();
+        $('#cancel').hide();
+        $('#save').hide();
+        $('#pwchange').hide();
+        $('#cogBtn').show();
         
-        getProfiles(userid); 
+        getProfile(userid); 
     });
     
     $('#save').on('click', function (e) {
@@ -65,26 +65,30 @@ $(document).ready(function () {
         $('#experience').attr('readonly', '');
         $('#field').attr('readonly', '');
     
-        $('#cancel').toggle();
-        $('#save').toggle();
-        $('#pwchange').toggle();
-        $('#cogBtn').toggle();
+        $('#cancel').hide();
+        $('#save').hide();
+        $('#pwchange').hide();
+        $('#cogBtn').show();
+        //$('#changePW').hide();
         
         var changes ={
-            "firstName": "",
-            "lastName": "",
-            "experience": "",
-            "field": "",
-            "links": "",
-            "id": "",
-            "userId": "" 
+            "firstName": $('#name').val(),
+            "lastName": $('#surname').val(),
+            "experience": $('#experience').val(),
+            "field": $('#field').val(),
+            "links": $('#links').val(),
+            "id": userid,       //id?
+            "userId": userid, 
         }
+        
+        updateProfile(changes);
+        //getProfile(userid);
     });
 
     $('#pwchange').on('click', function (e) {
         console.log("CHANGE PW BTN");
-        $('#pwchange').toggle();
-        $('#changePW').toggle();
+        $('#pwchange').hide();
+        $('#changePW').show();
     });
 
     $('#savePW').on('click', function (e) {
@@ -106,9 +110,9 @@ $(document).ready(function () {
             if ( oldpw == Cookies.get('password')){
                 $('#errorOld').hide();
                 
-                updateUser(Cookies.get('username'), Cookies.get('userid'), pw);
-                $('#pwchange').toggle();
-                $('#changePW').toggle();
+                updatePW(Cookies.get('username'), Cookies.get('userid'), pw);
+                $('#pwchange').show();
+                $('#changePW').hide();
                 console.log("PW saved");
                 
             }else{
@@ -117,16 +121,45 @@ $(document).ready(function () {
             }
         }
     });
+    
+    $('#cancelPW').on('click', function (e) {
+        console.log("CHANGE PW BTN");
+        $('#pwchange').show();
+        $('#changePW').hide();
+        
+        $("#oldPW").val("");
+        $("#newPW1").val("");
+        $("#newPW2").val("");
+    });
+    
 });
 
 function callbackupdateProfile(result) {
     console.log("Returning Profile");
     console.log(result);
     
+    if (result == undefined){
+        console.log("Creating Profile");
+        createProfile(Cookies.get('userid'));
+    } else{
+        $('#name').val(result.firstName);
+        $('#surname').val(result.lastName);
+        $('#experience').val(result.experience);
+        $('#field').val(result.field);
+        $('#links').val(result.links);   
+    }
+}
+
+function callbackCreateProfile(result) {
+    console.log("Returning created Profile");
+    console.log(result);
+
     $('#name').val(result.firstName);
     $('#surname').val(result.lastName);
     $('#experience').val(result.experience);
     $('#field').val(result.field);
-    $('#links').val(result.links);   
+    $('#links').val(result.links);       
 }
+
+
 

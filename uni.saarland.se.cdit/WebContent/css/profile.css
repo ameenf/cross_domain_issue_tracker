@@ -42,3 +42,11 @@
 	border: 3px solid red;
 	background:rgba(120,0,0,0.05);	
 }
+
+#changePW{
+    margin-top: 30px;
+}
+
+#experience, #links{
+    max-width: 100%;
+}
