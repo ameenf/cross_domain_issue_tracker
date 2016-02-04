@@ -210,6 +210,29 @@ public class UserDAO {
 		}
     }
 	
+	public boolean updateProfile(UserProfile profile) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE user_profile "+
+            										  "SET firstname=?, lastname=?, field=?, experience=?, links=? "+
+            										  "WHERE profile_id=?");
+            ps.setString(1, profile.getFirstName());
+            ps.setString(2, profile.getLastName());
+            ps.setString(3, profile.getField());
+            ps.setString(4, profile.getExperience());
+            ps.setString(5, profile.getLinks());
+            ps.setInt(6, profile.getId());
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
 	public boolean remove(int id) {
         Connection c = null;
         try {

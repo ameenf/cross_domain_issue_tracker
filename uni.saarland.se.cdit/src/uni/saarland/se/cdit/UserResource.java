@@ -80,6 +80,15 @@ public class UserResource {
 				.build();
 	}
 	
+	@PUT @Path("updateProfile")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response updateProfile(UserProfile profile) {
+		System.out.println("Updating profile");
+		return Response.status(200)
+				.entity(dao.updateProfile(profile))
+				.build();
+	}
+	
 	@DELETE @Path("remove/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public boolean remove(@PathParam("id") int id) {

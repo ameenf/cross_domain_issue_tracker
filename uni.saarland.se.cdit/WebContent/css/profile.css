@@ -28,3 +28,17 @@
 .editBtn{
 	margin: 2px;
 }
+
+
+.pwDivs{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    color: red;
+    margin: 9px;
+	padding: 8px;
+	border-radius: 18px;
+	border: 3px solid red;
+	background:rgba(120,0,0,0.05);	
+}

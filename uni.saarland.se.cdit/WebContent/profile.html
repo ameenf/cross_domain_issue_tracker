@@ -75,14 +75,14 @@
                         <label class="col-sm-2 control-label fieldLabel">Name:</label>
                         <br>
                         <div class="col-sm-10 editField form-group">
-                            <input id="name" type="text" class="form-control updCreat" value="John" readonly>
+                            <input id="name" type="text" class="form-control updCreat" readonly>
                         </div>
                     </div>
                     <div>
                         <label class="col-sm-2 control-label fieldLabel">Experience:</label>
                         <br>
                         <div class="col-sm-10 editField form-group">
-                            <textarea id="experience" class="form-control updDesc" readonly>none</textarea>
+                            <textarea id="experience" class="form-control updDesc" readonly></textarea>
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
                         <label class="col-sm-2 control-label fieldLabel">Links:</label>
                         <br>
                         <div class="col-sm-10 editField form-group">
-                            <textarea id="links" class="form-control updDesc" readonly>e.g. Facebook </textarea>
+                            <textarea id="links" class="form-control updDesc" readonly></textarea>
                         </div>
                     </div>
                 </div>
@@ -99,14 +99,15 @@
                         <label class="col-sm-2 control-label fieldLabel">Surname:</label>
                         <br>
                         <div class="col-sm-10 editField form-group">
-                            <input id="surname" type="text" class="form-control updCreat" value="Smith" readonly>
+                            <input id="surname" type="text" class="form-control updCreat" readonly>
                         </div>
                     </div>
                     <div>
                         <label class="col-sm-2 control-label fieldLabel">Field of work:</label>
                         <br>
                         <div class="col-sm-10 editField form-group">
-                            <select id="fow_list" class="form-control" disabled></select>
+                            <!-- <select id="field" class="form-control" disabled></select> -->
+                            <input id="field" type="text" class="form-control updCreat" readonly>
                         </div>
                     </div>
                     <!-- <div>
@@ -140,6 +141,15 @@
                     </div>
 
                     <button id="savePW" type="button" class="btn btn-default editBtn">Save Password</button>
+                    
+                    <div id="errorOld" class="pwDivs">
+                        The old password is incorrect!
+                    </div>
+                    
+                    <div id="errorRepeat" class="pwDivs">
+                        The repeated password does not match the new password!
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -160,10 +170,12 @@
     </script>
 -->
     <!-- Latest compiled and minified JavaScript -->
-    <script src="js/profile.js"></script>
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="js/header.js"></script>
     <script src="js/js.cookie.js"></script>
+    <script src="js/rest.js"></script>
+    <script src="js/profile.js"></script>
 
 </body>
 
