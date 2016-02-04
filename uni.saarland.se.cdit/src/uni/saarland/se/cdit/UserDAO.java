@@ -222,7 +222,7 @@ public class UserDAO {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE user_profile "+
             										  "SET firstname=?, lastname=?, field=?, experience=?, links=? "+
-            										  "WHERE user_id=?");
+            										  "WHERE users_id=?");
             ps.setString(1, profile.getFirstName());
             ps.setString(2, profile.getLastName());
             ps.setString(3, profile.getField());
