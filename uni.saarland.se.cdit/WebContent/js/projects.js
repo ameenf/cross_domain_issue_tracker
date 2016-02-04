@@ -1,6 +1,5 @@
 "use strict";
 var allProjects = [];
-var filteredProjects = [];
 
 var colors = [
     '#ba3c3c',
@@ -35,21 +34,41 @@ var letterPosition;
 $(document).ready(function () {
     console.log("projects.js");
     getProjectsFromUser(Cookies.get('userid'));
+
+    //Changehandler for the search bar. Change something and press enter to call this
+    $('.filterProjects').on('keyup', function () {
+        filterProjects();
+    });
 });
 
 function callbackGetProjectsFromUser(result) {
     console.log("callbackGetProjects");
     console.log(result);
     allProjects = result;
-    for (var key in result) {
-        $('.projects').append('<li class="itemRow project' + result[key].id + '"></li>');
-        $('.project' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerProject' + result[key].id + '"></div>');
-        $('.innerProject' + result[key].id).append('<div class="itemTag" style="background-color:' + getCharColor(result[key].title.substring(0, 1)) + '">' + result[key].title.substring(0, 1) + '</div>');
-        $('.innerProject' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
-        $('.innerProject' + result[key].id).append('<div class="inneruserlist innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
-        for (var keyy in result[key].users) {
-            $('.innerUserlist' + result[key].id).append('<span title="' + result[key].users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    filterProjects();
+}
+
+function filterProjects() {
+    console.log('searchProjects()');
+
+    var substring = $('.filterProjects').val();
+    $('.projects').empty();
+    for (var key in allProjects) {
+        if ((allProjects[key].title.toLowerCase()).indexOf(substring.toLowerCase()) > -1) {
+            addProjectRow(allProjects[key].id, allProjects[key].title, allProjects[key].users);
         }
+    }
+}
+
+function addProjectRow(id, title, users) {
+    console.log("addProjectRow");
+    $('.projects').append('<li class="itemRow project' + id + '"></li>');
+    $('.project' + id).append('<div class="flexrow centeritems flexspacebetween innerProject' + id + '"></div>');
+    $('.innerProject' + id).append('<div class="itemTag" style="background-color:' + getCharColor(title.substring(0, 1)) + '">' + title.substring(0, 1) + '</div>');
+    $('.innerProject' + id).append('<a class="itemName" href="workflow.html">' + title + '</a>');
+    $('.innerProject' + id).append('<div class="inneruserlist innerUserlist' + id + ' "aria-hidden="true"></div>');
+    for (var keyy in users) {
+        $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
     }
 }
 
