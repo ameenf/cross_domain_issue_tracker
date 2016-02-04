@@ -42,6 +42,9 @@ $(window).unload(function (e) {
         $.ajax({
             type: "PUT",
             url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/updatePosition",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+            },
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -54,6 +57,9 @@ $(window).unload(function (e) {
             error: function (a, b, c) {
                 console.log(a + " " + b + " " + c + "ERROR");
                 document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+                if (c = "Unauthorized") {
+                    window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
+                }
             }
         })
 
@@ -263,6 +269,9 @@ function listenerShowTicket() {
             $.ajax({
                 type: "PUT",
                 url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+                },
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 crossDomain: true,
@@ -277,6 +286,9 @@ function listenerShowTicket() {
                 error: function (a, b, c) {
                     console.log(a + " " + b + " " + c + "ERROR");
                     document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+                    if (c = "Unauthorized") {
+                        window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
+                    }
                 }
             })
         });
@@ -350,6 +362,9 @@ function listener() {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+            },
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             crossDomain: true,
@@ -365,6 +380,9 @@ function listener() {
             error: function (a, b, c) {
                 console.log(a + " " + b + " " + c + "ERROR");
                 document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+                if (c = "Unauthorized") {
+                    window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
+                }
             }
         })
     });
@@ -457,6 +475,9 @@ function updateAmountTicketsNodes(projectId) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -466,6 +487,9 @@ function updateAmountTicketsNodes(projectId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
+                window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
+            }
         }
     })
 }
@@ -531,6 +555,9 @@ function getAllTicketsNodes(nodeId) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
         dataType: 'json',
         async: true,
         success: function (result) {
@@ -546,6 +573,9 @@ function getAllTicketsNodes(nodeId) {
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
+                window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
+            }
         }
     })
 }
