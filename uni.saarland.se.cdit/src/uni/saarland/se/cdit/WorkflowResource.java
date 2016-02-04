@@ -25,6 +25,13 @@ public class WorkflowResource {
 		return dao.getWorkflow(Integer.parseInt(id));
 	}
 	
+	@GET @Path("getWorkflow/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public List<NodeTest> getFlow(@PathParam("id") String id) {
+		System.out.println("findById " + id);
+		return dao.getFlow(Integer.parseInt(id));
+	}
+	
 	@PUT @Path("updatePosition")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
