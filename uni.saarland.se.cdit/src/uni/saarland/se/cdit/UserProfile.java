@@ -3,25 +3,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class UserProfile {
-	private int id;
 	private int userId;
 	private String firstName;
 	private String lastName;
 	private String field;
 	private String experience;
 	private String links;
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 	/**
 	 * @return the users_id
 	 */

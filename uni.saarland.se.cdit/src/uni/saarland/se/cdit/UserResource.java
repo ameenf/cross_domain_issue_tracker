@@ -28,7 +28,7 @@ public class UserResource {
 	public Response authenticate(User user) {
 		boolean success = dao.authenticate(user);
 		if(success)
-			return Response.status(200).entity(dao.getUserId(user)).build();
+			return Response.status(200).entity(dao.getUser(user)).build();
 		else
 			return Response.status(401).entity(new ErrorHandler("Wrong username or password.")).build();
 

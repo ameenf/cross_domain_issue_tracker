@@ -9,8 +9,24 @@ public class User {
     private String password ;
     private String email ;
     private String type ;
+    private int groupId;
+    private int[] permissions;
     
-    public int getId() {
+    /**
+	 * @return the permissions
+	 */
+	public int[] getPermissions() {
+		return permissions;
+	}
+
+	/**
+	 * @param permissions the permissions to set
+	 */
+	public void setPermissions(int[] permissions) {
+		this.permissions = permissions;
+	}
+
+	public int getId() {
 		return id;
 	}
 
@@ -66,6 +82,20 @@ public class User {
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public int getGroupId() {
+		return groupId;
+	}
+
+	/**
+	 * @param groupId the groupId to set
+	 */
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 	
 }

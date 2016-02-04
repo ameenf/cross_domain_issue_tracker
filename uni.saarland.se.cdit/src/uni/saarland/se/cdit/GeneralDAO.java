@@ -120,4 +120,32 @@ public class GeneralDAO {
 		label.setTitle(rs.getString("label_title"));
         return label;
     }
+	
+	public List<Permission> getAllPermissions(){
+		List<Permission> list = new ArrayList<Permission>();
+        Connection c = null;
+    	String sql = "SELECT * FROM permissions ORDER BY permission_id";
+        try {
+            c = ConnectionHelper.getConnection();
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                list.add(processPermissionRow(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        
+        return list;
+	}
+	
+	protected Permission processPermissionRow(ResultSet rs) throws SQLException {
+		Permission permission = new Permission();
+		permission.setId(rs.getInt("permission_id"));
+		permission.setName(rs.getString("permission_name"));
+        return permission;
+    }
 }

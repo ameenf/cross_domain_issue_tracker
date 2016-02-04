@@ -52,4 +52,12 @@ public class GeneralResource {
 		return dao.getAllLabels();
 	}
 	
+	@JSONP(queryParam = "jsonpCallback")
+	@GET @Path("/permissions")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public List<Permission> getAllPermissions() {
+		System.out.println("findAlllabels");
+		return dao.getAllPermissions();
+	}
+	
 }

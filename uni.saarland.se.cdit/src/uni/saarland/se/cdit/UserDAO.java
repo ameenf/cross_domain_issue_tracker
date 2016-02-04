@@ -108,17 +108,27 @@ public class UserDAO {
 		return success;
 	}
 	
-	public User getUserId(User user){
+	public User getUser(User user){
 		Connection c = null;
-		String sql = "SELECT users.users_id FROM users WHERE users.users_username = ?";
+		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username = ?";
+		String permissionsSql = "SELECT permission_id "+
+								"FROM group_permissions "+
+								"WHERE group_id=?";
 		user.setPassword(null);
 		try {
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1, user.getUsername());
 			ResultSet rs = ps.executeQuery();
+			ps = c.prepareStatement(permissionsSql, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
 			if (rs.next()){
 				user.setId( rs.getInt("users_id"));
+				user.setGroupId(rs.getInt("group_id"));
+				ps.setInt(1, user.getGroupId());
+				rs = ps.executeQuery();
+				user.setPermissions(getIds(rs));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -176,11 +186,7 @@ public class UserDAO {
             ps.setString(5, profile.getExperience());
             ps.setString(6, profile.getLinks());
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            // Update the id in the returned object. This is important as this value must be returned to the client.
-            int id = rs.getInt(1);
-            profile.setId(id);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -216,13 +222,13 @@ public class UserDAO {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE user_profile "+
             										  "SET firstname=?, lastname=?, field=?, experience=?, links=? "+
-            										  "WHERE profile_id=?");
+            										  "WHERE user_id=?");
             ps.setString(1, profile.getFirstName());
             ps.setString(2, profile.getLastName());
             ps.setString(3, profile.getField());
             ps.setString(4, profile.getExperience());
             ps.setString(5, profile.getLinks());
-            ps.setInt(6, profile.getId());
+            ps.setInt(6, profile.getUserId());
             int count = ps.executeUpdate();
             return count == 1;
         } catch (SQLException e) {
@@ -258,7 +264,6 @@ public class UserDAO {
 	
 	private UserProfile processProfileRow(ResultSet rs) throws SQLException {
 		UserProfile profile = new UserProfile();
-		profile.setId(rs.getInt("profile_id"));
 		profile.setUserId(rs.getInt("users_id"));
 		profile.setFirstName(rs.getString("firstname"));
 		profile.setLastName(rs.getString("lastname"));
@@ -274,5 +279,24 @@ public class UserDAO {
         md.update(password.getBytes());
         byte byteData[] = md.digest();
 		return DatatypeConverter.printHexBinary(byteData);
+	}
+	
+	protected int[] getIds(ResultSet rs){
+		int[] ids = null;
+		try {
+			int len = 0;
+			if(rs.last()){
+				len = rs.getRow();
+				rs.beforeFirst();
+			}
+			ids = new int[len];
+			for(int i = 0;rs.next();i++){
+				ids[i] = rs.getInt(1);
+            }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ids;
 	}
 }
