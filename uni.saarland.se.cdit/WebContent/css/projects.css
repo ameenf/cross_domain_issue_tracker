@@ -1,6 +1,7 @@
 .noList {
     list-style-type: none;
     padding: 0px;
+    margin-top: 25px;
 }
 
 .itemRow {

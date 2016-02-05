@@ -70,6 +70,7 @@ function addProjectRow(id, title, users) {
     for (var keyy in users) {
         $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
     }
+    $('.project' + id).append('<div class="dividerHorizontal"></div>');
 }
 
 function getCharColor(char) {

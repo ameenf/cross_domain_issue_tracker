@@ -10,11 +10,6 @@ $(document).ready(function () {
     getProjects();
     getUsers();
 
-    //Clickhandler for an element in the issues list
-//    $('.itemName').on('click', function (e) {
-//        openUser(e);
-//    });
-
     //Changehandler for the search bar. Change something and press enter to call this
     $('.filterUsers').on('change', function () {
         filterUsers();
@@ -47,13 +42,9 @@ $(document).ready(function () {
         openModalDeleteUser();
     });
 
-    $('#deleteUser').on('click', function () {
-        deleteUser(usertoDelete);
-        $('#m_deleteUser').modal('toggle');
-        $('#deleteUser').closest("li").remove();
+    $('.users').on('click', '#b_editUser', function () {
+        changePage("userPreferences.html");
     });
-
-
 });
 
 function callbackCreateUser(result) {
@@ -91,7 +82,7 @@ function expandAddUser() {
 function openUser(e) {
     //e.preventDefault(); //Prevents link from forwarding
     console.log('openIssue()');
-    changePage("user.html")
+    changePage("userPreferences.html");
 }
 
 function filterUsers() {
@@ -114,7 +105,11 @@ function addUserRow(id, tag, username) {
     $('.innerUser' + id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + tag + '</div>');
     $('.innerUser' + id).append('<a class="itemName" href="user.html">' + username + '</a>');
     $('.innerUser' + id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
-    $('.innerUser' + id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+    $('.innerUser' + id).append('<div class="userButtons' + id + '"></div>');
+    $('.userButtons' + id).append('<span id="b_editUser" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
+    $('.userButtons' + id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
+    $('.user' + id).append('<div class="dividerHorizontal"></div>');
+
 }
 
 

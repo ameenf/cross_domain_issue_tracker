@@ -37,6 +37,9 @@ $(document).ready(function () {
         projectToDelete = split[1];
         openModalDeleteProject();
     });
+    $('.users').on('click', '#b_editProject', function () {
+        changePage('projectmanagement.html')
+    });
 
     $('#deleteProject').on('click', function () {
         deleteProject(projectToDelete);
@@ -55,7 +58,7 @@ $(document).ready(function () {
         console.log(str.split("userName userid"));
         var split = str.split("userName userid");
 
-        $('.usertaglist').empty();
+        $('.usertagWrapper').empty();
 
 
         if ($(this.firstChild).attr('class') === 'glyphicon glyphicon-plus') {
@@ -73,16 +76,16 @@ $(document).ready(function () {
             if (index > -1) {
                 userNames.splice(index, 1);
             }
-
-
         }
         $(this.firstChild).toggleClass("glyphicon-plus glyphicon-minus");
         $(this).toggleClass("btn-success btn-danger");
 
         console.log(userList);
         console.log($(this).next().html());
+        $('.usertagWrapper').append('Users :');
         for (var key in userNames) {
-            $('.usertaglist').append(userNames[key] + ' ; ');
+            //            $('.usertaglist').append(userNames[key] + ' ; ');
+            $('.usertagWrapper').append('<div class="usertagItem">' + userNames[key] + '</div>');
         }
 
     });
@@ -161,7 +164,10 @@ function addProjectRow(id, tag, title, users) {
     for (var keyy in users) {
         $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
     }
-    $('.innerUser' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash" aria-hidden="true"></span>');
+    $('.innerUser' + id).append('<div class="projectButtons' + id + '"></div>');
+    $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
+    $('.projectButtons' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
+    $('.user' + id).append('<div class="dividerHorizontal"></div>');
 }
 
 function openModalDeleteProject() {
