@@ -51,11 +51,28 @@ public class UserResource {
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
+	@GET @Path("groups")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public List<Group> getGroups(){
+		System.out.println("get groups");
+		return dao.getGroups();
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("findByProject/{project_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<User> findUsersByProject(@PathParam("project_id") int id) {
 		System.out.println("get users by project id");
 		return dao.findByProjectId(id);
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
+	@POST @Path("groups")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public Group createGroup(Group group) {
+		System.out.println("creating group");
+		return dao.createGroup(group);
 	}
 	
 	@JSONP(queryParam="jsonpCallback")

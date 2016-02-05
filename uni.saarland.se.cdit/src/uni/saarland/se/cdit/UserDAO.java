@@ -18,7 +18,7 @@ public class UserDAO {
 	public List<User> getAll() {
         List<User> list = new ArrayList<User>();
         Connection c = null;
-    	String sql = "SELECT users_id, users_username FROM users ORDER BY users_id";
+    	String sql = "SELECT users_id, users_username, group_id FROM users ORDER BY users_id";
         try {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
@@ -141,10 +141,46 @@ public class UserDAO {
 		
 	}
 	
+	public List<Group> getGroups(){
+		List<Group> list = new ArrayList<Group>();
+		Connection c = null;
+		String sql = "SELECT * FROM groups";
+		String permissionsSql = "SELECT permission_id "+
+								"FROM group_permissions "+
+								"WHERE group_id=?";
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			ps = c.prepareStatement(permissionsSql, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+			int i = 0;
+			while (rs.next()){
+				list.add(processGroupRow(rs));
+				ps.setInt(1, list.get(i).getId());
+				list.get(i).setPermissions(getIds(ps.executeQuery()));
+				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return list;
+		
+	}
+	
 	public User create(User user) {
         Connection c = null;
         PreparedStatement ps = null;
-        String statement= "INSERT INTO users(users_username, users_password, users_email, users_type) VALUES (?, ?, ?, ?)";
+        String statement = "";
+        if(user.getGroupId()!=0)
+        	 statement= "INSERT INTO users(users_username, users_password, users_email, users_type, group_id) VALUES (?, ?, ?, ?, ?)";
+        else
+        	 statement= "INSERT INTO users(users_username, users_password, users_email, users_type) VALUES (?, ?, ?, ?)";
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement, new String[] { "users_id" });
@@ -154,6 +190,8 @@ public class UserDAO {
             ps.setString(2, toHash(user.getPassword()));
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getType());
+            if(user.getGroupId()!=0)
+            	ps.setInt(5, user.getGroupId());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
@@ -167,6 +205,42 @@ public class UserDAO {
 			ConnectionHelper.close(c);
 		}
         return user;
+    }
+	
+	public Group createGroup(Group group) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement= "INSERT INTO groups(group_name, group_description) VALUES (?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "group_id" });
+            
+            ps.setString(1, group.getName());
+            
+            ps.setString(2, group.getDescription());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            group.setId(id);
+            int permissions[] = group.getPermissions();
+            if(permissions!=null){
+            	statement = "INSERT INTO group_permissions(group_id, permission_id) VALUES (?, ?)";
+            	ps = c.prepareStatement(statement);
+            	for(int i=0;i<permissions.length;i++){
+            		ps.setInt(1, id);
+                    ps.setInt(2, permissions[i]);
+                    ps.executeUpdate();
+            	}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return group;
     }
 	
 	public UserProfile createProfile(UserProfile profile) {
@@ -259,7 +333,16 @@ public class UserDAO {
 		User user = new User();
 		user.setId(rs.getInt("users_id"));
 		user.setUsername(rs.getString("users_username"));
+		user.setGroupId(rs.getInt("group_id"));
         return user;
+    }
+	
+	protected Group processGroupRow(ResultSet rs) throws SQLException {
+		Group group = new Group();
+		group.setId(rs.getInt("group_id"));
+		group.setName(rs.getString("group_name"));
+		group.setDescription(rs.getString("group_description"));
+        return group;
     }
 	
 	private UserProfile processProfileRow(ResultSet rs) throws SQLException {
