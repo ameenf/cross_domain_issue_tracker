@@ -463,6 +463,30 @@ function getUsers() {
     })
 }
 
+function getUser(id) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        url: baseurl + "rest/users/byId/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //return result;
+            callbackPermissions(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
 function createUser(username, password) {
     var data = {
         "email": "",

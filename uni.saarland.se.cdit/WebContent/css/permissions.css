@@ -1,0 +1,25 @@
+.permissionDiv{
+    width: 100%;
+    border-bottom:  solid;
+    border-bottom-width: 1px;
+    border-bottom-color: lightsteelblue;
+    
+}
+
+.permissionDiv:hover{
+    background-color: aliceblue;
+}
+
+.permissionLabel{
+    width: 30%;
+    font-size: 16px;
+}
+
+.editBtn{
+	margin: 2px;
+}
+
+h4{
+    font-size: 19px;
+    font-weight: bold;
+}
