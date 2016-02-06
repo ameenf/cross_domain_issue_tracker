@@ -112,9 +112,9 @@ public class UserDAO {
 	public User getUser(User user){
 		Connection c = null;
 		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username = ?";
-		String permissionsSql = "SELECT permission_id "+
-								"FROM group_permissions "+
-								"WHERE group_id=?";
+		String permissionsSql = "SELECT permission_name "+
+								"FROM group_permissions as gp, permissions as p "+
+								"WHERE gp.permission_id = p.permission_id AND group_id=?";
 		user.setPassword(null);
 		try {
 			c = ConnectionHelper.getConnection();
@@ -129,7 +129,7 @@ public class UserDAO {
 				user.setGroupId(rs.getInt("group_id"));
 				ps.setInt(1, user.getGroupId());
 				rs = ps.executeQuery();
-				user.setPermissions(getIds(rs));
+				user.setPermissions(getPermissions(rs));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -146,9 +146,9 @@ public class UserDAO {
 		Connection c = null;
 		User user = new User();
 		String sql = "SELECT users.users_username, users.group_id FROM users WHERE users.users_id = ?";
-		String permissionsSql = "SELECT permission_id "+
-								"FROM group_permissions "+
-								"WHERE group_id=?";
+		String permissionsSql = "SELECT permission_name "+
+				"FROM group_permissions as gp, permissions as p "+
+				"WHERE gp.permission_id = p.permission_id AND group_id=?";
 		try {
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
@@ -163,7 +163,7 @@ public class UserDAO {
 				user.setGroupId(rs.getInt("group_id"));
 				ps.setInt(1, user.getGroupId());
 				rs = ps.executeQuery();
-				user.setPermissions(getIds(rs));
+				user.setPermissions(getPermissions(rs));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -180,9 +180,9 @@ public class UserDAO {
 		List<Group> list = new ArrayList<Group>();
 		Connection c = null;
 		String sql = "SELECT * FROM groups";
-		String permissionsSql = "SELECT permission_id "+
-								"FROM group_permissions "+
-								"WHERE group_id=?";
+		String permissionsSql = "SELECT permission_name "+
+				"FROM group_permissions as gp, permissions as p "+
+				"WHERE gp.permission_id = p.permission_id AND group_id=?";
 		try {
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
@@ -194,7 +194,7 @@ public class UserDAO {
 			while (rs.next()){
 				list.add(processGroupRow(rs));
 				ps.setInt(1, list.get(i).getId());
-				list.get(i).setPermissions(getIds(ps.executeQuery()));
+				list.get(i).setPermissions(getPermissions(ps.executeQuery()));
 				i++;
 			}
 		} catch (SQLException e) {
@@ -259,13 +259,14 @@ public class UserDAO {
             // Update the id in the returned object. This is important as this value must be returned to the client.
             int id = rs.getInt(1);
             group.setId(id);
-            int permissions[] = group.getPermissions();
+            String permissions[] = group.getPermissions();
             if(permissions!=null){
-            	statement = "INSERT INTO group_permissions(group_id, permission_id) VALUES (?, ?)";
+            	statement = "INSERT INTO group_permissions(group_id, permission_id) VALUES (?,"+
+            				" (SELECT permission_id FROM permissions WHERE permission_name LIKE ?))";
             	ps = c.prepareStatement(statement);
             	for(int i=0;i<permissions.length;i++){
             		ps.setInt(1, id);
-                    ps.setInt(2, permissions[i]);
+                    ps.setString(2, permissions[i]);
                     ps.executeUpdate();
             	}
             }
@@ -401,17 +402,17 @@ public class UserDAO {
 		return DatatypeConverter.printHexBinary(byteData);
 	}
 	
-	protected int[] getIds(ResultSet rs){
-		int[] ids = null;
+	protected String[] getPermissions(ResultSet rs){
+		String[] ids = null;
 		try {
 			int len = 0;
 			if(rs.last()){
 				len = rs.getRow();
 				rs.beforeFirst();
 			}
-			ids = new int[len];
+			ids = new String[len];
 			for(int i = 0;rs.next();i++){
-				ids[i] = rs.getInt(1);
+				ids[i] = rs.getString(1);
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

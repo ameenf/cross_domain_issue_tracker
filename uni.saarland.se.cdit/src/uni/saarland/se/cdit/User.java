@@ -11,19 +11,19 @@ public class User {
     private String type ;
     private int groupId;
     private boolean active = true;
-    private int[] permissions;
+    private String[] permissions;
     
     /**
 	 * @return the permissions
 	 */
-	public int[] getPermissions() {
+	public String[] getPermissions() {
 		return permissions;
 	}
 
 	/**
 	 * @param permissions the permissions to set
 	 */
-	public void setPermissions(int[] permissions) {
+	public void setPermissions(String[] permissions) {
 		this.permissions = permissions;
 	}
 

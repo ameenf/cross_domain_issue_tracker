@@ -6,7 +6,7 @@ public class Group {
 	private int id;
 	private String name;
 	private String description;
-	private int[] permissions;
+	private String[] permissions;
 	/**
 	 * @return the id
 	 */
@@ -46,13 +46,13 @@ public class Group {
 	/**
 	 * @return the permissions
 	 */
-	public int[] getPermissions() {
+	public String[] getPermissions() {
 		return permissions;
 	}
 	/**
 	 * @param permissions the permissions to set
 	 */
-	public void setPermissions(int[] permissions) {
+	public void setPermissions(String[] permissions) {
 		this.permissions = permissions;
 	}
 }

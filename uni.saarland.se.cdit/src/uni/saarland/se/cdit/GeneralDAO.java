@@ -124,7 +124,7 @@ public class GeneralDAO {
 	public List<Permission> getAllPermissions(){
 		List<Permission> list = new ArrayList<Permission>();
         Connection c = null;
-    	String sql = "SELECT * FROM permissions ORDER BY permission_id";
+    	String sql = "SELECT permission_name FROM permissions ORDER BY permission_name asc";
         try {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
@@ -144,7 +144,6 @@ public class GeneralDAO {
 	
 	protected Permission processPermissionRow(ResultSet rs) throws SQLException {
 		Permission permission = new Permission();
-		permission.setId(rs.getInt("permission_id"));
 		permission.setName(rs.getString("permission_name"));
         return permission;
     }
