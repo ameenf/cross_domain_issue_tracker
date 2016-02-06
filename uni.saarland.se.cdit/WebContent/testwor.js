@@ -45,7 +45,6 @@ function startJsplumb() {
             ReattachConnections: true
         }
 
-
         jsPlumb.registerConnectionTypes({
             "normal": {
                 paintStyle: {
@@ -61,9 +60,6 @@ function startJsplumb() {
             }
         });
 
-        var anchSrc = ["Right", "Top"];
-        var anchTrg = ["Left", "Bottom"];
-
         // Connected nodes in an array
         var arrConnect = [];
 
@@ -78,7 +74,6 @@ function startJsplumb() {
         var found = false;
 
         function end(mode) {
-            console.log(mode);
             if (mode == false) {
                 console.log("F " + mode);
                 for (var key in arrConnect) {

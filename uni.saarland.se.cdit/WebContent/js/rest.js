@@ -229,7 +229,8 @@ function getTicketsByNodeId(nodeid) {
         dataType: 'json',
         async: true,
         success: function (result) {
-            return result;
+            callbackGetTicketsByNodeId(result);
+            //            return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -295,15 +296,17 @@ function getTicketFeedback(id) {
     })
 };
 
-function createTicket(title, description, prioId, typeId, nodeId, projId) {
+function createTicket(title, date, description, prioId, typeId, nodeId, projId, users, labels) {
     var data = {
         "title": title,
-        "creationDate": "",
+        "creationDate": date,
         "description": description,
         "priorityId": prioId,
         "typeId": typeId,
         "statusId": nodeId,
-        "projectId": projId
+        "projectId": projId,
+        "users": users,
+        "labels": labels
     }
 
     $.ajax({
@@ -319,7 +322,8 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackCreateTicket(result);
+            //            return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -331,16 +335,18 @@ function createTicket(title, description, prioId, typeId, nodeId, projId) {
     })
 }
 
-function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
+function updateTicket(id, title, creationDate, description, prioId, typeId, nodeId, projId, ticketUser, ticketLabel) {
     var data = {
         "id": id,
+        "creationDate": creationDate,
         "title": title,
-        "creationDate": "",
         "description": description,
         "priorityId": prioId,
         "typeId": typeId,
         "statusId": nodeId,
-        "projectId": projId
+        "projectId": projId,
+        "users": ticketUser,
+        "labels": ticketLabel
     }
 
     $.ajax({
@@ -356,7 +362,8 @@ function updateTicket(id, title, description, prioId, typeId, nodeId, projId) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackUpdateTicket(result);
+            //            return result;
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -642,11 +649,35 @@ function updateProfile(data) {
 //////////////////////////////////////////////////Workflow/////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function getWorkflow(projectId) {
+function getProjectWorkflow(projectId) {
     $.ajax({
         type: "GET",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
         url: baseurl + "rest/workflow/getProjectWorkflow/" + projectId,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //return result;
+            callbackGetProjectWorkflow(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+function getWorkflow(projectId) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        url: baseurl + "rest/workflow/getWorkflow/" + projectId,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
@@ -660,6 +691,36 @@ function getWorkflow(projectId) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+function updateWorkflowposition(nodeId, positionX, positionY) {
+    var data = {
+        "id": nodeId,
+        "positionX": positionX,
+        "positionY": positionY
+    }
+    $.ajax({
+        type: "PUT",
+        url: baseurl + "rest/workflow/updatePosition",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            callbackUpdateWorkflowposition(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }

@@ -14,6 +14,7 @@ var feedbackTicket = [];
 var currentTicketIndex;
 var currentStatusId;
 var projectId = 1; // add prject id here
+var userId = Cookies.get("userid"); // add prject id here
 var nodeIndex;
 
 $(document).ready(function () {
@@ -30,38 +31,12 @@ $(window).unload(function (e) {
     console.log("unload function");
 
     $.each(workflowNodes, function (index, value) {
-        var posLeft = (100 * $('#' + workflowNodes[index].sourceNodeId).position().left) / $('#diagramContainer').width(); // posX
-        var posTop = (100 * $('#' + workflowNodes[index].sourceNodeId).position().top) / $('#diagramContainer').height(); // posY
-        var data = {
-            "id": workflowNodes[index].id,
-            "positionX": posLeft,
-            "positionY": posTop
-        }
-        e.preventDefault();
+        var posLeft = (100 * $('#' + workflowNodes[index].id).position().left) / $('#diagramContainer').width(); // posX
+        var posTop = (100 * $('#' + workflowNodes[index].id).position().top) / $('#diagramContainer').height(); // posY
 
-        $.ajax({
-            type: "PUT",
-            url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/updatePosition",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-            },
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: "json",
-            async: false,
-            success: function (result) {
-                console.log("WORKFLOW UPDATED!");
-                console.log(result);
-            },
-            error: function (a, b, c) {
-                console.log(a + " " + b + " " + c + "ERROR");
-                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-                if (c = "Unauthorized") {
-                    window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
-                }
-            }
-        })
+        e.preventDefault();
+        // TODO add userid
+        //updateWorkflowposition(workflowNodes[index].id, posLeft, posTop);
 
     });
 });
@@ -198,11 +173,11 @@ function listenerShowTicket() {
         });
 
         // Files
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add File</label><div class="col-sm-10"></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Files</label><div class="col-sm-10"></div></div>');
         $('.updFiles + .col-sm-10').append('<button class="btn btn-default btnEdit" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
 
         // Feedback
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Add comment</label><div class="col-sm-10"></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Comments</label><div class="col-sm-10"></div></div>');
 
         // TODO: add here comment section with usericon, username and his commment. Further a user can add comments and existing comments should be modifiable.
 
@@ -238,59 +213,15 @@ function listenerShowTicket() {
         // Update the ticket
         $('#updateTicket').off().on('click', function (e) {
             console.log("UPDATE TICKET BTN");
-            console.log($(".updTitle").val());
-            console.log($(".updDesc").html());
 
             var elem = document.getElementById("updPrioritylist");
             var prioId = elem.options[elem.selectedIndex].value;
-            console.log("NEW PRIOID: " + prioId);
 
             var elem = document.getElementById("updTypelist");
             var typeId = elem.options[elem.selectedIndex].value;
-            console.log("NEW PRIOID: " + typeId);
-            console.log("NEW LABELS: " + typeId);
-            console.log("NEW USERS: " + typeId);
 
-            var data = {
-                    "id": allTicketInNode[currentTicketIndex].id,
-                    "creationDate": $(".updCreat").val(),
-                    "title": $(".updTitle").val(),
-                    "description": $(".updDesc").html(),
-                    "priorityId": prioId,
-                    "typeId": typeId,
-                    "statusId": currentStatusId,
-                    "projectId": projectId,
-                    "users": ticketUser,
-                    "labels": ticketLabel
-                }
-                //            $.each(data, function (key, value) {
-                //                console.log(data[key]);
-                //            });
-            $.ajax({
-                type: "PUT",
-                url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/update",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-                },
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    console.log("TICKET UPDATED!");
-                    console.log(result);
-                    $('#ticketView').fadeOut('fast');
-                    $('#ticketViewWrapper').fadeOut('fast');
-                },
-                error: function (a, b, c) {
-                    console.log(a + " " + b + " " + c + "ERROR");
-                    document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-                    if (c = "Unauthorized") {
-                        window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
-                    }
-                }
-            })
+            // update the ticket
+            updateTicket(allTicketInNode[currentTicketIndex].id, $(".updTitle").val(), $(".updCreat").val(), $(".updDesc").val(), prioId, typeId, currentStatusId, projectId, ticketUser, ticketLabel);
         });
 
     });
@@ -330,13 +261,15 @@ function listener() {
         $('#ticketViewWrapper').fadeOut('fast');
     });
 
-    // Show nodes with tickets inside
+    // Show all tickets within a node
     $('.showNode').off().on('click', function (e) {
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
-        nodeId = workflowNodes[$(this).parent().index()].id;
-        getAllTicketsNodes(nodeId);
+        nodeId = workflowNodes[$(this).parent().index()].statusId;
+        console.log(nodeId);
+        getTicketsByNodeId(nodeId);
+
     });
 
     // Submit a ticket to the database
@@ -353,38 +286,14 @@ function listener() {
             "description": $("#input_new_desc").val(),
             "priorityId": prioId,
             "typeId": typeId,
-            "statusId": workflowNodes[nodeIndex].sourceNodeId,
-            "projectId": 1,
+            "statusId": workflowNodes[nodeIndex].statusId,
+            "projectId": projectId,
             "users": optionsUser,
             "labels": optionsLabel
         }
 
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-            },
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            crossDomain: true,
-            dataType: "json",
-            async: true,
-            success: function (result) {
-                console.log("SUCCESS!");
-                $('#' + workflowNodes[nodeIndex].sourceNodeId + ' .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
-                //$('#myModal1').modal('toggle');
-                $('#ticketAdd').fadeOut('fast');
-                $('#ticketViewWrapper').fadeOut('fast');
-            },
-            error: function (a, b, c) {
-                console.log(a + " " + b + " " + c + "ERROR");
-                document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-                if (c = "Unauthorized") {
-                    window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
-                }
-            }
-        })
+        // call to create a ticket
+        createTicket($("#input_new_title").val(), datetime, $("#input_new_desc").val(), prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
     });
 
     $('.dropdown-menu.dropdownLabels a').off().on('click', function (event) {
@@ -447,12 +356,13 @@ function listener() {
 function callbackGetTickets(result) {
     console.log("callbackGetTickets");
     allTickets = result;
+    //    getProjectWorkflow(projectId);
     getWorkflow(projectId);
 }
 
 // Callback for the workflow of a user
-function callbackGetWorkflow(result) {
-    console.log("callbackGetWorkflow");
+function callbackGetProjectWorkflow(result) {
+    console.log("callbackGetProjectWorkflow");
     workflowNodes = result;
     for (var key in result) {
         $('.bgRaster').append('<div id="' + result[key].sourceNodeId + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
@@ -470,34 +380,29 @@ function callbackGetWorkflow(result) {
     listener(); // Activate the listener after create HTML content
 
 }
+// Callback for the workflow of a user
+function callbackGetWorkflow(result) {
+    console.log("callbackGetWorkflow");
+    workflowNodes = result;
+    for (var key in result) {
+        $('.bgRaster').append('<div id="' + result[key].id + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
+        $('#' + result[key].id).append('<div class="addTicket"></div>');
+        $('#' + result[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+        $('#' + result[key].id).append('<div class="topTitle">' + allNodes[result[key].statusId - 1].title + '</div>');
+        $('#' + result[key].id).append('<div class="showNode"></div>');
+        $('#' + result[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
+        $('#' + result[key].id + ' .showNode').after('<div class="amountTickets"></div>');
+        $('#' + result[key].id + ' .amountTickets').html(result[key].ticketsCount);
+    }
+    startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
+    listener(); // Activate the listener after create HTML content
 
-function updateAmountTicketsNodes(projectId) {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-        },
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            workflowNodes = result;
-            $('#' + nodeId + ' .amountTickets').html(workflowNodes[nodeId]);
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
-                window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
-            }
-        }
-    })
 }
 
 // Callback to get all status from server
 function callbackGetStatus(result) {
-    console.log("callbackGetStatus");
     allNodes = result;
+    console.log("callbackGetStatus: " + allNodes);
 }
 
 // Callback to get all types in the DB
@@ -545,39 +450,40 @@ function callbackGetUsers(result) {
     }
 }
 
-
+// Get all tickets by ticketid
 function callbackGetTicketsById(result) {
     ticketById = result;
 }
+// Update the position of the nodes in the workflow
+function callbackUpdateWorkflowposition(result) {
+    console.log("callbackUpdateWorkflowposition");
+}
+// Update ticket
+function callbackUpdateTicket(result) {
+    console.log("callbackUpdateTicket");
+    $('#ticketView').fadeOut('fast');
+    $('#ticketViewWrapper').fadeOut('fast');
+}
 
+function callbackCreateTicket(result) {
+    console.log("callbackCreateTicket");
+    $('#' + workflowNodes[nodeIndex].id + ' .amountTickets').html(++workflowNodes[nodeIndex].ticketsCount);
+    $('#ticketAdd').fadeOut('fast');
+    $('#ticketViewWrapper').fadeOut('fast');
+}
 // get all tickets for showing all within a node  
-function getAllTicketsNodes(nodeId) {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets/getNodeTickets/" + nodeId,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-        },
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            allTicketInNode = result;
-            $('#myModal2 .modal-body').empty();
-            for (var key in result) {
-                //        Load tickets into Nodes
-                $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"></div>');
-                $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].id + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
-            }
-            listenerShowTicket();
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
-                window.location.href = "http://localhost:8080/uni.saarland.se.cdit/";
-            }
-        }
-    })
+function callbackGetTicketsByNodeId(result) {
+    console.log("GetTicketsByNodeId");
+
+    allTicketInNode = result;
+    $('#myModal2 .modal-body').empty();
+    for (var key in result) {
+        console.log("allticket: " + allTicketInNode);
+        //        Load tickets into Nodes
+        $('#myModal2 .modal-body').append('<div class="nodeTicketWrapper"></div>');
+        $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].statusId + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
+    }
+    listenerShowTicket();
 }
 
 function startJsplumb() {
@@ -606,6 +512,7 @@ function startJsplumb() {
                         color: "rgba(97, 170, 224, 0.72)",
                     },
                     label: "", // Name of the label at the arrow
+                    id: "label",
                     location: 0.5, // Position of the label at the arrow
                 }]
                       ],
@@ -616,104 +523,29 @@ function startJsplumb() {
             endpointStyle: {
                 fillStyle: "rgba(49, 49, 49, 0)"
             },
-            isSource: true,
-            isTarget: true,
             ConnectionsDetachable: false,
             ReattachConnections: false
         }
 
-        jsPlumb.registerEndpointTypes({
-            "basic": {
+        jsPlumb.registerConnectionTypes({
+            "normal": {
                 paintStyle: {
-                    fillStyle: "blue"
+                    strokeStyle: "rgb(51, 122, 183)",
+                    lineWidth: 5
                 }
             },
-            "selected": {
+            "edit": {
                 paintStyle: {
-                    fillStyle: "red"
-                }
-            }
-        });
-
-        var adminCommon = {
-            connector: ["StateMachine"], // Form of the line between connected nodes
-            endpoint: "Dot", // Form of the anchorpoint
-            anchor: ["TopCenter", "RightMiddle", "BottomCenter", "LeftMiddle"],
-            overlays: [["Arrow", {
-                    width: 20,
-                    length: 20,
-                    location: 1,
-                    foldback: 1,
-                    id: "arrow"
-            }],
-                       ["Label", {
-                    labelStyle: {
-                        fillStyle: "white",
-                        font: "15px sans-serif",
-                        color: "rgba(97, 170, 224, 0.72)",
-                    },
-                    label: "", // Name of the label at the arrow
-                    location: 0.5, // Position of the label at the arrow
-                }]
-                      ],
-            paintStyle: {
-                strokeStyle: "rgba(51, 122, 183, 1)",
-                lineWidth: 5
-            },
-            endpointStyle: {
-                fillStyle: "rgba(49, 49, 49, 1)"
-            },
-            isSource: true,
-            isTarget: true,
-            ConnectionsDetachable: false,
-            ReattachConnections: false
-        }
-
-        jsPlumb.registerEndpointTypes({
-            "basic": {
-                paintStyle: {
-                    fillStyle: "blue"
-                }
-            },
-            "selected": {
-                paintStyle: {
-                    fillStyle: "red"
+                    strokeStyle: "rgb(183, 51, 51)",
+                    lineWidth: 5
                 }
             }
         });
+        var arrConnect = [];
+
         // Anchors can switch position
         var dynamicAnchors1 = ["Left", "Right", "Top", "Bottom"];
         var dynamicAnchors2 = ["Right", "Left", "Top", "Bottom"];
-
-        // Connect nodes
-        for (var i = 0; i < workflowNodes.length; i++) {
-            var sourceName = workflowNodes[i].sourceNodeId;
-            var targetName = workflowNodes[i].targetNodeId;
-            var arrConnect = [];
-            arrConnect[i] = jsPlumb.connect({
-                source: sourceName + "", // + "" has to be stated here, otherwise the nodes won't connect, dunno why
-                target: targetName + "",
-                detachable: false
-
-            }, common);
-
-        }
-
-        function end() {
-
-            $('#1').endpoints[0].setPaintStyle({
-                fillStyle: "FF0000"
-            });
-
-        }
-        // adding anchorpoints to nodes
-        //    jsPlumb.addEndpoint($(".item"), {
-        //        anchors: dynamicAnchors1
-        //    }, common);
-        //
-        //    jsPlumb.addEndpoint($(".item"), {
-        //        anchors: dynamicAnchors2
-        //    }, common);
 
         // Node is draggable on a 10x10 grid
         jsPlumb.draggable($(".item"), {
@@ -721,12 +553,91 @@ function startJsplumb() {
             grid: [10, 10]
         });
 
-        // Event to get info about sourceId and targetId of node if you connect 2 nodes together
-        jsPlumb.bind("connection", function (info) {
-            console.log(info.sourceId);
-            console.log(info.targetId);
+        // Loop through nodes and connect them
+        for (var i = 0; i < workflowNodes.length; i++) {
+            // if the node has no arrows, don't do anything
+            if (workflowNodes[i].arrows == null) {} else { // if the node has arrows, connect them
+                for (var key in workflowNodes[i].arrows) {
+                    var sourceName = workflowNodes[i].arrows[key].sourceNode;
+                    var targetName = workflowNodes[i].arrows[key].targetNode;
+                    arrConnect[i] = jsPlumb.connect({
+                        source: sourceName + "", // + "" has to be stated here, otherwise the nodes won't connect, dunno why
+                        target: targetName + "",
+                        detachable: false
+                    }, common);
+                    // TODO if no label exists, do notihng
+                    var label = arrConnect[i].getOverlay("label");
+                    label.setLabel(workflowNodes[i].arrows[key].label);
+                }
+            }
+        }
+        var srcClick = "";
+        var trgClick = "";
+        var found = false;
+        // connect 2 nodes together
+        function connectNodes() {
+            var firstNode;
+            $(".item").off().on('click', function () {
+                if (srcClick == "") {
+                    srcClick = $(this).attr("id");
+                    firstNode = $(this);
+                    firstNode.addClass('borderHighlight');
+                    console.log("set src: " + $(this).attr("id"));
+                } else if (srcClick == $(this).attr("id")) {
+                    srcClick = "";
+                    firstNode.removeClass('borderHighlight');
+                    console.log("make src empty: " + $(this).attr("id"));
+                } else if (trgClick == "") {
+                    trgClick = $(this).attr("id");
+                    for (var key in arrConnect) {
+                        if (srcClick == arrConnect[key].sourceId && trgClick == arrConnect[key].targetId) {
+                            console.log("FOUND");
+                            found = true;
+                        }
+                    }
+                    if (found == true) {
+                        console.log("already set!");
+                        //                            $("#connectionExistsAlert").alert('open');
+                        $("#connectionExistsAlert").show();
+                        $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
+                            //                                $("#connectionExistsAlert").alert('close');
+                            $("#connectionExistsAlert").hide();
+                        });
+                        srcClick = "";
+                        trgClick = "";
+                        console.log("make both empty");
+                        found = false;
+                        firstNode.removeClass('borderHighlight');
 
-        })
+                    } else {
+                        arrConnect.push(jsPlumb.connect({
+                            type: "edit",
+                            source: srcClick,
+                            target: trgClick,
+                            detachable: false
+                        }, common));
+                        srcClick = "";
+                        trgClick = "";
+                        console.log("make both empty");
+                        firstNode.removeClass('borderHighlight');
+                    }
+                }
+            });
+            // click on arrow to remove connection
+            jsPlumb.bind("click", function (c) {
+                console.log(c.sourceId);
+                console.log(c.targetId);
+                for (var key in arrConnect) {
+                    if (c.sourceId == arrConnect[key].sourceId && c.targetId == arrConnect[key].targetId) {
+                        delete arrConnect[key];
+                    }
+                }
+                jsPlumb.detach(c);
+                // TODO Push arrows that are deleted
+                // TODO Maybe if no arrow is set -> warning
+            });
+        }
+
 
         // ******************************************** ZOOM ********************************************
         //Zoom the container on mousewheel
@@ -790,11 +701,26 @@ function startJsplumb() {
                 curScale: curScale
             };
         }
-
+        var editmode = false;
         $('.switchEditMode').off().on('click', function () {
+            // if switch is turned on, add listener to connect nodes
+            if (editmode == false) {
+                editmode = true;
+                for (var key in arrConnect) {
+                    arrConnect[key].toggleType("edit");
+                }
+                connectNodes();
+            } else { // if switch is turned off, delete clicklistener
+                editmode = false;
+                for (var key in arrConnect) {
+                    arrConnect[key].toggleType("edit");
+                }
+                $(".item").off().on('click', function () {});
+                jsPlumb.unbind("click");
+                // TODO updatecall nodes
+            }
             console.log("click: " + $(this).prop('checked'));
 
-            end();
         });
     });
 
