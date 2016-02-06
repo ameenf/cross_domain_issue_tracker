@@ -10,7 +10,7 @@ public class User {
     private String email ;
     private String type ;
     private int groupId;
-    private boolean active;
+    private boolean active = true;
     private int[] permissions;
     
     /**

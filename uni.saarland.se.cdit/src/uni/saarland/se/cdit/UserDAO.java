@@ -158,7 +158,8 @@ public class UserDAO {
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
 			if (rs.next()){
-				user.setId( rs.getInt("users_id"));
+				user.setId(id);
+				user.setUsername(rs.getString("users_username"));
 				user.setGroupId(rs.getInt("group_id"));
 				ps.setInt(1, user.getGroupId());
 				rs = ps.executeQuery();
