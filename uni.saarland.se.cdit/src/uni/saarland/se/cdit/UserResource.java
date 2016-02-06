@@ -43,6 +43,14 @@ public class UserResource {
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
+	@GET @Path("byId/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public User getUser(@PathParam("id") int id) {
+		System.out.println("getAll");
+		return dao.getUser(id);
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getProfile/{user_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public UserProfile getUserProfile(@PathParam("user_id") int id){

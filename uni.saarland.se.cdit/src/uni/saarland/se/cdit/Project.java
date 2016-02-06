@@ -7,7 +7,22 @@ public class Project {
 	private int id;
 	private String description;
     private String title;
-    private int[] users;
+    private boolean active;
+    /**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	private int[] users;
     
     public int getId() {
 		return id;

@@ -134,7 +134,7 @@ public class TicketDAO {
 	public List<Ticket> findByType(String type) {
         List<Ticket> list = new ArrayList<Ticket>();
         Connection c = null;
-    	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description " + 
+    	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description, t.active " + 
             "FROM ticket as t, type " +
 			"WHERE t.type_id = type.type_id AND UPPER(type.type_title) LIKE ? AND t.active=?" +	
 			"ORDER BY t.ticket_title";
@@ -177,9 +177,9 @@ public class TicketDAO {
 	public List<Ticket> findByNode(int id) {
         List<Ticket> list = new ArrayList<Ticket>();
         Connection c = null;
-    	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description " + 
+    	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description, t.active " + 
             "FROM ticket as t, nodes as n " +
-			"WHERE n.node_id = ? AND t.status_id = n.source_node_id AND t.project_id = n.project_id AND t.active = ? " +	
+			"WHERE n.node_id = ? AND t.status_id = n.status_id AND t.project_id = n.project_id AND t.active = ? " +	
 			"ORDER BY t.ticket_id";
         try {
             c = ConnectionHelper.getConnection();
@@ -362,6 +362,7 @@ public class TicketDAO {
         ticket.setProjectId(rs.getInt("project_id"));
         ticket.setDescription(rs.getString("ticket_description"));
         ticket.setStatusId(rs.getInt("status_id"));
+        ticket.setActive(rs.getBoolean("active"));
         return ticket;
     }
 	

@@ -14,6 +14,7 @@ public class Ticket {
     private int typeId;    
     private int statusId;    
     private int projectId;
+    private boolean active;
 
     private int[] users;
     private int[] labels;
@@ -96,6 +97,20 @@ public class Ticket {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

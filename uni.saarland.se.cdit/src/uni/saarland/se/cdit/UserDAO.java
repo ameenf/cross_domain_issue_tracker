@@ -18,7 +18,7 @@ public class UserDAO {
 	public List<User> getAll() {
         List<User> list = new ArrayList<User>();
         Connection c = null;
-    	String sql = "SELECT users_id, users_username, group_id FROM users ORDER BY users_id";
+    	String sql = "SELECT users_id, users_username, group_id, active FROM users ORDER BY users_id";
         try {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
@@ -120,6 +120,39 @@ public class UserDAO {
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1, user.getUsername());
+			ResultSet rs = ps.executeQuery();
+			ps = c.prepareStatement(permissionsSql, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+			if (rs.next()){
+				user.setId( rs.getInt("users_id"));
+				user.setGroupId(rs.getInt("group_id"));
+				ps.setInt(1, user.getGroupId());
+				rs = ps.executeQuery();
+				user.setPermissions(getIds(rs));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return user;
+		
+	}
+	
+	public User getUser(int id){
+		Connection c = null;
+		User user = new User();
+		String sql = "SELECT users.users_username, users.group_id FROM users WHERE users.users_id = ?";
+		String permissionsSql = "SELECT permission_id "+
+								"FROM group_permissions "+
+								"WHERE group_id=?";
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			ps = c.prepareStatement(permissionsSql, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
@@ -318,8 +351,9 @@ public class UserDAO {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("DELETE FROM users WHERE users_id=? AND users_type NOT LIKE 'admin'");
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("UPDATE users SET active=? WHERE users_id=? AND users_type NOT LIKE 'admin'");
+            ps.setBoolean(1, false);
+            ps.setInt(2, id);
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
@@ -335,6 +369,7 @@ public class UserDAO {
 		user.setId(rs.getInt("users_id"));
 		user.setUsername(rs.getString("users_username"));
 		user.setGroupId(rs.getInt("group_id"));
+		user.setActive(rs.getBoolean("active"));
         return user;
     }
 	

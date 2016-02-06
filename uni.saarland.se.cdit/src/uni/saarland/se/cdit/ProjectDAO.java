@@ -205,6 +205,7 @@ public class ProjectDAO {
 		project.setId(rs.getInt("project_id"));
 		project.setTitle(rs.getString("project_title"));
 		project.setDescription(rs.getString("project_description"));
+		project.setActive(rs.getBoolean("active"));
         return project;
     }
 	

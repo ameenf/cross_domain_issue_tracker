@@ -5,11 +5,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
 	private int id;
-    private String username;
+    private String username ;
     private String password ;
     private String email ;
     private String type ;
     private int groupId;
+    private boolean active;
     private int[] permissions;
     
     /**
@@ -96,6 +97,20 @@ public class User {
 	 */
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }
