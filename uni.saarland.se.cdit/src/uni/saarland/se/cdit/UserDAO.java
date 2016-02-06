@@ -242,6 +242,35 @@ public class UserDAO {
         return user;
     }
 	
+	public boolean addPermissions(User user, int projectId) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "";
+        boolean success = false;
+        statement= "INSERT INTO user_permissions(project_id, user_id, permission_id) VALUES (?, ?, (SELECT permission_id FROM permissions WHERE permission_name LIKE ?))";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement);
+            
+            ps.setInt(1, projectId);
+            ps.setInt(2, user.getId());
+            String permissions[] = user.getPermissions();
+            if(permissions!=null){
+            	for(int i=0;i<permissions.length;i++){
+                    ps.setString(3, permissions[i]);
+                    ps.executeUpdate();
+                    success = true;
+            	}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return success;
+    }
+	
 	public Group createGroup(Group group) {
         Connection c = null;
         PreparedStatement ps = null;

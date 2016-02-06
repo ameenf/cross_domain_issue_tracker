@@ -93,6 +93,19 @@ public class UserResource {
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
+	@POST @Path("addProjectPermissions/{projectId}")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public Response addPermissions(User user, @PathParam("projectId") int projectId) {
+		System.out.println("adding permissions");
+		boolean success = dao.addPermissions(user,projectId);
+		if(success)
+			return Response.status(200).entity(new MessageHandler("Success.")).build();
+		else
+			return Response.status(500).entity(new MessageHandler("Error Occurred.")).build();
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("createProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
