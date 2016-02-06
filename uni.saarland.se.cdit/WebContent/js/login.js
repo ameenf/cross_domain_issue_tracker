@@ -1,11 +1,22 @@
 $(document).ready(function () {
     console.log("login.js");
+    $('[data-toggle="popover"]').popover();
     $("#login").on("click", function () {
-        Cookies.set('username', $("#inputEmail").val());
-        Cookies.set('password', $("#inputPassword").val());
-        login($("#inputEmail").val(), $("#inputPassword").val());
+        handleLogin();
+    });
+
+    $('input').bind('keypress', function (event) {
+        if (event.keyCode === 13) {
+            handleLogin();
+        }
     });
 });
+
+function handleLogin() {
+    Cookies.set('username', $("#inputEmail").val());
+    Cookies.set('password', $("#inputPassword").val());
+    login($("#inputEmail").val(), $("#inputPassword").val());
+}
 
 
 function callbackSuccessLogin(result) {
