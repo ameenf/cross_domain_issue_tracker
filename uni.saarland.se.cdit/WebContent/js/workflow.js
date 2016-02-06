@@ -501,27 +501,29 @@ function startJsplumb() {
             overlays: [["Arrow", {
                     width: 20,
                     length: 20,
-                    location: 1,
+                    location: 0.97,
                     foldback: 1,
                     id: "arrow"
             }],
                        ["Label", {
-                    labelStyle: {
-                        fillStyle: "white",
-                        font: "15px sans-serif",
-                        color: "rgba(97, 170, 224, 0.72)",
-                    },
+//                    labelStyle: {
+//                        fillStyle: "white",
+//                        font: "15px sans-serif",
+//                        color: "rgba(97, 170, 224, 0.72)",
+//                    },
                     label: "", // Name of the label at the arrow
                     id: "label",
+                    cssClass: "labelstyle",
                     location: 0.5, // Position of the label at the arrow
                 }]
                       ],
             paintStyle: {
-                strokeStyle: "rgba(51, 122, 183, 1)",
+                strokeStyle: "#428bca",
                 lineWidth: 5
             },
             endpointStyle: {
-                fillStyle: "rgba(49, 49, 49, 0)"
+                fillStyle: "#428bca",
+                radius: 7
             },
             ConnectionsDetachable: false,
             ReattachConnections: false
@@ -530,13 +532,13 @@ function startJsplumb() {
         jsPlumb.registerConnectionTypes({
             "normal": {
                 paintStyle: {
-                    strokeStyle: "rgb(51, 122, 183)",
+                    strokeStyle: "#428bca",
                     lineWidth: 5
                 }
             },
             "edit": {
                 paintStyle: {
-                    strokeStyle: "rgb(183, 51, 51)",
+                    strokeStyle: "#ca4242",
                     lineWidth: 5
                 }
             }
