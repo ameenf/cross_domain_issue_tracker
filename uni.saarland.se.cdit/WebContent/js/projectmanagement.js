@@ -16,7 +16,7 @@ $(document).ready(function () {
     });
 
     //Changehandler for the search bar. Change something and press enter to call this
-    $('.filterUsers').on('change', function () {
+    $('.filterProjects').on('keyup', function () {
         filterProjects();
     });
 
@@ -28,21 +28,22 @@ $(document).ready(function () {
         createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), userList);
     });
 
-    $('.users').on('click', '#b_deleteProject', function () {
+    $('.projects').on('click', '#b_deleteProject', function () {
         console.log("closestclass");
         console.log($('#b_deleteProject').closest("li").attr('class'));
         var str = $('#b_deleteProject').closest("li").attr('class');
         console.log(str.split("itemRow user"));
         var split = str.split("itemRow user");
         projectToDelete = split[1];
-        openModalDeleteProject();
+        $('#m_deleteProject').modal('toggle');
     });
-    $('.users').on('click', '#b_editProject', function () {
+    $('.projects').on('click', '#b_editProject', function () {
         changePage('projectmanagement.html')
     });
 
     $('#deleteProject').on('click', function () {
         deleteProject(projectToDelete);
+        $('#m_deleteProject').modal('toggle');
     });
 
     $('.scrollContainer').on('click', '.addUserToProject', function () {
@@ -137,10 +138,10 @@ function openIssue(e) {
 function filterProjects() {
     console.log('searchProjects()');
 
-    var substring = $('.filterUsers').val();
-    $('.users').empty();
+    var substring = $('.filterProjects').val();
+    $('.projects').empty();
     for (var key in allProjects) {
-        if ((allProjects[key].title).indexOf(substring) > -1) {
+        if ((allProjects[key].title).indexOf(substring.toLowerCase()) > -1) {
             addProjectRow(allProjects[key].id, allProjects[key].title.substring(0, 1), allProjects[key].title, allProjects[key].users);
         }
     }
@@ -156,7 +157,7 @@ function callbackGetProjects(result) {
 function addProjectRow(id, tag, title, users) {
     console.log("addProjectRow");
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    $('.users').append('<li class="itemRow user' + id + '"></li>');
+    $('.projects').append('<li class="itemRow user' + id + '"></li>');
     $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');
     $('.innerUser' + id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + tag + '</div>');
     $('.innerUser' + id).append('<a class="itemName" href="">' + title + '</a>');
@@ -168,8 +169,4 @@ function addProjectRow(id, tag, title, users) {
     $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
     $('.projectButtons' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
-}
-
-function openModalDeleteProject() {
-    $('#m_deleteProject').modal('toggle');
 }

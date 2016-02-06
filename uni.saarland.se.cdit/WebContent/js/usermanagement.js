@@ -11,7 +11,7 @@ $(document).ready(function () {
     getUsers();
 
     //Changehandler for the search bar. Change something and press enter to call this
-    $('.filterUsers').on('change', function () {
+    $('.filterUsers').on('keyup', function () {
         filterUsers();
     });
 
@@ -39,7 +39,12 @@ $(document).ready(function () {
         var split = str.split("itemRow user");
         console.log(split);
         usertoDelete = split[1];
-        openModalDeleteUser();
+        $('#m_deleteUser').modal('toggle');
+    });
+
+    $('#deleteUser').on('click', function () {
+        deleteUser(usertoDelete);
+        $('#m_deleteUser').modal('toggle');
     });
 
     $('.users').on('click', '#b_editUser', function () {
@@ -91,7 +96,7 @@ function filterUsers() {
     $('.users').empty();
 
     for (var key in allUsers) {
-        if ((allUsers[key].username).indexOf(substring) > -1) {
+        if ((allUsers[key].username).indexOf(substring.toLowerCase()) > -1) {
             addUserRow(allUsers[key].id, allUsers[key].username.substring(0, 1), allUsers[key].username);
         }
     }
@@ -121,8 +126,4 @@ function callbackGetUsers(result) {
 
 function callbackGetProjects(result) {
     allProjects = result;
-}
-
-function openModalDeleteUser() {
-    $('#m_deleteUser').modal('toggle');
 }
