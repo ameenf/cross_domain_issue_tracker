@@ -3,14 +3,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Node {
-
-	private int id ;
-	private int projectId ;
-	private int sourceNodeId; 
-	private int targetNodeId ;
+	private int id;
+	private int projectId;
+	private int userId;
+	private int statusId;
 	private int positionX;
 	private int positionY;
 	private int ticketsCount;
+	private Arrow[] arrows;
 	/**
 	 * @return the id
 	 */
@@ -18,10 +18,10 @@ public class Node {
 		return id;
 	}
 	/**
-	 * @param workflowId the id to set
+	 * @param id the id to set
 	 */
-	public void setId(int workflowId) {
-		this.id = workflowId;
+	public void setId(int id) {
+		this.id = id;
 	}
 	/**
 	 * @return the projectId
@@ -36,28 +36,28 @@ public class Node {
 		this.projectId = projectId;
 	}
 	/**
-	 * @return the sourceNodeId
+	 * @return the userId
 	 */
-	public int getSourceNodeId() {
-		return sourceNodeId;
+	public int getUserId() {
+		return userId;
 	}
 	/**
-	 * @param sourceNodeId the sourceNodeId to set
+	 * @param userId the userId to set
 	 */
-	public void setSourceNodeId(int sourceNodeId) {
-		this.sourceNodeId = sourceNodeId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	/**
-	 * @return the targetNodeId
+	 * @return the statusId
 	 */
-	public int getTargetNodeId() {
-		return targetNodeId;
+	public int getStatusId() {
+		return statusId;
 	}
 	/**
-	 * @param targetNodeId the targetNodeId to set
+	 * @param statusId the statusId to set
 	 */
-	public void setTargetNodeId(int targetNodeId) {
-		this.targetNodeId = targetNodeId;
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
 	}
 	/**
 	 * @return the positionX
@@ -84,17 +84,27 @@ public class Node {
 		this.positionY = positionY;
 	}
 	/**
-	 * @return the ticketsCount
+	 * @return the arrows
+	 */
+	public Arrow[] getArrows() {
+		return arrows;
+	}
+	/**
+	 * @param arrows the arrows to set
+	 */
+	public void setArrows(Arrow[] arrows) {
+		this.arrows = arrows;
+	}
+	/**
+	 * @return the ticketCount
 	 */
 	public int getTicketsCount() {
 		return ticketsCount;
 	}
 	/**
-	 * @param ticketsCount the ticketsCount to set
+	 * @param ticketCount the ticketCount to set
 	 */
-	public void setTicketsCount(int ticketsCount) {
-		this.ticketsCount = ticketsCount;
+	public void setTicketsCount(int ticketCount) {
+		this.ticketsCount = ticketCount;
 	}
-
-
 }

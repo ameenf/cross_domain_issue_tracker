@@ -3,14 +3,14 @@ package uni.saarland.se.cdit;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ErrorHandler {
+public class MessageHandler {
 	private String message;
 
-	public ErrorHandler(){
+	public MessageHandler(){
 		
 	}
 	
-	public ErrorHandler(String m){
+	public MessageHandler(String m){
 		message = m;
 	}
 	/**

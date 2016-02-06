@@ -9,9 +9,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeDAO {
+public class WorkflowDAO {
 	
-	public List<Node> getWorkflow(int id) {
+	/*public List<Node> getWorkflow(int id) {
         List<Node> list = new ArrayList<Node>();
         Connection c = null;
     	String sql = "SELECT node_id, project_id, source_node_id, target_node_id, x_pos, y_pos "+
@@ -43,6 +43,63 @@ public class NodeDAO {
 			ConnectionHelper.close(c);
 		}
         return list;
+    }*/
+	
+	public Node create(Node node) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement= "INSERT INTO nodes(project_id, status_id, x_pos, y_pos, user_id) "+
+        				  "VALUES (?, ?, ?, ?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "node_id" });
+            
+            ps.setInt(1, node.getProjectId());
+            ps.setInt(2, node.getStatusId());
+            ps.setInt(3, node.getPositionX());
+            ps.setInt(4, node.getPositionY());
+            ps.setInt(5, node.getUserId());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);          
+            node.setId(id);
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return node;
+    }
+	
+	public Arrow create(Arrow arrow) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement= "INSERT INTO arrows(source_node_id, target_node_id, label) VALUES (?, ?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "arrow_id" });
+            
+            ps.setInt(1, arrow.getSourceNode());
+            ps.setInt(2, arrow.getTargetNode());
+            ps.setString(3, arrow.getLabel());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);          
+            arrow.setId(id);
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return arrow;
     }
 	
 	public Node updateNodePosition(Node node){
@@ -65,11 +122,32 @@ public class NodeDAO {
         return node;
 	}
 	
-	public List<NodeTest> getFlow(int id) {
-        List<NodeTest> list = new ArrayList<NodeTest>();
+	public Arrow updateArrow(Arrow arrow){
+		Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE arrows "+
+            										  "SET source_node_id=?, target_node_id=?, label=? "+
+            										  "WHERE arrow_id=?");
+            ps.setInt(1, arrow.getSourceNode());
+            ps.setInt(2, arrow.getTargetNode());
+            ps.setString(3, arrow.getLabel());
+            ps.setInt(4, arrow.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return arrow;
+	}
+	
+	public List<Node> getFlow(int id) {
+        List<Node> list = new ArrayList<Node>();
         Connection c = null;
     	String sql = "SELECT node_id, project_id, status_id, user_id, x_pos, y_pos "+
-    				 "FROM nodes_test "+
+    				 "FROM nodes "+
     				 "WHERE project_id = ?";
     	String ticketsCountSql = "SELECT COUNT(t.ticket_id) FROM ticket as t WHERE t.project_id = ? AND t.status_id = ? AND t.active=?";
     	String arrows = "SELECT * FROM arrows WHERE source_node_id=?";
@@ -106,20 +184,25 @@ public class NodeDAO {
 		}
         return list;
     }
-	
-	protected Node processRow(ResultSet rs) throws SQLException {
-		Node workflow = new Node();
-		workflow.setId(rs.getInt("node_id"));
-		workflow.setProjectId(rs.getInt("project_id"));
-		workflow.setSourceNodeId(rs.getInt("source_node_id"));
-		workflow.setTargetNodeId(rs.getInt("target_node_id"));
-		workflow.setPositionX(rs.getInt("x_pos"));
-		workflow.setPositionY(rs.getInt("y_pos"));
-        return workflow;
+
+	public boolean removeArrow(int id) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("DELETE FROM arrows WHERE arrow_id=?");
+            ps.setInt(1, id);
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
     }
 	
-	protected NodeTest processTestRow(ResultSet rs) throws SQLException {
-		NodeTest workflow = new NodeTest();
+	protected Node processTestRow(ResultSet rs) throws SQLException {
+		Node workflow = new Node();
 		workflow.setId(rs.getInt("node_id"));
 		workflow.setProjectId(rs.getInt("project_id"));
 		workflow.setUserId(rs.getInt("user_id"));

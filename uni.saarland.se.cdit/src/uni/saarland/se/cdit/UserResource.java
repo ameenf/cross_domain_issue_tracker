@@ -30,7 +30,7 @@ public class UserResource {
 		if(success)
 			return Response.status(200).entity(dao.getUser(user)).build();
 		else
-			return Response.status(401).entity(new ErrorHandler("Wrong username or password.")).build();
+			return Response.status(401).entity(new MessageHandler("Wrong username or password.")).build();
 
 	}
 	
