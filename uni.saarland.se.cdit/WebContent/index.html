@@ -7,7 +7,8 @@
 
     <!-- Boostrap start -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
+    <!--    <link rel="stylesheet" href="bootstrap-3.3.6-dist/bootstrap-material-design-master/dist/css/bootstrap-material-design.min.css">-->
 
     <!-- Latest compiled and minified JavaScript -->
     <!--    <script src="js/bootstrap.min.js"></script>-->
@@ -28,22 +29,41 @@
 </head>
 
 <body>
-    <div class="container">
-        <!--        <form class="form-signin">-->
-        <h2 class="form-signin-heading">Login</h2>
-        <div>
-            <label for="inputEmail" class="sr-only">Username</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-            <!--  <button class="btn btn-lg btn-primary btn-block" id="login">Sign in</button>-->
-            <input type="submit" class="btn btn-lg btn-primary btn-block" id="login">
-            <!--        </form>-->
+    <div class="container loginContainer">
+        <div class="login-row">
+            <div class="login-icon"></div>
+            <div class="loginHeading">WELCOME BACK</div>
         </div>
+        <div id="login-username" class="login-row form-group">
+            <!--                        <label for="inputEmail" class="sr-only">Username</label>-->
+            <label class="sr-only">Username</label>
+            <div class="loginLabel">Username</div>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Your username" required autofocus>
+        </div>
+
+        <div id="login-password" class="login-row form-group">
+            <!--            <label for="inputPassword" class="sr-only">Password</label>-->
+            <div class="loginLabel">Password</div>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Your password" required>
+        </div>
+        <div class="login-row">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" id="login" value="SIGN IN">
+        </div>
+
+        <div class="login-row">
+            <a href="#" class="forgotPassword">
+                Forgot the password?
+            </a>
+        </div>
+        <div id="loginFailBox" class="alert alert-danger">
+            Wrong password or username
+        </div>
+        <!--
         <div id="loginFailBox" class="loginFailBox">
             Wrong username/password combination!
             <br> Please try again or contact the admin.
         </div>
+-->
     </div>
     <!-- /container -->
 </body>
