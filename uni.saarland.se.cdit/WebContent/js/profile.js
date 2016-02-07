@@ -77,7 +77,6 @@ $(document).ready(function () {
             "experience": $('#experience').val(),
             "field": $('#field').val(),
             "links": $('#links').val(),
-            "id": userid,       //id?
             "userId": userid, 
         }
         

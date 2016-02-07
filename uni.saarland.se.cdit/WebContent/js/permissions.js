@@ -4,7 +4,7 @@ $(document).ready(function () {
     console.log("Getting ID");
     var userid;
     //userid = Cookies.get('userid')
-    userid = 3;
+    userid = 1;
     
     console.log("User ID " + userid);
     getUser(userid);

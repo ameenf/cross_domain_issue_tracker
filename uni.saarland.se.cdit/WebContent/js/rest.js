@@ -612,7 +612,6 @@ function createProfile(id) {
         "experience": "",
         "field": "",
         "links": "",
-        "id": id,
         "userId": id,
     }
 
@@ -644,7 +643,6 @@ function createProfile(id) {
 function updateProfile(data) {
     $.ajax({
         type: "PUT",
-        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/remove/" + id,
         url: baseurl + "rest/users/updateProfile",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));

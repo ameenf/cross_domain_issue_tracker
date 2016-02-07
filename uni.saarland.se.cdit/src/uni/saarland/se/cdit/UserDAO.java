@@ -271,6 +271,41 @@ public class UserDAO {
         return success;
     }
 	
+	public boolean updatePermissions(User user, int projectId) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "";
+        boolean success = false;
+        String delStatement = "DELETE FROM user_permissions WHERE project_id=? AND user_id=?";
+        statement= "INSERT INTO user_permissions(project_id, user_id, permission_id) VALUES (?, ?, (SELECT permission_id FROM permissions WHERE permission_name LIKE ?))";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(delStatement);
+            ps.setInt(1, projectId);
+            ps.setInt(2, user.getId());
+            if(ps.executeUpdate()>0)
+            	success = true;
+            ps = c.prepareStatement(statement);
+            ps.setInt(1, projectId);
+            ps.setInt(2, user.getId());
+            String permissions[] = user.getPermissions();
+            
+            if(permissions!=null){
+            	for(int i=0;i<permissions.length;i++){
+                    ps.setString(3, permissions[i]);
+                    ps.executeUpdate();
+                    success = true;
+            	}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return success;
+    }
+	
 	public Group createGroup(Group group) {
         Connection c = null;
         PreparedStatement ps = null;
@@ -307,6 +342,43 @@ public class UserDAO {
 		}
         return group;
     }
+	
+	public Group updateGroup(Group group) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement= "UPDATE groups SET group_name=?, group_description=? WHERE group_id=?";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement);
+            ps.setString(1, group.getName());
+            ps.setString(2, group.getDescription());
+            ps.setInt(3, group.getId());
+            ps.executeUpdate();
+            
+            String delStatement = "DELETE FROM group_permissions WHERE group_id=?";
+            ps = c.prepareStatement(delStatement);
+            ps.setInt(1, group.getId());
+            ps.executeUpdate();
+            
+            String permissions[] = group.getPermissions();
+            if(permissions!=null){
+            	statement = "INSERT INTO group_permissions(group_id, permission_id) VALUES (?,"+
+            				" (SELECT permission_id FROM permissions WHERE permission_name LIKE ?))";
+            	ps = c.prepareStatement(statement);
+            	for(int i=0;i<permissions.length;i++){
+            		ps.setInt(1, group.getId());
+                    ps.setString(2, permissions[i]);
+                    ps.executeUpdate();
+            	}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return group;
+    }	
 	
 	public UserProfile createProfile(UserProfile profile) {
         Connection c = null;
