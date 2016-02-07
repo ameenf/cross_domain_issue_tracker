@@ -673,30 +673,6 @@ function updateProfile(data) {
 //////////////////////////////////////////////////Workflow/////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function getProjectWorkflow(projectId) {
-    $.ajax({
-        type: "GET",
-        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
-        url: baseurl + "rest/workflow/getProjectWorkflow/" + projectId,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-        },
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            //return result;
-            callbackGetProjectWorkflow(result);
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c == "Unauthorized") {
-                window.location.href = baseurl;
-            }
-        }
-    })
-}
-
 function getWorkflow(projectId) {
     $.ajax({
         type: "GET",
@@ -721,6 +697,30 @@ function getWorkflow(projectId) {
     })
 }
 
+
+function getWorkflowForArray(projectId) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        url: baseurl + "rest/workflow/getWorkflow/" + projectId,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //return result;
+            callbackGetWorkflowForArray(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
 function updateWorkflowposition(nodeId, positionX, positionY) {
     var data = {
         "id": nodeId,
@@ -745,6 +745,59 @@ function updateWorkflowposition(nodeId, positionX, positionY) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             if (c = "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+function createArrow(srcNode, trgNode, label) {
+    var data = {
+        "sourceNode": srcNode,
+        "targetNode": trgNode,
+        "label": label
+    }
+    $.ajax({
+        type: "POST",
+        url: baseurl + "rest/workflow/arrow",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackCreateArrow(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+  function deleteArrow(id) {
+    $.ajax({
+        type: "DELETE",
+        url: baseurl + "rest/workflow/arrow/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
         }

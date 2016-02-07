@@ -270,6 +270,11 @@
     padding: 20px;
 }
 
+#addLabel {
+    display: none;
+    padding: 20px;
+}
+
 
 /*
 .alertPlaceholder {
@@ -284,7 +289,7 @@
     width: 33%;
     left: 33%;
     text-align: center;
-    z-index: 999;
+    z-index: 1011;
 }
 
 .labelstyle {
