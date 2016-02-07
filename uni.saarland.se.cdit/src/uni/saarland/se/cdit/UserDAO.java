@@ -81,6 +81,31 @@ public class UserDAO {
         return list;
     }
 	
+	public User findByProjectId(User user, int projectId) {
+        Connection c = null;
+    	String sql = "SELECT permission_name "+
+    				 "FROM permissions as p, user_permissions as up "+
+    				 "WHERE p.permission_id = up.permission_id AND up.user_id = ? AND up.project_id=? ";
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement s = c.prepareStatement(sql, 
+            		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+              		  ResultSet.CONCUR_READ_ONLY);
+            s.setInt(1, user.getId());
+            s.setInt(2, projectId);
+            ResultSet rs = s.executeQuery();
+            if (rs.next()) {
+                user.setPermissions(getPermissions(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return user;
+    }
+	
 	public boolean authenticate(User user){
 		Connection c = null;
 		String sql = "SELECT users.users_password FROM users WHERE users.users_username = ? AND active=?";

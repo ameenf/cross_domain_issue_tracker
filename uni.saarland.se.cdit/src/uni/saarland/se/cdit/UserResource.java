@@ -75,6 +75,15 @@ public class UserResource {
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
+	@POST @Path("getProjectPermissions/{project_id}")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public User findUsersByProject(User user, @PathParam("project_id") int id) {
+		System.out.println("get user by project id");
+		return dao.findByProjectId(user,id);
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("groups")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
