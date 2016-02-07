@@ -1,6 +1,7 @@
 package uni.saarland.se.cdit;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -146,5 +147,117 @@ public class GeneralDAO {
 		Permission permission = new Permission();
 		permission.setName(rs.getString("permission_name"));
         return permission;
+    }
+	
+	public Type create(Type type) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "INSERT INTO type(type_title) VALUES (?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "type_id" });
+            
+            ps.setString(1, type.getTitle());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            type.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return type;
+    }
+
+	public Status create(Status status) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "INSERT INTO status(status_title) VALUES (?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "status_id" });
+            
+            ps.setString(1, status.getTitle());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            status.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return status;
+    }
+
+	public Label create(Label label) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "INSERT INTO label(label_title) VALUES (?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "label_id" });
+            
+            ps.setString(1, label.getTitle());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            label.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return label;
+    }	
+	
+	public Priority create(Priority priority) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "INSERT INTO priority(priority_title) VALUES (?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "priority_id" });
+            
+            ps.setString(1, priority.getTitle());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            priority.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return priority;
+    }	
+	
+	public boolean remove(int id, String src) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("DELETE FROM "+src+" WHERE "+src+"_id=?");
+            ps.setInt(1, id);
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
     }
 }
