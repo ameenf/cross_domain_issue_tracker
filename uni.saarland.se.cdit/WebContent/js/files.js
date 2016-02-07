@@ -15,10 +15,15 @@ $(document).ready(function () {
     //        filterIssues();
     //    });
 
-    getTickets();
+    getFiles();
 });
 
 function openIssue(e) {
     e.preventDefault(); //Prevents link from forwarding
     console.log('openIssue()');
+}
+
+function callbackGetFiles(result) {
+    console.log('callbackGetFiles');
+    console.log(result);
 }

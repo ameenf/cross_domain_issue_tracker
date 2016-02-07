@@ -114,7 +114,6 @@ function addUserRow(id, tag, username) {
     $('.userButtons' + id).append('<span id="b_editUser" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
     $('.userButtons' + id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
-
 }
 
 

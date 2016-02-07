@@ -12,10 +12,9 @@ $(document).ready(function () {
     });
 
     //Changehandler for the search bar. Change something and press enter to call this
-    $('.filterIssues').on('change', function () {
+    $('.filterIssues').on('keyup', function () {
         filterIssues();
     });
-
     getTickets();
 });
 
@@ -26,83 +25,33 @@ function openIssue(e) {
 
 function filterIssues() {
     console.log('searchIssues()');
-
     var substring = $('.filterIssues').val();
-
     $('.issues').empty();
 
     for (var key in allTickets) {
-        if ((allTickets[key].title).indexOf(substring) > -1) {
-            filteredTickets.push(allTickets[key]);
-            console.log(allTickets[key].id);
-            $('.issues').append('<li class="itemRow issue' + allTickets[key].id + '"></li>');
-            $('.issue' + allTickets[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + allTickets[key].id + '"></div>');
-            $('.innerIssue' + allTickets[key].id).append('<div class="itemTag"></div>');
-            $('.innerIssue' + allTickets[key].id).append('<a class="itemName" href="workflow.html">' + allTickets[key].title + '</a>');
-            $('.innerIssue' + allTickets[key].id).append('<div class="innerUserlist' + allTickets[key].id + ' "aria-hidden="true"></div>');
-            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-            $('.innerUserlist' + allTickets[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-            $('.innerIssue' + allTickets[key].id).append('<div class="itemInfo">' + allTickets[key].description + '</div>');
+        if ((allTickets[key].title).indexOf(substring.toLowerCase()) > -1) {
+            addRow(allTickets[key].id, allTickets[key].title, allTickets[key].description);
         }
-
     }
 }
 
-function getTickets() {
-    getStatus();
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/tickets",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-            allTickets = result;
-            for (var key in result) {
-                //        Load tickets into Issues-List
-                $('.issues').append('<li class="itemRow issue' + result[key].id + '"></li>');
-                $('.issue' + result[key].id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + result[key].id + '"></div>');
-                $('.innerIssue' + result[key].id).append('<div class="itemTag"></div>');
-                $('.innerIssue' + result[key].id).append('<a class="itemName" href="workflow.html">' + result[key].title + '</a>');
-                $('.innerIssue' + result[key].id).append('<div class="innerUserlist' + result[key].id + ' "aria-hidden="true"></div>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerUserlist' + result[key].id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
-                $('.innerIssue' + result[key].id).append('<div class="itemInfo">' + statusList[result[key].statusId - 1].title + '</div>');
-
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
+function callbackGetTickets(result) {
+    console.log(result);
+    allTickets = result;
+    filterIssues();
 }
 
-function getStatus() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/uni.saarland.se.cdit/rest/general/status",
-        dataType: 'json',
-        async: true,
-        success: function (result) {
-            console.log(result);
-            statusList = result;
-            //            for (var key in result) {
-            //                for (var ticketId in allTickets) {
-            //                    
-            //                }
-            //
-            //            }
-        },
-        error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-        }
-    })
+function addRow(id, title, description) {
+    $('.issues').append('<li class="itemRow issue' + id + '"></li>');
+    $('.issue' + id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + id + '"></div>');
+    $('.innerIssue' + id).append('<div class="itemTag"></div>');
+    $('.innerIssue' + id).append('<a class="itemName" href="workflow.html">' + title + '</a>');
+    $('.innerIssue' + id).append('<div class="innerUserlist' + id + ' "aria-hidden="true"></div>');
+    $('.innerUserlist' + id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    $('.innerUserlist' + id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    $('.innerUserlist' + id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    $('.innerUserlist' + id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    $('.innerUserlist' + id).append('<span class="glyphicon glyphicon-user" aria-hidden="true"></span>');
+    $('.innerIssue' + id).append('<div class="itemInfo">' + description + '</div>');
+    $('.issue' + id).append('<div class="dividerHorizontal"></div>');
 }
