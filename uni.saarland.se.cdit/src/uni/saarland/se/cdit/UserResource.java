@@ -129,7 +129,7 @@ public class UserResource {
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Response updatePermissions(User user, @PathParam("projectId") int projectId) {
 		System.out.println("updating permissions");
-		boolean success = dao.addPermissions(user,projectId);
+		boolean success = dao.updatePermissions(user,projectId);
 		if(success)
 			return Response.status(200).entity(new MessageHandler("Success.")).build();
 		else

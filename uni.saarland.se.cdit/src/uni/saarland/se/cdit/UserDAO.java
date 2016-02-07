@@ -308,8 +308,10 @@ public class UserDAO {
             ps = c.prepareStatement(delStatement);
             ps.setInt(1, projectId);
             ps.setInt(2, user.getId());
-            if(ps.executeUpdate()>0)
+            if(ps.executeUpdate()>0){
             	success = true;
+            }
+            	
             ps = c.prepareStatement(statement);
             ps.setInt(1, projectId);
             ps.setInt(2, user.getId());
