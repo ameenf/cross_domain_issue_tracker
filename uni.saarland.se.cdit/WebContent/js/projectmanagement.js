@@ -38,7 +38,7 @@ $(document).ready(function () {
         $('#m_deleteProject').modal('toggle');
     });
     $('.projects').on('click', '#b_editProject', function () {
-        changePage('projectmanagement.html')
+        changePage('permissions.html')
     });
 
     $('#deleteProject').on('click', function () {
