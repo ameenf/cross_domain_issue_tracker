@@ -16,6 +16,7 @@ var currentStatusId;
 var projectId = 1; // add prject id here
 var userId = Cookies.get("userid"); // add prject id here
 var nodeIndex;
+var lastarrowId;
 
 $(document).ready(function () {
     getTickets(); // Get the amount of tickets and store number in node
@@ -36,7 +37,7 @@ $(window).unload(function (e) {
 
         e.preventDefault();
         // TODO add userid
-        //updateWorkflowposition(workflowNodes[index].id, posLeft, posTop);
+        updateWorkflowposition(workflowNodes[index].id, posLeft, posTop);
 
     });
 });
@@ -266,7 +267,7 @@ function listener() {
         $('#myModal2').modal('toggle');
         nodename = $(this).prev().html();
         $('#myModal2 .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
-        nodeId = workflowNodes[$(this).parent().index()].statusId;
+        nodeId = workflowNodes[$(this).parent().index()].id;
         console.log(nodeId);
         getTicketsByNodeId(nodeId);
 
@@ -356,49 +357,33 @@ function listener() {
 function callbackGetTickets(result) {
     console.log("callbackGetTickets");
     allTickets = result;
-    //    getProjectWorkflow(projectId);
     getWorkflow(projectId);
 }
 
-// Callback for the workflow of a user
-function callbackGetProjectWorkflow(result) {
-    console.log("callbackGetProjectWorkflow");
-    workflowNodes = result;
-    for (var key in result) {
-        $('.bgRaster').append('<div id="' + result[key].sourceNodeId + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
-        $('#' + result[key].sourceNodeId).append('<div class="addTicket"></div>');
-        $('#' + result[key].sourceNodeId + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
-        $('#' + result[key].sourceNodeId).append('<div class="topTitle">' + allNodes[result[key].sourceNodeId - 1].title + '</div>');
-        $('#' + result[key].sourceNodeId).append('<div class="showNode"></div>');
-        $('#' + result[key].sourceNodeId + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
-        $('#' + result[key].sourceNodeId + ' .showNode').after('<div class="amountTickets"></div>');
-        $('#' + result[key].sourceNodeId + ' .amountTickets').html(result[key].ticketsCount);
-        //        console.log("nodeid: " + result[key].id + " | countticket: " + result[key].ticketsCount);
-        //getTicketsByNodeId(allNodes[result[key].sourceNodeId - 1].id);
-    }
-    startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
-    listener(); // Activate the listener after create HTML content
 
-}
 // Callback for the workflow of a user
 function callbackGetWorkflow(result) {
     console.log("callbackGetWorkflow");
     workflowNodes = result;
-    for (var key in result) {
-        $('.bgRaster').append('<div id="' + result[key].id + '" class="item" style=left:' + result[key].positionX + '%;top:' + result[key].positionY + '%></div>');
-        $('#' + result[key].id).append('<div class="addTicket"></div>');
-        $('#' + result[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
-        $('#' + result[key].id).append('<div class="topTitle">' + allNodes[result[key].statusId - 1].title + '</div>');
-        $('#' + result[key].id).append('<div class="showNode"></div>');
-        $('#' + result[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
-        $('#' + result[key].id + ' .showNode').after('<div class="amountTickets"></div>');
-        $('#' + result[key].id + ' .amountTickets').html(result[key].ticketsCount);
+    for (var key in workflowNodes) {
+        $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
+        $('#' + workflowNodes[key].id).append('<div class="addTicket"></div>');
+        $('#' + workflowNodes[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+        $('#' + workflowNodes[key].id).append('<div class="topTitle">' + allNodes[workflowNodes[key].statusId - 1].title + '</div>');
+        $('#' + workflowNodes[key].id).append('<div class="showNode"></div>');
+        $('#' + workflowNodes[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
+        $('#' + workflowNodes[key].id + ' .showNode').after('<div class="amountTickets"></div>');
+        $('#' + workflowNodes[key].id + ' .amountTickets').html(workflowNodes[key].ticketsCount);
     }
     startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
     listener(); // Activate the listener after create HTML content
-
 }
 
+function callbackGetWorkflowForArray(result) {
+    console.log("callbackGetWorkflowForArray");
+    workflowNodes = result;
+
+}
 // Callback to get all status from server
 function callbackGetStatus(result) {
     allNodes = result;
@@ -473,7 +458,7 @@ function callbackCreateTicket(result) {
 }
 // get all tickets for showing all within a node  
 function callbackGetTicketsByNodeId(result) {
-    console.log("GetTicketsByNodeId");
+    console.log("callbackGetTicketsByNodeId");
 
     allTicketInNode = result;
     $('#myModal2 .modal-body').empty();
@@ -484,6 +469,14 @@ function callbackGetTicketsByNodeId(result) {
         $('#myModal2 .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].statusId + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
     }
     listenerShowTicket();
+}
+
+function callbackCreateArrow(result) {
+    console.log("callbackCreateArrow");
+    console.log(result);
+    lastarrowId = result.id;
+    console.log(lastarrowId);
+    console.log("---------------------");
 }
 
 function startJsplumb() {
@@ -501,17 +494,11 @@ function startJsplumb() {
             overlays: [["Arrow", {
                     width: 20,
                     length: 20,
-                    location: 0.97,
+                    location: 1,
                     foldback: 1,
                     id: "arrow"
             }],
                        ["Label", {
-//                    labelStyle: {
-//                        fillStyle: "white",
-//                        font: "15px sans-serif",
-//                        color: "rgba(97, 170, 224, 0.72)",
-//                    },
-                    label: "", // Name of the label at the arrow
                     id: "label",
                     cssClass: "labelstyle",
                     location: 0.5, // Position of the label at the arrow
@@ -523,7 +510,7 @@ function startJsplumb() {
             },
             endpointStyle: {
                 fillStyle: "#428bca",
-                radius: 7
+                radius: 6
             },
             ConnectionsDetachable: false,
             ReattachConnections: false
@@ -554,7 +541,6 @@ function startJsplumb() {
             containment: "parent",
             grid: [10, 10]
         });
-
         // Loop through nodes and connect them
         for (var i = 0; i < workflowNodes.length; i++) {
             // if the node has no arrows, don't do anything
@@ -562,14 +548,21 @@ function startJsplumb() {
                 for (var key in workflowNodes[i].arrows) {
                     var sourceName = workflowNodes[i].arrows[key].sourceNode;
                     var targetName = workflowNodes[i].arrows[key].targetNode;
+                    var arrowId = workflowNodes[i].arrows[key].id;
+                    console.log(arrowId);
                     arrConnect[i] = jsPlumb.connect({
                         source: sourceName + "", // + "" has to be stated here, otherwise the nodes won't connect, dunno why
                         target: targetName + "",
-                        detachable: false
+                        detachable: false,
+                        parameters: {
+                            "arrowId": arrowId
+                        }
                     }, common);
-                    // TODO if no label exists, do notihng
+
                     var label = arrConnect[i].getOverlay("label");
-                    label.setLabel(workflowNodes[i].arrows[key].label);
+                    if (workflowNodes[i].arrows[key].label == null) {} else {
+                        label.setLabel(workflowNodes[i].arrows[key].label);
+                    }
                 }
             }
         }
@@ -612,12 +605,42 @@ function startJsplumb() {
                         firstNode.removeClass('borderHighlight');
 
                     } else {
+                        var label = "";
+
+                        createArrow(srcClick, trgClick);
+                        getWorkflowForArray(projectId);
+                        // create an arrow between 2 nodes
                         arrConnect.push(jsPlumb.connect({
                             type: "edit",
                             source: srcClick,
                             target: trgClick,
-                            detachable: false
+                            detachable: false,
+                            parameters: {
+                                "arrowId": 1
+                            }
                         }, common));
+
+                        //                        console.log(srcClick + " " + trgClick);
+                        //                        console.log(workflowNodes[firstNode.index()].arrows[workflowNodes[firstNode.index()].arrows.length-1]);
+
+
+                        //                        $("#addLabel").show();
+                        //                        $('#ticketViewWrapper').show();
+                        //
+                        //                        $(".btnClose").off().on('click', function (srcClick, trgClick) {
+                        //                            $("#addLabel").hide();
+                        //                            $('#ticketViewWrapper').hide();
+                        //                            console.log(srcClick + " " + trgClick);
+                        //
+                        //                            createArrow(srcClick, trgClick, label);
+                        //                        });
+                        //                        $(".btnSaveLabel").off().on('click', function (srcClick, trgClick) {
+                        //                            $("#addLabel").hide();
+                        //                            $('#ticketViewWrapper').hide();
+                        //                            label = $(".inputLabel").val();
+                        //                            console.log(label);
+                        //                            createArrow(srcClick, trgClick);
+                        //                        });
                         srcClick = "";
                         trgClick = "";
                         console.log("make both empty");
@@ -627,14 +650,18 @@ function startJsplumb() {
             });
             // click on arrow to remove connection
             jsPlumb.bind("click", function (c) {
+
+                console.log(c.id);
                 console.log(c.sourceId);
                 console.log(c.targetId);
+                console.log(c);
+
                 for (var key in arrConnect) {
                     if (c.sourceId == arrConnect[key].sourceId && c.targetId == arrConnect[key].targetId) {
                         delete arrConnect[key];
                     }
                 }
-                jsPlumb.detach(c);
+                //jsPlumb.detach(c);
                 // TODO Push arrows that are deleted
                 // TODO Maybe if no arrow is set -> warning
             });
