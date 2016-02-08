@@ -88,6 +88,7 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <!--  Add Ticket-->
+<!--
                 <div id="ticketAdd">
                     <div class="title"></div>
                     <form class="form-horizontal">
@@ -147,6 +148,8 @@
                 </div>
 
 
+                
+-->
 
                 <!-- Modal Show Node -->
                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -180,15 +183,6 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
                 <div id="popover-content-addTicket" class="popover-content hide">
                     <!--                    <div id="ticketAdd" style="display: block;">-->
                     <div class="modal-header">
@@ -213,9 +207,6 @@
                                 <label class="col-sm-2 control-label">Priority</label>
                                 <div class="col-sm-10">
                                     <select id="prioritylist" class="form-control">
-                                        <option value="1">High</option>
-                                        <option value="2">Medium</option>
-                                        <option value="3">Low</option>
                                     </select>
                                 </div>
                             </div>
@@ -223,7 +214,6 @@
                                 <label class="col-sm-2 control-label">Type</label>
                                 <div class="col-sm-10">
                                     <select id="typelist" class="form-control">
-                                        <option value="1">Meeting</option>
                                     </select>
                                 </div>
                             </div>
@@ -236,24 +226,6 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdownLabels">
-                                            <li>
-                                                <a href="#" class="small" data-value="1" tabindex="-1">
-                                                    <input type="checkbox" id="label1">
-                                                    <label for="label1"><span></span>Test</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="small" data-value="2" tabindex="-1">
-                                                    <input type="checkbox" id="label2">
-                                                    <label for="label2"><span></span>Second</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="small" data-value="3" tabindex="-1">
-                                                    <input type="checkbox" id="label3">
-                                                    <label for="label3"><span></span>Thrid</label>
-                                                </a>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div class="btn-group">
@@ -262,36 +234,6 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdownUsers">
-                                            <li>
-                                                <a href="#" class="small" data-value="1" tabindex="-1">
-                                                    <input type="checkbox" id="user1">
-                                                    <label for="user1"><span></span>admin</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="small" data-value="3" tabindex="-1">
-                                                    <input type="checkbox" id="user3">
-                                                    <label for="user3"><span></span>ameen</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="small" data-value="4" tabindex="-1">
-                                                    <input type="checkbox" id="user4">
-                                                    <label for="user4"><span></span>tobias</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="small" data-value="6" tabindex="-1">
-                                                    <input type="checkbox" id="user6">
-                                                    <label for="user6"><span></span>Tobias Walter</label>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="small" data-value="7" tabindex="-1">
-                                                    <input type="checkbox" id="user7">
-                                                    <label for="user7"><span></span>Christian Murlowski</label>
-                                                </a>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div class="btn-group">
@@ -308,15 +250,6 @@
                         <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
 
                 <div class="input-group">
                     <input type="text" class="form-control filterWorkflow" placeholder="Filter...">
@@ -346,8 +279,8 @@
                 </form>
 
                 <div class="alertPlaceholder">
-                    <div id="connectionExistsAlert" class="alert alert-info">
-                        <strong>Info!</strong> This connection already exists!
+                    <div id="connectionExistsAlert" class="alert alert-danger">
+                        <strong>Info!</strong> Already exists!
                     </div>
                 </div>
 
@@ -362,8 +295,6 @@
                                     <p class="form-control-static">Testtitle</p>
                                 </div>
                             </div>
-
-
                         </form>
                     </div>
                     <div class="bgRaster"></div>

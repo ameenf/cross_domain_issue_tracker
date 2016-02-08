@@ -47,7 +47,7 @@ $(window).unload(function (e) {
 
 function listenerShowTicket() {
     // Enlarge a ticket
-    $('.nodeTicket').off().on('click', function (e) {
+    $('.nodeTicket').on('click', function (e) {
         $('#ticketViewWrapper').toggle();
         currentTicketIndex = $('.nodeTicket').index(this);
         console.log('currentTicketIndex');
@@ -270,16 +270,14 @@ function listener() {
     var nodeId;
     // Open dialog to create a ticket
     $('.addTicket').off().on('click', function (e) {
-        //        optionsLabel = [];
-        //        optionsUser = [];
-        //        var allInputs = $(":input");
-        //        allInputs.prop('checked', false);
-        //        //$('#myModal1').modal('toggle');
-        //        $('#ticketAdd').fadeToggle('fast');
-        //        $('#ticketViewWrapper').fadeToggle('fast');
-        //
-        //        nodename = $(this).next().html();
-        //        nodeId = workflowNodes[$(this).parent().index()].id;
+        optionsLabel = [];
+        optionsUser = [];
+        var allInputs = $(":input");
+        allInputs.prop('checked', false);
+        //$('#myModal1').modal('toggle');
+        //                $('#ticketAdd').fadeToggle('fast');
+        //                $('#ticketViewWrapper').fadeToggle('fast');
+
         nodeIndex = $(this).parent().index();
         //
         //        $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
@@ -292,8 +290,8 @@ function listener() {
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover({
             html: true,
             content: function () {
-                var nodename = $(this).prev().html();
-                $('#popover-content .modal-title').html('Add Ticket in <b>' + nodename + '</b>'); // replaces the title
+                var nodename = $(this).next().html();
+                $('#popover-content-addTicket .title').html('Add Ticket in <b>' + nodename + '</b>'); // replaces the title
                 var nodeId = workflowNodes[$(this).parent().index()].id;
                 console.log(nodeId);
                 //                getTicketsByNodeId(nodeId);
@@ -341,16 +339,26 @@ function listener() {
     });
 
     $('body').on('click', '#submitTicket', function (e) {
-        var elem = document.getElementById("prioritylist");
+        var elem = $(".popover #prioritylist")[0];
         var prioId = elem.options[elem.selectedIndex].value;
 
-        var elem = document.getElementById("typelist");
+        var elem = $(".popover #typelist")[0];
         var typeId = elem.options[elem.selectedIndex].value;
+        var subTicketTitle = $(".popover #input_new_title").val();
+        var subTicketDesc = $(".popover #input_new_desc").val();
+
+        console.log(subTicketTitle + " | " + subTicketDesc);
+        console.log("priority: " + prioId);
+        console.log("type: " + typeId);
+        console.log("status: " + workflowNodes[nodeIndex].statusId);
+        console.log("project: " + projectId);
+        console.log("users: " + optionsUser);
+        console.log("labels: " + optionsLabel);
 
         var data = {
-            "title": $("#input_new_title").val(),
+            "title": $(".popover #input_new_title").val(),
             "creationDate": datetime,
-            "description": $("#input_new_desc").val(),
+            "description": $(".popover #input_new_desc").val(),
             "priorityId": prioId,
             "typeId": typeId,
             "statusId": workflowNodes[nodeIndex].statusId,
@@ -360,7 +368,9 @@ function listener() {
         }
 
         // call to create a ticket
-        createTicket($("#input_new_title").val(), datetime, $("#input_new_desc").val(), prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
+        createTicket(subTicketTitle, datetime, subTicketDesc, prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
+        $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
+
     });
 
     // Submit a ticket to the database
@@ -386,10 +396,9 @@ function listener() {
     //        // call to create a ticket
     //        createTicket($("#input_new_title").val(), datetime, $("#input_new_desc").val(), prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
     //    });
+    $('body').on('click', '.popover .dropdown-menu.dropdownLabels a', function (e) {
 
-    $('.dropdown-menu.dropdownLabels a').off().on('click', function (event) {
-
-        var $target = $(event.currentTarget),
+        var $target = $(this),
             val = $target.attr('data-value'),
             $inp = $target.find('input'),
             idx;
@@ -412,9 +421,8 @@ function listener() {
         return false;
     });
 
-    $('.dropdown-menu.dropdownUsers a').off().on('click', function (event) {
-
-        var $target = $(event.currentTarget),
+    $('body').on('click', '.popover .dropdown-menu.dropdownUsers a', function (e) {
+        var $target = $(this),
             val = $target.attr('data-value'),
             $inp = $target.find('input'),
             idx;
@@ -437,6 +445,7 @@ function listener() {
         return false;
     });
 
+
     $('#btnFileUpload').off().on('click', function (event) {
         // select file and upload 
     });
@@ -452,29 +461,6 @@ function callbackGetTickets(result) {
 
 
 // Callback for the workflow of a user
-//function callbackGetWorkflow(result) {
-//    console.log("callbackGetWorkflow");
-//    workflowNodes = result;
-//    for (var key in workflowNodes) {
-//        $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
-//        $('#' + workflowNodes[key].id).append('<div class="addTicket"></div>');
-//        $('#' + workflowNodes[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
-//        $('#' + workflowNodes[key].id).append('<div class="topTitle">' + allNodes[workflowNodes[key].statusId - 1].title + '</div>');
-//        $('#' + workflowNodes[key].id).append('<div class="showNode"></div>');
-//        $('#' + workflowNodes[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
-//        $('#' + workflowNodes[key].id + ' .showNode').after('<div class="amountTickets"></div>');
-//        $('#' + workflowNodes[key].id + ' .amountTickets').html(workflowNodes[key].ticketsCount);
-//        $("[data-toggle=popover]").popover({
-//            html: true,
-//            content: function () {
-//                return $('#popover-content').html();
-//            }
-//        });
-//    }
-//    startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
-//    listener(); // Activate the listener after create HTML content
-//}
-
 function callbackGetWorkflow(result) {
     console.log("callbackGetWorkflow");
     workflowNodes = result;
@@ -484,7 +470,6 @@ function callbackGetWorkflow(result) {
             console.log("null");
         } else {
             nodeArrows[key] = workflowNodes[key].arrows;
-
         }
 
         $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
@@ -518,9 +503,6 @@ function callbackGetWorkflow(result) {
 function callbackGetWorkflowForArray(result) {
     console.log("callbackGetWorkflowForArray");
     workflowNodes = result;
-    for (var key in result) {
-        console.log(result[key].arrows)
-    }
 }
 // Callback to get all status from server
 function callbackGetStatus(result) {
@@ -654,9 +636,40 @@ function callbackUpdateArrow(result) {
 
 function callbackCreateNode(result) {
     console.log("callbackCreateNode");
-    console.log(result.id);
-    $(".item").last().attr("id", result.id);
+    console.log(result);
+    console.log(result.ticketsCount);
+    //$(".item").last().attr("id", result.id);
     getWorkflowForArray(projectId);
+
+
+    $('.bgRaster').append('<div id="' + result.id + '" class="item" style=left:' + result.positionX + '%;top:' + result.positionY + '%></div>');
+    $('#' + result.id).append('<div class="addTicket" data-placement="bottom" data-toggle="' + result.id + 'popoverAddTicket" data-container="body" data-placement="left" data-html="true"></div>');
+    $('#' + result.id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+    $('#' + result.id).append('<div class="topTitle">' + allNodes[result.statusId - 1].title + '</div>');
+    $('#' + result.id).append('<div class="showNode" data-placement="bottom" data-toggle="' + result.id + 'popoverNodeView" data-container="body" data-placement="left" data-html="true"></div>');
+    $('#' + result.id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
+    $('#' + result.id + ' .showNode').after('<div class="amountTickets"></div>');
+    $('#' + result.id + ' .amountTickets').html(result.ticketsCount);
+    jsPlumb.draggable($(".item"), {
+        containment: "parent",
+        grid: [10, 10]
+    });
+
+    //        $("[data-toggle=popover]").popover({
+    //            html: true,
+    //            content: function () {
+    //                $(this).next('.popover').find('#closePopup').click(function (e) {
+    //                    $(this).popover('hide');
+    //                });
+    //
+    //                var nodename = $(this).prev().html();
+    //                $('#popover-content .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
+    //                var nodeId = workflowNodes[$(this).parent().index()].id;
+    //                console.log(nodeId);
+    //                getTicketsByNodeId(nodeId);
+    //                return $('#popover-content').html();
+    //            }
+    //        });
 
 }
 
@@ -733,7 +746,7 @@ function startJsplumb() {
                     var sourceName = workflowNodes[i].arrows[key].sourceNode;
                     var targetName = workflowNodes[i].arrows[key].targetNode;
                     var arrowId = workflowNodes[i].arrows[key].id;
-                    console.log(arrowId);
+                    console.log("Arrows:" + arrowId);
                     arrConnect[counter] = jsPlumb.connect({
                         source: sourceName + "", // + "" has to be stated here, otherwise the nodes won't connect, dunno why
                         target: targetName + "",
@@ -779,7 +792,6 @@ function startJsplumb() {
                         //                            $("#connectionExistsAlert").alert('open');
                         $("#connectionExistsAlert").show();
                         $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
-                            //                                $("#connectionExistsAlert").alert('close');
                             $("#connectionExistsAlert").hide();
                         });
                         srcClick = "";
@@ -894,20 +906,37 @@ function startJsplumb() {
             }
         });
 
-        // add a new node with title
+        // add a new node with title of the available status
         $('body').on('click', '#saveAddNode', function () {
-            $(".bgRaster").append('<div id="" class="item jsplumb-draggable jsplumb-endpoint-anchor jsplumb-connected"><div class="topTitle">' + allNodes[statusIdTemp].title + '</div></div>');
-            console.log(allNodes[statusIdTemp].title);
-            createNode(projectId, userId, allNodes[statusIdTemp].id, 0, 0);
+            var found = false;
+            for (var key in workflowNodes) {
+                if (allNodes[statusIdTemp].id == workflowNodes[key].statusId) {
+                    console.log("exists already: " + allNodes[statusIdTemp].title);
+                    found = true;
+                }
+            }
+            if (found == true) {
+                $("#connectionExistsAlert").show();
+                $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#connectionExistsAlert").hide();
+                });
+            } else {
 
-            jsPlumb.draggable($(".item"), {
-                containment: "parent",
-                grid: [10, 10]
-            });
+                //                $(".bgRaster").append('<div id="" class="item jsplumb-draggable jsplumb-endpoint-anchor jsplumb-connected"><div class="topTitle">' + allNodes[statusIdTemp].title + '</div></div>');
+                console.log(allNodes[statusIdTemp].title);
+                createNode(projectId, userId, allNodes[statusIdTemp].id, 0, 0);
 
-            console.log("save");
-            $('#addNode').trigger("click");
-            jsPlumb.repaintEverything();
+                jsPlumb.draggable($(".item"), {
+                    containment: "parent",
+                    grid: [10, 10]
+                });
+
+                console.log("save");
+                $('#addNode').trigger("click");
+                jsPlumb.repaintEverything();
+            }
+
+
         });
 
         $('body').on('click', '#closeAddNode', function () {
