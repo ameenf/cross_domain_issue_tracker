@@ -199,8 +199,11 @@
     -webkit-animation-direction: alternate;
 }
 
+.editRow {
+    margin-top: 15px;
+}
+
 .onoffswitch {
-    margin-top: 20px;
     position: relative;
     width: 90px;
     /*
@@ -220,8 +223,9 @@
     cursor: pointer;
     height: 36px;
     padding: 0;
-    line-height: 36px;
-    border: 2px solid #CCCCCC;
+    margin-bottom: 0px;
+    /*    line-height: 36px;*/
+    /*    border: 2px solid #CCCCCC;*/
     border-radius: 36px;
     background-color: #C7C7C7;
     transition: background-color 0.3s ease-in;
@@ -236,7 +240,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    right: 57px;
+    /*    right: 57px;*/
     border: 2px solid #CCCCCC;
     border-radius: 36px;
     transition: all 0.3s ease-in 0s;
@@ -314,4 +318,49 @@
 .ticketScrollContainer {
     height: 250px;
     overflow-y: scroll;
+}
+
+path {
+    cursor: pointer;
+}
+
+.popoverArrow {
+    position: absolute;
+    display: none;
+    background: #fff;
+    border: 1px solid #999;
+    padding: 10px;
+    width: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    z-index: 1011;
+}
+
+.popoverArrow:after,
+.popoverArrow:before {
+    right: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    z-index: 1011;
+}
+
+.popoverArrow:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #ffffff;
+    border-width: 10px;
+    top: 50%;
+    margin-top: -10px;
+    z-index: 1011;
+}
+
+.popoverArrow:before {
+    border-color: rgba(201, 201, 201, 0);
+    border-right-color: #c9c9c9;
+    border-width: 11px;
+    top: 50%;
+    margin-top: -11px;
+    z-index: 1011;
 }

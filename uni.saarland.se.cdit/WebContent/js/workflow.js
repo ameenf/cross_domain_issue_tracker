@@ -10,14 +10,16 @@ var allUsers = [];
 var optionsLabel = [];
 var optionsUser = [];
 var workflowNodes = [];
+var nodeArrows = [];
 var feedbackTicket = [];
 var currentTicketIndex;
 var currentStatusId;
-var projectId = 1; // add prject id here
-var userId = Cookies.get("userid"); // add prject id here
+var projectId = 1; // add prject id from cookie here
+var userId = Cookies.get("userid"); // get UserId from cookie
 var nodeIndex;
 var lastarrowId;
 var popoverId;
+var firstNode;
 
 $(document).ready(function () {
     getTickets(); // Get the amount of tickets and store number in node
@@ -414,6 +416,14 @@ function callbackGetWorkflow(result) {
     console.log("callbackGetWorkflow");
     workflowNodes = result;
     for (var key in workflowNodes) {
+
+        if (workflowNodes[key].arrows == null) {
+            console.log("null");
+        } else {
+            nodeArrows[key] = workflowNodes[key].arrows;
+
+        }
+
         $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
         $('#' + workflowNodes[key].id).append('<div class="addTicket"></div>');
         $('#' + workflowNodes[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
@@ -445,12 +455,17 @@ function callbackGetWorkflow(result) {
 function callbackGetWorkflowForArray(result) {
     console.log("callbackGetWorkflowForArray");
     workflowNodes = result;
-
+    for (var key in result) {
+        console.log(result[key].arrows)
+    }
 }
 // Callback to get all status from server
 function callbackGetStatus(result) {
     allNodes = result;
     console.log("callbackGetStatus: " + allNodes);
+    for (var key in allNodes) {
+        $('#addNode + .popover .checkbox').append('<div class="radio"><label><input type="radio" name="optionsRadios" class="radioStatus" id="option' + allNodes[key].id + '" value="' + allNodes[key].id + '" />' + allNodes[key].title + '</label></div>');
+    }
 }
 
 // Callback to get all types in the DB
@@ -566,13 +581,23 @@ function callbackGetTicketsByNodeId(result) {
 function callbackCreateArrow(result) {
     console.log("callbackCreateArrow");
     console.log(result);
-    lastarrowId = result.id;
-    console.log(lastarrowId);
-    console.log("---------------------");
+    getWorkflowForArray(projectId);
+}
+// updating an existing arrow
+function callbackUpdateArrow(result) {
+    console.log("callbackCreateArrow");
+    console.log(result);
+}
+
+function callbackCreateNode(result) {
+    console.log("callbackCreateNode");
+    console.log(result.id);
+    $(".item").last().attr("id", result.id);
+    getWorkflowForArray(projectId);
+
 }
 
 function startJsplumb() {
-
     jsPlumb.ready(function () {
         console.log("jsplumb loaded!");
         // Set the container for the workflow
@@ -619,6 +644,9 @@ function startJsplumb() {
                 paintStyle: {
                     strokeStyle: "#ca4242",
                     lineWidth: 5
+                },
+                hoverPaintStyle: {
+                    strokeStyle: "#baca42"
                 }
             }
         });
@@ -633,6 +661,7 @@ function startJsplumb() {
             containment: "parent",
             grid: [10, 10]
         });
+        var counter = 0;
         // Loop through nodes and connect them
         for (var i = 0; i < workflowNodes.length; i++) {
             // if the node has no arrows, don't do anything
@@ -642,28 +671,28 @@ function startJsplumb() {
                     var targetName = workflowNodes[i].arrows[key].targetNode;
                     var arrowId = workflowNodes[i].arrows[key].id;
                     console.log(arrowId);
-                    arrConnect[i] = jsPlumb.connect({
+                    arrConnect[counter] = jsPlumb.connect({
                         source: sourceName + "", // + "" has to be stated here, otherwise the nodes won't connect, dunno why
                         target: targetName + "",
-                        detachable: false,
-                        parameters: {
-                            "arrowId": arrowId
-                        }
+                        detachable: false
                     }, common);
 
-                    var label = arrConnect[i].getOverlay("label");
+                    var label = arrConnect[counter].getOverlay("label");
+                    counter++;
                     if (workflowNodes[i].arrows[key].label == null) {} else {
                         label.setLabel(workflowNodes[i].arrows[key].label);
                     }
                 }
             }
         }
+
         var srcClick = "";
         var trgClick = "";
         var found = false;
+
         // connect 2 nodes together
         function connectNodes() {
-            var firstNode;
+
             $(".item").off().on('click', function () {
                 if (srcClick == "") {
                     srcClick = $(this).attr("id");
@@ -696,68 +725,140 @@ function startJsplumb() {
                         found = false;
                         firstNode.removeClass('borderHighlight');
 
-                    } else {
+                    } else { // create the arrow
                         var label = "";
 
                         createArrow(srcClick, trgClick);
-                        getWorkflowForArray(projectId);
+
                         // create an arrow between 2 nodes
                         arrConnect.push(jsPlumb.connect({
                             type: "edit",
                             source: srcClick,
                             target: trgClick,
-                            detachable: false,
-                            parameters: {
-                                "arrowId": 1
-                            }
+                            detachable: false
                         }, common));
 
-                        //                        console.log(srcClick + " " + trgClick);
-                        //                        console.log(workflowNodes[firstNode.index()].arrows[workflowNodes[firstNode.index()].arrows.length-1]);
-
-
-                        //                        $("#addLabel").show();
-                        //                        $('#ticketViewWrapper').show();
-                        //
-                        //                        $(".btnClose").off().on('click', function (srcClick, trgClick) {
-                        //                            $("#addLabel").hide();
-                        //                            $('#ticketViewWrapper').hide();
-                        //                            console.log(srcClick + " " + trgClick);
-                        //
-                        //                            createArrow(srcClick, trgClick, label);
-                        //                        });
-                        //                        $(".btnSaveLabel").off().on('click', function (srcClick, trgClick) {
-                        //                            $("#addLabel").hide();
-                        //                            $('#ticketViewWrapper').hide();
-                        //                            label = $(".inputLabel").val();
-                        //                            console.log(label);
-                        //                            createArrow(srcClick, trgClick);
-                        //                        });
                         srcClick = "";
                         trgClick = "";
                         console.log("make both empty");
                         firstNode.removeClass('borderHighlight');
+                        connectNodes(); // refresh clicklistener for new arrow 
                     }
                 }
             });
-            // click on arrow to remove connection
-            jsPlumb.bind("click", function (c) {
 
-                console.log(c.id);
-                console.log(c.sourceId);
-                console.log(c.targetId);
-                console.log(c);
+            var arrowIdTemp;
+            var cSourceId;
+            var cTargetId;
+            var cObject;
+            // click on arrow to get the arrowId
+            jsPlumb.bind("click", function (c) {
+                console.log(c.sourceId + " " + c.targetId);
+                cObject = c;
+                cSourceId = c.sourceId;
+                cTargetId = c.targetId;
+                // look for the right node in local array
+                var found;
+                for (var key in workflowNodes) {
+                    // console.log("iterate workflow: " + workflowNodes[key].id + workflowNodes[key].arrows);
+                    if (workflowNodes[key].id == c.sourceId) {
+                        //  console.log("found: " + workflowNodes[key].id);
+                        found = key;
+                    }
+                }
+                // look for the arrow that has been clicked
+                for (var key in workflowNodes[found].arrows) {
+                    //console.log("iterate arrow: " + workflowNodes[found].arrows[key].id);
+                    if (c.sourceId == workflowNodes[found].arrows[key].sourceNode && c.targetId == workflowNodes[found].arrows[key].targetNode) {
+                        // console.log("THIS ARROW ID: " + workflowNodes[found].arrows[key].id);
+                        arrowIdTemp = workflowNodes[found].arrows[key].id;
+                    }
+                }
+                // TODO Maybe if no arrow is set -> warning
+            });
+
+            // clicklistener on arrow to show option to add a label or delete the arrow
+            $('path').off().on('click', function (e) {
+                var offset = $(this).offset();
+                var left = e.pageX;
+                var top = e.pageY;
+                var theHeight = $('.popoverArrow').height();
+                $('.popoverArrow').show();
+                $('.popoverArrow').css('left', (left + 10) + 'px');
+                $('.popoverArrow').css('top', (top - (theHeight / 2) - 10) + 'px');
+            });
+
+
+            $('.btnSaveLabel').off().on('click', function () {
+                var inputLabelVal = $(".inputLabel").val();
+                var arrconnLabel;
+                updateArrow(arrowIdTemp, cSourceId, cTargetId, inputLabelVal);
 
                 for (var key in arrConnect) {
-                    if (c.sourceId == arrConnect[key].sourceId && c.targetId == arrConnect[key].targetId) {
+                    if (cSourceId == arrConnect[key].sourceId && cTargetId == arrConnect[key].targetId) {
+                        arrconnLabel = arrConnect[key].getOverlay("label");
+                    }
+                }
+                arrconnLabel.setLabel(inputLabelVal);
+
+                $('.popoverArrow').hide();
+            });
+            // delete arrow
+            $('.btnDeleteArrow').off().on('click', function (c) {
+                console.log(arrowIdTemp + " | " + cSourceId + " | " + cTargetId);
+                deleteArrow(arrowIdTemp);
+                for (var key in arrConnect) {
+                    if (cSourceId == arrConnect[key].sourceId && cTargetId == arrConnect[key].targetId) {
                         delete arrConnect[key];
                     }
                 }
-                //jsPlumb.detach(c);
-                // TODO Push arrows that are deleted
-                // TODO Maybe if no arrow is set -> warning
+                // delete arrow in UI
+                jsPlumb.detach(cObject);
+                $('.popoverArrow').hide();
+            });
+
+            $('.btnCloseLabel').off().on('click', function () {
+                $('.popoverArrow').hide();
             });
         }
+
+        var statusIdTemp;
+        $('#addNode').popover({
+            html: true,
+            title: 'Select status',
+            content: function () {
+                return $('#addNode + .popover').html();
+            }
+        });
+
+        // add a new node with title
+        $('body').on('click', '#saveAddNode', function () {
+            $(".bgRaster").append('<div id="" class="item jsplumb-draggable jsplumb-endpoint-anchor jsplumb-connected"><div class="topTitle">' + allNodes[statusIdTemp].title + '</div></div>');
+            console.log(allNodes[statusIdTemp].title);
+            createNode(projectId, userId, allNodes[statusIdTemp].id, 0, 0);
+
+            jsPlumb.draggable($(".item"), {
+                containment: "parent",
+                grid: [10, 10]
+            });
+
+            console.log("save");
+            $('#addNode').trigger("click");
+            jsPlumb.repaintEverything();
+        });
+
+        $('body').on('click', '#closeAddNode', function () {
+            console.log("close");
+            $('#addNode').trigger("click");
+
+        });
+
+        $('body').on('click', '.radioStatus', function () {
+            statusIdTemp = $('.radioStatus').index(this);
+            console.log(allNodes[statusIdTemp].id);
+        });
+
+
 
 
         // ******************************************** ZOOM ********************************************
@@ -828,6 +929,7 @@ function startJsplumb() {
             if (editmode == false) {
                 editmode = true;
                 for (var key in arrConnect) {
+                    //  console.log(arrConnect[key].id)
                     arrConnect[key].toggleType("edit");
                 }
                 connectNodes();

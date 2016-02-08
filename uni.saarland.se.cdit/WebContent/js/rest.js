@@ -779,6 +779,37 @@ function createArrow(srcNode, trgNode, label) {
         }
     })
 }
+function updateArrow(arrowId, srcNode, trgNode, label) {
+    var data = {
+        "id": arrowId,
+        "sourceNode": srcNode,
+        "targetNode": trgNode,
+        "label": label
+    }
+
+    $.ajax({
+        type: "PUT",
+        url: baseurl + "rest/workflow/arrow",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            callbackUpdateArrow(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
 
 function deleteArrow(id) {
     $.ajax({
@@ -797,6 +828,38 @@ function deleteArrow(id) {
             console.log(a + " " + b + " " + c + "ERROR");
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+// Adding new node
+function createNode(projId, userId, statusId, posX, posY) {
+    var data = {
+        "projectId": projId,
+        "userId": userId,
+        "statusId": statusId,
+        "positionX": posX,
+        "positionY": posY
+    }
+    $.ajax({
+        type: "POST",
+        url: baseurl + "rest/workflow/node",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackCreateNode(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
                 window.location.href = baseurl;
             }
         }
