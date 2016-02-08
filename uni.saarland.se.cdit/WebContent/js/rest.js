@@ -556,6 +556,68 @@ function updateUser(username, id, password) {
     })
 }
 
+
+function getProjectPermissions (projectid, userid) {
+    var data = {
+        "id": userid,
+    }
+    //TODO
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
+        url: baseurl + "rest/users/getProjectPermissions/" + projectid,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            callbackPermissions(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+function updateProjectPermissions(projectid, userid, permissions) {
+    var data = {
+        "id" : userid,
+        "permissions": permissions,
+    }
+    
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
+        url: baseurl + "rest/users/updateProjectPermissions/" + projectid,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            console.log("Project Permissions updated");
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
 function deleteUser(id) {
     $.ajax({
         type: "DELETE",
