@@ -174,6 +174,48 @@ public class TicketDAO {
         return list;
     }
 	
+	public List<Ticket> findByProject(int projectId) {
+        List<Ticket> list = new ArrayList<Ticket>();
+        Connection c = null;
+    	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description, t.active " + 
+            "FROM ticket as t " +
+			"WHERE t.project_id=? " +	
+			"ORDER BY t.ticket_creation_date";
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setInt(1, projectId);
+            ResultSet rs = ps.executeQuery();
+            sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
+            String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+            PreparedStatement ps1 = c.prepareStatement(sql, 
+            		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+            		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps2 = c.prepareStatement(sql2, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            int i = 0;
+            while (rs.next()) {
+                list.add(processRow(rs));
+                ps1.setInt(1, list.get(i).getId());
+                ps2.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps1.executeQuery();
+                ResultSet rs3 = ps2.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getIds(rs2));
+                if(rs3.next())
+                	list.get(i).setLabels(getIds(rs3));
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return list;
+    }
+	
 	public List<Ticket> findByNode(int id) {
         List<Ticket> list = new ArrayList<Ticket>();
         Connection c = null;

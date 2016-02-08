@@ -52,6 +52,14 @@ import org.glassfish.jersey.server.JSONP;
 		}
 		
 		@JSONP(queryParam = "jsonpCallback")
+		@GET @Path("getProjectTickets/{id}")
+		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+		public List<Ticket> getByProject(@PathParam("id") int id) {
+			System.out.println("findByNode: " + id);
+			return dao.findByProject(id);
+		}
+		
+		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("searchByType/{query}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 		public List<Ticket> findByType(@PathParam("query") String query) {
