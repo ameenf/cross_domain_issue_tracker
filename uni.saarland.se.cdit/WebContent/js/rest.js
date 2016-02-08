@@ -557,11 +557,11 @@ function updateUser(username, id, password) {
 }
 
 
-function getProjectPermissions (projectid, userid) {
+function getProjectPermissions(projectid, userid) {
     var data = {
-        "id": userid,
-    }
-    //TODO
+            "id": userid,
+        }
+        //TODO
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
@@ -589,10 +589,10 @@ function getProjectPermissions (projectid, userid) {
 
 function updateProjectPermissions(projectid, userid, permissions) {
     var data = {
-        "id" : userid,
+        "id": userid,
         "permissions": permissions,
     }
-    
+
     $.ajax({
         type: "PUT",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
@@ -841,6 +841,7 @@ function createArrow(srcNode, trgNode, label) {
         }
     })
 }
+
 function updateArrow(arrowId, srcNode, trgNode, label) {
     var data = {
         "id": arrowId,
@@ -927,7 +928,30 @@ function createNode(projId, userId, statusId, posX, posY) {
         }
     })
 }
-
+// delete node
+function deleteNode(id) {
+    $.ajax({
+        type: "DELETE",
+        url: baseurl + "rest/workflow/node/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackDeleteNode(result);
+            return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Files//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

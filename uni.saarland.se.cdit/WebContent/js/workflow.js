@@ -142,7 +142,7 @@ function listenerShowTicket() {
         });
 
         // select labels and add labels in UI and in the checkboxlist
-        $('body').off().on('click', '.labelCheck', function () {
+        $('body').on('click', '.labelCheck', function () {
             var found = $.inArray(allLabels[$('.labelCheck').index(this)].id, ticketLabel);
 
             if ($(this).prop('checked') == true) {
@@ -272,8 +272,8 @@ function listener() {
     $('.addTicket').off().on('click', function (e) {
         optionsLabel = [];
         optionsUser = [];
-        var allInputs = $(":input");
-        allInputs.prop('checked', false);
+        //        var allInputs = $(":input");
+        //        allInputs.prop('checked', false);
         //$('#myModal1').modal('toggle');
         //                $('#ticketAdd').fadeToggle('fast');
         //                $('#ticketViewWrapper').fadeToggle('fast');
@@ -641,7 +641,6 @@ function callbackCreateNode(result) {
     //$(".item").last().attr("id", result.id);
     getWorkflowForArray(projectId);
 
-
     $('.bgRaster').append('<div id="' + result.id + '" class="item" style=left:' + result.positionX + '%;top:' + result.positionY + '%></div>');
     $('#' + result.id).append('<div class="addTicket" data-placement="bottom" data-toggle="' + result.id + 'popoverAddTicket" data-container="body" data-placement="left" data-html="true"></div>');
     $('#' + result.id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
@@ -650,6 +649,8 @@ function callbackCreateNode(result) {
     $('#' + result.id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
     $('#' + result.id + ' .showNode').after('<div class="amountTickets"></div>');
     $('#' + result.id + ' .amountTickets').html(result.ticketsCount);
+    $('#' + result.id).append('<div class="deleteNode" data-placement="bottom" data-container="body"></div>');
+    $('#' + result.id + ' .deleteNode').append('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>');
     jsPlumb.draggable($(".item"), {
         containment: "parent",
         grid: [10, 10]
@@ -671,6 +672,12 @@ function callbackCreateNode(result) {
     //            }
     //        });
 
+}
+
+function callbackDeleteNode(result) {
+    console.log("callbackDeleteNode");
+    console.log(result);
+    //getWorkflowForArray(projectId);
 }
 
 function startJsplumb() {
@@ -769,7 +776,12 @@ function startJsplumb() {
         // connect 2 nodes together
         function connectNodes() {
 
-            $(".item").off().on('click', function () {
+            for (var key in workflowNodes) {
+                $('#' + workflowNodes[key].id).append('<div class="deleteNode" data-placement="bottom" data-container="body"></div>');
+                $('#' + workflowNodes[key].id + ' .deleteNode').append('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>');
+            }
+
+            $('body').on('click', '.item', function () {
                 if (srcClick == "") {
                     srcClick = $(this).attr("id");
                     firstNode = $(this);
@@ -817,7 +829,6 @@ function startJsplumb() {
                         trgClick = "";
                         console.log("make both empty");
                         firstNode.removeClass('borderHighlight');
-                        connectNodes(); // refresh clicklistener for new arrow 
                     }
                 }
             });
@@ -851,7 +862,7 @@ function startJsplumb() {
                 }
                 // TODO Maybe if no arrow is set -> warning
             });
-
+            //////////////////////////////////////////////////Update Arrow//////////////////////////////////////////////////////
             // clicklistener on arrow to show option to add a label or delete the arrow
             $('path').off().on('click', function (e) {
                 var offset = $(this).offset();
@@ -897,6 +908,51 @@ function startJsplumb() {
             });
         }
 
+        //////////////////////////////////////////////////Deleting Nodes//////////////////////////////////////////////////////
+        var nodeObject, nodeStatusId, nodeIndex, nodeId;
+        $('body').on('click', '.deleteNode', function (e) {
+            nodeObject = $(this).parent();
+            nodeIndex = $(this).parent().index();
+            nodeStatusId = workflowNodes[$(this).parent().index()].statusId;
+            nodeId = workflowNodes[$(this).parent().index()].id;
+            deleteNode(37);
+
+            console.log("deletenode");
+            var offset = $(this).offset();
+            var left = e.pageX;
+            var top = e.pageY;
+            var theHeight = $('.popoverDeleteNode').height();
+            $('.popoverDeleteNode').show();
+            $('.popoverDeleteNode').css('left', (left + 10) + 'px');
+            $('.popoverDeleteNode').css('top', (top - (theHeight / 2) - 10) + 'px');
+        });
+
+        $('body').on('click', '.btnDeleteNode', function () {
+            console.log("dom object: " + nodeObject);
+            console.log("node statusid: " + nodeStatusId);
+            console.log("nodeid: " + nodeId);
+            //            deleteNode(nodeId);
+
+
+            // delete node in UI
+            for (var key in arrConnect) {
+                if (nodeId == arrConnect[key].sourceId || nodeId == arrConnect[key].targetId) {
+                    console.log("arrconn delete: ");
+                    console.log(arrConnect[key]);
+                    delete arrConnect[key];
+                }
+            }
+
+            //jsPlumb.remove(nodeId + "");
+            console.log(workflowNodes[nodeIndex]);
+            $('.popoverDeleteNode').hide();
+        });
+
+        $('.btnCloseDeleteNode').off().on('click', function () {
+            $('.popoverDeleteNode').hide();
+        });
+
+        //////////////////////////////////////////////////Adding Nodes//////////////////////////////////////////////////////
         var statusIdTemp;
         $('#addNode').popover({
             html: true,
@@ -905,7 +961,6 @@ function startJsplumb() {
                 return $('#addNode + .popover').html();
             }
         });
-
         // add a new node with title of the available status
         $('body').on('click', '#saveAddNode', function () {
             var found = false;
@@ -935,7 +990,9 @@ function startJsplumb() {
                 $('#addNode').trigger("click");
                 jsPlumb.repaintEverything();
             }
+        });
 
+        $('body').on('click', '#closeAddNode', function () {
 
         });
 
@@ -1025,11 +1082,13 @@ function startJsplumb() {
                     arrConnect[key].toggleType("edit");
                 }
                 connectNodes();
+                deleteNodes();
             } else { // if switch is turned off, delete clicklistener
                 editmode = false;
                 for (var key in arrConnect) {
                     arrConnect[key].toggleType("edit");
                 }
+                $(".deleteNode").remove();
                 $(".item").off().on('click', function () {});
                 jsPlumb.unbind("click");
                 // TODO updatecall nodes
