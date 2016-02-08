@@ -205,9 +205,12 @@ public class WorkflowDAO {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("DELETE FROM arrows WHERE source_node_id=?; DELETE FROM nodes WHERE node_id=?");
+            PreparedStatement ps = c.prepareStatement("DELETE FROM arrows WHERE source_node_id=?;"+
+            										  "UPDATE arrows SET target_node_id = NULL WHERE target_node_id=?;" +
+            										  " DELETE FROM nodes WHERE node_id=?");
             ps.setInt(1, id);
             ps.setInt(2, id);
+            ps.setInt(3, id);
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
