@@ -142,7 +142,7 @@
                             </div>
                         </div>
                     </form>
-                    <button id="closeTicket" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="closeTicket" type="button" class="btn btn-default closePopupAddTicket" data-dismiss="modal">Close</button>
                     <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                 </div>
 
@@ -165,19 +165,158 @@
                     </div>
                 </div>
 
-                <div id="popover-content" class="hide">
 
+
+
+                <div id="popover-content" class="popover-content hide">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close closePopupNodeView" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel"> </h4>
                     </div>
                     <div class="modal-body ticketScrollContainer">
                     </div>
                     <div class="modal-footer">
-                        <button id="closePopup" type="button" class="btn btn-default closePopup">Close</button>
+                        <button type="button" class="btn btn-default closePopup closePopupNodeView">Close</button>
                     </div>
-
                 </div>
+
+
+
+
+
+
+
+
+
+
+                <div id="popover-content-addTicket" class="popover-content hide">
+                    <!--                    <div id="ticketAdd" style="display: block;">-->
+                    <div class="modal-header">
+                        <button type="button" class="close closePopupAddTicketView" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="title">New ticket in <b>New</b></div>
+                    </div>
+                    <div class="popup-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="input_new_title" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea id="input_new_desc" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Priority</label>
+                                <div class="col-sm-10">
+                                    <select id="prioritylist" class="form-control">
+                                        <option value="1">High</option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">Low</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Type</label>
+                                <div class="col-sm-10">
+                                    <select id="typelist" class="form-control">
+                                        <option value="1">Meeting</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                            Labels
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdownLabels">
+                                            <li>
+                                                <a href="#" class="small" data-value="1" tabindex="-1">
+                                                    <input type="checkbox" id="label1">
+                                                    <label for="label1"><span></span>Test</label>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="small" data-value="2" tabindex="-1">
+                                                    <input type="checkbox" id="label2">
+                                                    <label for="label2"><span></span>Second</label>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="small" data-value="3" tabindex="-1">
+                                                    <input type="checkbox" id="label3">
+                                                    <label for="label3"><span></span>Thrid</label>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="btnAddUsers" data-toggle="dropdown">
+                                            Add Users
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdownUsers">
+                                            <li>
+                                                <a href="#" class="small" data-value="1" tabindex="-1">
+                                                    <input type="checkbox" id="user1">
+                                                    <label for="user1"><span></span>admin</label>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="small" data-value="3" tabindex="-1">
+                                                    <input type="checkbox" id="user3">
+                                                    <label for="user3"><span></span>ameen</label>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="small" data-value="4" tabindex="-1">
+                                                    <input type="checkbox" id="user4">
+                                                    <label for="user4"><span></span>tobias</label>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="small" data-value="6" tabindex="-1">
+                                                    <input type="checkbox" id="user6">
+                                                    <label for="user6"><span></span>Tobias Walter</label>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="small" data-value="7" tabindex="-1">
+                                                    <input type="checkbox" id="user7">
+                                                    <label for="user7"><span></span>Christian Murlowski</label>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default" type="button" id="btnFileUpload">
+                                            <span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span> Add File
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="closeTicket" type="button" class="btn btn-default closePopupAddTicketView" data-dismiss="modal">Close</button>
+                        <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
 
                 <div class="input-group">
                     <input type="text" class="form-control filterWorkflow" placeholder="Filter...">

@@ -54,8 +54,8 @@ $(document).ready(function () {
 
 function callbackCreateUser(result) {
     console.log(result);
-    var elem = document.getElementById("dd_addUserProjectList");
-    var projectid = elem.options[elem.selectedIndex].value;
+//    var elem = document.getElementById("dd_addUserProjectList");
+//    var projectid = elem.options[elem.selectedIndex].value;
     console.log(projectid);
 
     //After the user has been added, close the expanded view

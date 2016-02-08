@@ -313,6 +313,7 @@
 
 .popover {
     max-width: 420px;
+    width: 500px;
 }
 
 .ticketScrollContainer {
@@ -363,4 +364,8 @@ path {
     top: 50%;
     margin-top: -11px;
     z-index: 1011;
+}
+
+.popup-body {
+    margin-top: 10px;
 }

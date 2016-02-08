@@ -50,28 +50,51 @@ function listenerShowTicket() {
     $('.nodeTicket').off().on('click', function (e) {
         $('#ticketViewWrapper').toggle();
         currentTicketIndex = $('.nodeTicket').index(this);
-        currentStatusId = allTicketInNode[$('.nodeTicket').index(this)].statusId;
+        console.log('currentTicketIndex');
+        console.log(currentTicketIndex);
+        console.log(allTicketInNode);
+        console.log($('.nodeTicket').index(this));
+        //        currentStatusId = allTicketInNode[$('.nodeTicket').index(this)].statusId;
+        currentStatusId = 1;
 
-        getTicketsById(allTicketInNode[$('.nodeTicket').index(this)].id);
-        getTicketFeedback(allTicketInNode[$('.nodeTicket').index(this)].id);
+        //        getTicketsById(allTicketInNode[$('.nodeTicket').index(this)].id);
+        //        getTicketFeedback(allTicketInNode[$('.nodeTicket').index(this)].id);
+
+        getTicketsById(4);
+        getTicketFeedback(4);
+
+
+        $("[data-toggle=" + popoverId + "popover]").popover({
+            html: true,
+            content: function () {
+                $('#popover-content .modal-title').html('NEWTITLE'); // replaces the title
+                return $('#popover-content').html();
+            }
+        });
+
+
         //        $('#myModal2').modal('toggle');
         $('#ticketView').fadeToggle('fast');
         //        $('#ticketView').append('<div id="ticket');
         // Title
         $('#ticketView .form-horizontal').empty();
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><input type="text" class="form-control updTitle" value="' + allTicketInNode[$('.nodeTicket').index(this)].title + '" readonly></div></div>');
+        //        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><input type="text" class="form-control updTitle" value="' + allTicketInNode[$('.nodeTicket').index(this)].title + '" readonly></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Title</label><div class="col-sm-10"><input type="text" class="form-control updTitle" value="' + allTicketInNode[1].title + '" readonly></div></div>');
 
         //Description
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><textarea class="form-control updDesc" readonly>' + allTicketInNode[$('.nodeTicket').index(this)].description + '</textarea></div></div>');
+        //        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><textarea class="form-control updDesc" readonly>' + allTicketInNode[$('.nodeTicket').index(this)].description + '</textarea></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Description</label><div class="col-sm-10"><textarea class="form-control updDesc" readonly>' + allTicketInNode[1].description + '</textarea></div></div>');
 
         // Creation date
-        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><input type="text" class="form-control updCreat" value="' + allTicketInNode[$('.nodeTicket').index(this)].creationDate + '" readonly></div></div>');
+        //        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><input type="text" class="form-control updCreat" value="' + allTicketInNode[$('.nodeTicket').index(this)].creationDate + '" readonly></div></div>');
+        $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Creation Date</label><div class="col-sm-10"><input type="text" class="form-control updCreat" value="' + allTicketInNode[1].creationDate + '" readonly></div></div>');
 
         // Priority
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label">Priority</label><div class="col-sm-10"><select id="updPrioritylist" class="form-control" disabled></select></div></div>');
         // TODO geht das nich auch mit id?
         for (var key in allPriorities) {
-            if (allPriorities[allTicketInNode[$('.nodeTicket').index(this)].priorityId - 1].title == allPriorities[key].title)
+            //            if (allPriorities[allTicketInNode[$('.nodeTicket').index(this)].priorityId - 1].title == allPriorities[key].title)
+            if (allPriorities[allTicketInNode[1].priorityId - 1].title == allPriorities[key].title)
                 $('#updPrioritylist').append('<option value="' + allPriorities[key].id + '" selected>' + allPriorities[key].title + '</option>');
             else
                 $('#updPrioritylist').append('<option value="' + allPriorities[key].id + '">' + allPriorities[key].title + '</option>');
@@ -81,7 +104,8 @@ function listenerShowTicket() {
         $('#ticketView .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updType">Type</label><div class="col-sm-10"><select id="updTypelist" class="form-control" disabled></select></div></div>');
         // TODO geht das nich auch mit id?
         for (var key in allTypes) {
-            if (allTypes[allTicketInNode[$('.nodeTicket').index(this)].typeId - 1].title == allTypes[key].title)
+            //            if (allTypes[allTicketInNode[$('.nodeTicket').index(this)].typeId - 1].title == allTypes[key].title)
+            if (allTypes[allTicketInNode[1].typeId - 1].title == allTypes[key].title)
                 $('#updTypelist').append('<option value="' + allTypes[key].id + '" selected>' + allTypes[key].title + '</option>');
             else
                 $('#updTypelist').append('<option value="' + allTypes[key].id + '">' + allTypes[key].title + '</option>');
@@ -96,7 +120,8 @@ function listenerShowTicket() {
         if (allTicketInNode[$('.nodeTicket').index(this)].labels == null) {
             ticketLabel = []
         } else {
-            ticketLabel = allTicketInNode[$('.nodeTicket').index(this)].labels;
+            //            ticketLabel = allTicketInNode[$('.nodeTicket').index(this)].labels;
+            ticketLabel = allTicketInNode[1].labels;
         }
         $.each(allLabels, function (key, value) {
             var found = $.inArray(allLabels[key].id, ticketLabel);
@@ -245,19 +270,39 @@ function listener() {
     var nodeId;
     // Open dialog to create a ticket
     $('.addTicket').off().on('click', function (e) {
-        optionsLabel = [];
-        optionsUser = [];
-        var allInputs = $(":input");
-        allInputs.prop('checked', false);
-        //$('#myModal1').modal('toggle');
-        $('#ticketAdd').fadeToggle('fast');
-        $('#ticketViewWrapper').fadeToggle('fast');
-
-        nodename = $(this).next().html();
-        nodeId = workflowNodes[$(this).parent().index()].id;
+        //        optionsLabel = [];
+        //        optionsUser = [];
+        //        var allInputs = $(":input");
+        //        allInputs.prop('checked', false);
+        //        //$('#myModal1').modal('toggle');
+        //        $('#ticketAdd').fadeToggle('fast');
+        //        $('#ticketViewWrapper').fadeToggle('fast');
+        //
+        //        nodename = $(this).next().html();
+        //        nodeId = workflowNodes[$(this).parent().index()].id;
         nodeIndex = $(this).parent().index();
+        //
+        //        $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
 
-        $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
+        console.log("popoverid");
+        console.log($(this).attr('data-toggle'));
+        console.log($(this).attr('data-toggle').substr(0, 1));
+        popoverId = $(this).attr('data-toggle').substr(0, 1);
+        console.log("[data-toggle=" + popoverId + "popoverAddTicket]");
+        $("[data-toggle=" + popoverId + "popoverAddTicket]").popover({
+            html: true,
+            content: function () {
+                var nodename = $(this).prev().html();
+                $('#popover-content .modal-title').html('Add Ticket in <b>' + nodename + '</b>'); // replaces the title
+                var nodeId = workflowNodes[$(this).parent().index()].id;
+                console.log(nodeId);
+                //                getTicketsByNodeId(nodeId);
+                return $('#popover-content-addTicket').html();
+            }
+        });
+        $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('show');
+
+
     });
 
     $('#closeTicket').off().on('click', function (e) {
@@ -288,20 +333,14 @@ function listener() {
         getTicketsByNodeId(nodeId);
     });
 
-    $('#closePopup').off().on('click', function (e) {
-        console.log("HIDE");
-        console.log(popoverId);
-        $("[data-toggle=" + popoverId + "popover]").popover('hide');
+    $('body').on('click', '.closePopupNodeView', function () {
+        $("[data-toggle=" + popoverId + "popoverNodeView]").popover('hide');
+    });
+    $('body').on('click', '.closePopupAddTicketView', function () {
+        $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
     });
 
-    $('.closePopup').off().on('click', function (e) {
-        console.log("HIDE......");
-        console.log(popoverId);
-        $("[data-toggle=" + popoverId + "popover]").popover('hide');
-    });
-
-    // Submit a ticket to the database
-    $('#submitTicket').off().on('click', function (e) {
+    $('body').on('click', '#submitTicket', function (e) {
         var elem = document.getElementById("prioritylist");
         var prioId = elem.options[elem.selectedIndex].value;
 
@@ -323,6 +362,30 @@ function listener() {
         // call to create a ticket
         createTicket($("#input_new_title").val(), datetime, $("#input_new_desc").val(), prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
     });
+
+    // Submit a ticket to the database
+    //    $('#submitTicket').off().on('click', function (e) {
+    //        var elem = document.getElementById("prioritylist");
+    //        var prioId = elem.options[elem.selectedIndex].value;
+    //
+    //        var elem = document.getElementById("typelist");
+    //        var typeId = elem.options[elem.selectedIndex].value;
+    //
+    //        var data = {
+    //            "title": $("#input_new_title").val(),
+    //            "creationDate": datetime,
+    //            "description": $("#input_new_desc").val(),
+    //            "priorityId": prioId,
+    //            "typeId": typeId,
+    //            "statusId": workflowNodes[nodeIndex].statusId,
+    //            "projectId": projectId,
+    //            "users": optionsUser,
+    //            "labels": optionsLabel
+    //        }
+    //
+    //        // call to create a ticket
+    //        createTicket($("#input_new_title").val(), datetime, $("#input_new_desc").val(), prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
+    //    });
 
     $('.dropdown-menu.dropdownLabels a').off().on('click', function (event) {
 
@@ -425,10 +488,10 @@ function callbackGetWorkflow(result) {
         }
 
         $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
-        $('#' + workflowNodes[key].id).append('<div class="addTicket"></div>');
+        $('#' + workflowNodes[key].id).append('<div class="addTicket" data-placement="bottom" data-toggle="' + workflowNodes[key].id + 'popoverAddTicket" data-container="body" data-placement="left" data-html="true"></div>');
         $('#' + workflowNodes[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
         $('#' + workflowNodes[key].id).append('<div class="topTitle">' + allNodes[workflowNodes[key].statusId - 1].title + '</div>');
-        $('#' + workflowNodes[key].id).append('<div class="showNode" data-placement="bottom" data-toggle="' + workflowNodes[key].id + 'popover" data-container="body" data-placement="left" data-html="true"></div>');
+        $('#' + workflowNodes[key].id).append('<div class="showNode" data-placement="bottom" data-toggle="' + workflowNodes[key].id + 'popoverNodeView" data-container="body" data-placement="left" data-html="true"></div>');
         $('#' + workflowNodes[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
         $('#' + workflowNodes[key].id + ' .showNode').after('<div class="amountTickets"></div>');
         $('#' + workflowNodes[key].id + ' .amountTickets').html(workflowNodes[key].ticketsCount);
@@ -562,7 +625,7 @@ function callbackGetTicketsByNodeId(result) {
     }
 
 
-    $("[data-toggle=" + popoverId + "popover]").popover({
+    $("[data-toggle=" + popoverId + "popoverNodeView]").popover({
         html: true,
         content: function () {
             var nodename = $(this).prev().html();
@@ -573,7 +636,7 @@ function callbackGetTicketsByNodeId(result) {
             return $('#popover-content').html();
         }
     });
-    $("[data-toggle=" + popoverId + "popover]").popover('show');
+    $("[data-toggle=" + popoverId + "popoverNodeView]").popover('show');
 
     listenerShowTicket();
 }
