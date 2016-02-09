@@ -24,6 +24,8 @@
 .itemName {
     width: 20%;
     text-align: left;
+    overflow: hidden;
+    cursor: pointer;
 }
 
 .itemInfo {
@@ -59,4 +61,8 @@
     padding: 20px;
     border-top-style: none;
     border-radius: 0px 0px 5px 5px;
+}
+
+.inactive {
+    opacity: 0.2;
 }

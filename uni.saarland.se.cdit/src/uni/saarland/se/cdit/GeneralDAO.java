@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 public class GeneralDAO {
 
 	public List<Type> getAllTypes(){
@@ -245,19 +247,38 @@ public class GeneralDAO {
         return priority;
     }	
 	
-	public boolean remove(int id, String src) {
+	public Response remove(int id, String src) {
         Connection c = null;
+        boolean success = false;
+        String msg = "";
+        int status = 500;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("DELETE FROM "+src+" WHERE "+src+"_id=?");
+            PreparedStatement ps = c.prepareStatement("SELECT ticket_id FROM ticket WHERE "+src+"_id = ? LIMIT 1");
             ps.setInt(1, id);
-            int count = ps.executeUpdate();
-            return count == 1;
+            success = !ps.executeQuery().next();
+            if(success){
+	            ps = c.prepareStatement("DELETE FROM "+src+" WHERE "+src+"_id=?");
+	            ps.setInt(1, id);
+	            success = (ps.executeUpdate()>0);
+	            if(success){
+	            	status = 200;
+	            	msg = "Success";
+	            }else{
+	            	status = 404;
+	            	msg = "The resource was not found. Make sure you sent the correct ID.";
+	            }
+            }else{
+            	status = 400;
+            	msg = "The "+src+" cannot be deleted at the moment, because there are tickets associated with it.";
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
 		} finally {
 			ConnectionHelper.close(c);
 		}
+        return Response.status(status).entity(new MessageHandler(msg)).build();
     }
 }

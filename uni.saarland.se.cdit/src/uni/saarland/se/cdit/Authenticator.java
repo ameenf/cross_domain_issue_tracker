@@ -3,7 +3,10 @@ package uni.saarland.se.cdit;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.lang.Class;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -15,6 +18,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.internal.util.Base64;
+import org.glassfish.jersey.message.internal.ReaderWriter;
+import org.glassfish.jersey.server.ContainerException;
+
 
 @Provider
 public class Authenticator implements ContainerRequestFilter{
@@ -31,7 +37,21 @@ public class Authenticator implements ContainerRequestFilter{
 		UserDAO dao = new UserDAO();
 		User user = new User();
 		Method method = resourceInfo.getResourceMethod();
-		Class<?> resource = resourceInfo.getResourceClass();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+        InputStream in = requestContext.getEntityStream();
+        final StringBuilder b = new StringBuilder();
+        try {
+            if (in.available() > 0) {
+                ReaderWriter.writeTo(in, out);
+
+                byte[] requestEntity = out.toByteArray();
+                printEntity(b, requestEntity);
+
+                requestContext.setEntityStream(new ByteArrayInputStream(requestEntity));
+            }
+        } catch (IOException ex) {
+            throw new ContainerException(ex);
+        }
 		//if(resource.isAnnotationPresent(PermitAll.class))
 		//	return;
 		if(method.isAnnotationPresent(PermitAll.class))
@@ -66,5 +86,12 @@ public class Authenticator implements ContainerRequestFilter{
         System.out.println(password);
         if(!dao.authenticate(user))
         	requestContext.abortWith(Response.status(401).build());
+    }
+	private void printEntity(StringBuilder b, byte[] entity) throws IOException {
+        if (entity.length == 0)
+            return;
+        b.append(new String(entity)).append("\n");
+        System.out.println("#### Intercepted Entity ####");
+        System.out.println(b.toString());
     }
 }

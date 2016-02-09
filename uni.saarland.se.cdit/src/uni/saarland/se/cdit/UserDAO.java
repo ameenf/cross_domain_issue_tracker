@@ -18,7 +18,7 @@ public class UserDAO {
 	public List<User> getAll() {
         List<User> list = new ArrayList<User>();
         Connection c = null;
-    	String sql = "SELECT users_id, users_username, group_id, active FROM users ORDER BY users_id";
+    	String sql = "SELECT users_id, users_username, users_type , group_id, active FROM users ORDER BY users_type";
         try {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
@@ -125,6 +125,28 @@ public class UserDAO {
 				}
 			}
 		} catch (SQLException | NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return success;
+	}
+	
+	public boolean check(User user){
+		Connection c = null;
+		String sql = "SELECT users.users_username FROM users WHERE users.users_username = ?";
+		boolean success = false;
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, user.getUsername());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				success = true;
+			}
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
@@ -481,9 +503,10 @@ public class UserDAO {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("UPDATE users SET active=? WHERE users_id=? AND users_type NOT LIKE 'admin'");
+            PreparedStatement ps = c.prepareStatement("UPDATE users SET active=? WHERE users_id=? AND users_username NOT LIKE ?");
             ps.setBoolean(1, false);
             ps.setInt(2, id);
+            ps.setString(3, "admin");
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
@@ -498,6 +521,7 @@ public class UserDAO {
 		User user = new User();
 		user.setId(rs.getInt("users_id"));
 		user.setUsername(rs.getString("users_username"));
+		user.setType(rs.getString("users_type"));
 		user.setGroupId(rs.getInt("group_id"));
 		user.setActive(rs.getBoolean("active"));
         return user;

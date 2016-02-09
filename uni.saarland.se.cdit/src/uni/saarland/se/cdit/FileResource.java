@@ -2,6 +2,7 @@ package uni.saarland.se.cdit;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
@@ -24,9 +25,11 @@ public class FileResource {
 	
 	FileDAO dao = new FileDAO();
 	
+	@PermitAll
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Response uploadFile(
 		            @FormDataParam("file") InputStream fileInputStream,
 		            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
@@ -34,12 +37,10 @@ public class FileResource {
 		
 		 // save the file to the server
 		boolean success = dao.saveFile(fileInputStream, contentDispositionHeader.getFileName());
-		String output;
 		if(success)
-			output = contentDispositionHeader.getFileName();
+			return Response.status(200).entity(dao.createAttachment(contentDispositionHeader.getFileName())).build();
 		else
-			output = "ERROR";
-		return Response.status(200).entity(output).build();
+			return Response.status(500).entity(new MessageHandler("Uploading file failed. Please try again.")).build();
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
@@ -51,6 +52,7 @@ public class FileResource {
 		return file;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/{query}")
 	//@Produces("application/pdf")
@@ -63,19 +65,10 @@ public class FileResource {
 	}
 	
 	@GET
-	public Response returnFileList() {
-		FileDAO dao = new FileDAO();
-		String location = dao.getFilesPath();
-		File dir = new File(location);
-		File[] files = dir.listFiles();
-		String output = "<html><head></head><body><h1>Files available:</h1>";
-		for (File f : files){
-			if(f.isFile()){
-				output = output + "<a href=" + f.getName() + " />" + f.getName() + "<br>\n";
-			}
-		}
-		output += "</body></html>";
-	    return Response.status(200).entity(output).build();
+	@Path("/getProjectFiles/{projectId")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public List<Attachment> getProjectAttachments(@PathParam("projectId") int id) {
+	    return dao.getProjectAttachments(id);
 	}
 	
 }

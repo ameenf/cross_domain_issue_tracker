@@ -86,8 +86,17 @@
                     <button type="button" class="btn btn-danger btnDeleteArrow" data-dismiss="modal">Delete Arrow</button>
                 </div>
             </div>
+            <!--            Popover if click on delete node -->
+            <div class="popoverDeleteNode">
+                <strong>Add a label</strong>
+                <div class="input-group">
+                    <button type="button" class="btn btn-default btnCloseDeleteNode">Close</button>
+                    <button type="button" class="btn btn-danger btnDeleteNode" data-dismiss="modal">Delete Node</button>
+                </div>
+            </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <!--  Add Ticket-->
+                <!--
                 <div id="ticketAdd">
                     <div class="title"></div>
                     <form class="form-horizontal">
@@ -142,11 +151,13 @@
                             </div>
                         </div>
                     </form>
-                    <button id="closeTicket" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="closeTicket" type="button" class="btn btn-default closePopupAddTicket" data-dismiss="modal">Close</button>
                     <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                 </div>
 
 
+                
+-->
 
                 <!-- Modal Show Node -->
                 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -165,19 +176,149 @@
                     </div>
                 </div>
 
-                <div id="popover-content" class="hide">
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel"> </h4>
+
+
+                <div id="popover-content" class="popover-content hide">
+                    <div id="ticketOverview">
+                        <div class="modal-header">
+                            <button type="button" class="close closePopupNodeView" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel"> </h4>
+                        </div>
+                        <div class="modal-body ticketScrollContainer">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default closePopup closePopupNodeView">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-body ticketScrollContainer">
+
+                    <!--
+                    <div id="ticketView">
+                        <div class="modal-header">
+                            <button type="button" class="close closePopupNodeView" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel"> </h4>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">Testtitle</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+-->
+
+                    <div id="ticketView" style='display:none;'>
+                        <div class="modal-header">
+                            <button type="button" class="close closePopupNodeView" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel"> </h4>
+                        </div>
+                        <div class="popup-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Title</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">Testtitle</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default closePopup closePopupTicketView">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="popover-content-addTicket" class="popover-content hide">
+                    <!--                    <div id="ticketAdd" style="display: block;">-->
+                    <div class="modal-header">
+                        <button type="button" class="close closePopupAddTicketView" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="title">New ticket in <b>New</b></div>
+                    </div>
+                    <div class="popup-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="input_new_title" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea id="input_new_desc" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Priority</label>
+                                <div class="col-sm-10">
+                                    <select id="prioritylist" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Type</label>
+                                <div class="col-sm-10">
+                                    <select id="typelist" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                            Labels
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdownLabels">
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="btnAddUsers" data-toggle="dropdown">
+                                            Add Users
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdownUsers">
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default" type="button" id="btnFileUpload">
+                                            <span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span> Add File
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button id="closePopup" type="button" class="btn btn-default closePopup">Close</button>
+                        <button id="closeTicket" type="button" class="btn btn-default closePopupAddTicketView" data-dismiss="modal">Close</button>
+                        <button id="submitTicket" type="submit" class="btn btn-primary">Save Ticket</button>
                     </div>
-
                 </div>
+
+
+
+
+                <!--
+                <div id="popover-content-viewTicket" class="popover-content hide">
+                    <div id="ticketView">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">Testtitle</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+-->
+
+
+
+
 
                 <div class="input-group">
                     <input type="text" class="form-control filterWorkflow" placeholder="Filter...">
@@ -207,14 +348,15 @@
                 </form>
 
                 <div class="alertPlaceholder">
-                    <div id="connectionExistsAlert" class="alert alert-info">
-                        <strong>Info!</strong> This connection already exists!
+                    <div id="connectionExistsAlert" class="alert alert-danger">
+                        <strong>Info!</strong> Already exists!
                     </div>
                 </div>
 
                 <!-- Workflow Graph Content -->
                 <div id="diagramContainer">
                     <!-- Show Ticket -->
+                    <!--
                     <div id="ticketView">
                         <form class="form-horizontal">
                             <div class="form-group">
@@ -223,10 +365,9 @@
                                     <p class="form-control-static">Testtitle</p>
                                 </div>
                             </div>
-
-
                         </form>
                     </div>
+-->
                     <div class="bgRaster"></div>
                 </div>
             </div>
@@ -242,7 +383,9 @@
     <script src="js/bootstrap-switch.js"></script>
     <script src="js/js.cookie.js"></script>
     <script src="js/rest.js"></script>
-    <script src="js/workflow.js"></script>
+    <!--    <script src="js/workflow.js"></script>-->
+    <script src="js/workflowCopy.js"></script>
+    <script src="js/plumb.js"></script>
     <script src="js/workflowFilter.js"></script>
     <!--
     <script>

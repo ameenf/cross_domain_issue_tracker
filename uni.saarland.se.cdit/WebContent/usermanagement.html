@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/users.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/awesome-bootstrap-checkbox.css">
 
 </head>
 
@@ -85,10 +86,25 @@
                         <input type="text" class="form-control" id="i_name">
                         <br> Password :
                         <input type="text" class="form-control" id="i_password">
+
+                        <form id="rb_adminCheck">
+                            <div class="radio">
+                                <input type="radio" name="rb_admin" value="admin">
+                                <label for="radio3">
+                                    Admin
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <input type="radio" name="rb_admin" value="user" checked>
+                                <label for="radio4">
+                                    User
+                                </label>
+                            </div>
+                        </form>
+                        <!--
                         <br> Project:
                         <select id="dd_addUserProjectList" class="form-control">
-
-                        </select>
+-->
                     </div>
                     <div class="dialog-footer">
                         <!--                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->

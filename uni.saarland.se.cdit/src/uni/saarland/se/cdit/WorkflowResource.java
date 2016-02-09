@@ -25,7 +25,7 @@ public class WorkflowResource {
 	@GET @Path("getWorkflow/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Node> getFlow(@PathParam("id") String id) {
-		System.out.println("findById " + id);
+		System.out.println("find project Id " + id);
 		return dao.getFlow(Integer.parseInt(id));
 	}
 	
@@ -68,9 +68,21 @@ public class WorkflowResource {
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("arrow/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Response remove(@PathParam("id") int id){
+	public Response removeArrow(@PathParam("id") int id){
 		System.out.println("updating arrow");
 		boolean success = dao.removeArrow(id);
+		if(success)
+			return Response.status(200).entity(new MessageHandler("Success!")).build();
+		else
+			return Response.status(404).entity(new MessageHandler("ID not found!")).build();
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
+	@DELETE @Path("node/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public Response removeNode(@PathParam("id") int id){
+		System.out.println("updating arrow");
+		boolean success = dao.removeNode(id);
 		if(success)
 			return Response.status(200).entity(new MessageHandler("Success!")).build();
 		else

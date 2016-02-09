@@ -11,6 +11,8 @@ import java.util.List;
 
 public class TicketDAO {
 
+
+    FileDAO dao = new FileDAO();
 	
 	public List<Ticket> findAll() {
         List<Ticket> list = new ArrayList<Ticket>();
@@ -22,10 +24,14 @@ public class TicketDAO {
             ResultSet rs = s.executeQuery(sql);
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+            String sql3 = "SELECT * FROM attachment WHERE ticket_id=?";
             PreparedStatement ps1 = c.prepareStatement(sql, 
             		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
             		  ResultSet.CONCUR_READ_ONLY);
             PreparedStatement ps2 = c.prepareStatement(sql2, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps3 = c.prepareStatement(sql3, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
             int i = 0;
@@ -33,12 +39,16 @@ public class TicketDAO {
                 list.add(processRow(rs));
                 ps1.setInt(1, list.get(i).getId());
                 ps2.setInt(1, list.get(i).getId());
+                ps3.setInt(1, list.get(i).getId());
                 ResultSet rs2 = ps1.executeQuery();
                 ResultSet rs3 = ps2.executeQuery();
+                ResultSet rs4 = ps3.executeQuery();
                 if(rs2.next())
                 	list.get(i).setUsers(getIds(rs2));
                 if(rs3.next())
                 	list.get(i).setLabels(getIds(rs3));
+                if(rs4.next())
+                	list.get(i).setFiles(getAttachments(rs4));
                 i++;
             }
         } catch (SQLException e) {
@@ -64,20 +74,28 @@ public class TicketDAO {
                 ticket = processRow(rs);
                 sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
                 String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+                String sql3 = "SELECT * FROM attachment WHERE ticket_id=?";
                 PreparedStatement ps1 = c.prepareStatement(sql, 
                 		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
                 		  ResultSet.CONCUR_READ_ONLY);
                 PreparedStatement ps2 = c.prepareStatement(sql2, 
               		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
               		  ResultSet.CONCUR_READ_ONLY);
+                PreparedStatement ps3 = c.prepareStatement(sql3, 
+                		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                		  ResultSet.CONCUR_READ_ONLY);
                     ps1.setInt(1, ticket.getId());
                     ps2.setInt(1, ticket.getId());
+                    ps3.setInt(1, ticket.getId());
                     ResultSet rs2 = ps1.executeQuery();
                     ResultSet rs3 = ps2.executeQuery();
+                    ResultSet rs4 = ps3.executeQuery();
                     if(rs2.next())
                     	ticket.setUsers(getIds(rs2));
                     if(rs3.next())
                     	ticket.setLabels(getIds(rs3));
+                    if(rs4.next())
+                    	ticket.setFiles(getAttachments(rs4));
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,6 +107,7 @@ public class TicketDAO {
         return ticket;
     }
 	
+
 	public List<Ticket> findByTitle(String title) {
         List<Ticket> list = new ArrayList<Ticket>();
         Connection c = null;
@@ -103,10 +122,14 @@ public class TicketDAO {
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+            String sql3 = "SELECT * FROM attachment WHERE ticket_id=?";
             PreparedStatement ps1 = c.prepareStatement(sql, 
             		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
             		  ResultSet.CONCUR_READ_ONLY);
             PreparedStatement ps2 = c.prepareStatement(sql2, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps3 = c.prepareStatement(sql3, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
             int i = 0;
@@ -114,12 +137,16 @@ public class TicketDAO {
                 list.add(processRow(rs));
                 ps1.setInt(1, list.get(i).getId());
                 ps2.setInt(1, list.get(i).getId());
+                ps3.setInt(1, list.get(i).getId());
                 ResultSet rs2 = ps1.executeQuery();
                 ResultSet rs3 = ps2.executeQuery();
+                ResultSet rs4 = ps3.executeQuery();
                 if(rs2.next())
                 	list.get(i).setUsers(getIds(rs2));
                 if(rs3.next())
                 	list.get(i).setLabels(getIds(rs3));
+                if(rs4.next())
+                	list.get(i).setFiles(getAttachments(rs4));
                 i++;
             }
         } catch (SQLException e) {
@@ -146,10 +173,14 @@ public class TicketDAO {
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+            String sql3 = "SELECT * FROM attachment WHERE ticket_id=?";
             PreparedStatement ps1 = c.prepareStatement(sql, 
             		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
             		  ResultSet.CONCUR_READ_ONLY);
             PreparedStatement ps2 = c.prepareStatement(sql2, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps3 = c.prepareStatement(sql3, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
             int i = 0;
@@ -157,12 +188,66 @@ public class TicketDAO {
                 list.add(processRow(rs));
                 ps1.setInt(1, list.get(i).getId());
                 ps2.setInt(1, list.get(i).getId());
+                ps3.setInt(1, list.get(i).getId());
                 ResultSet rs2 = ps1.executeQuery();
                 ResultSet rs3 = ps2.executeQuery();
+                ResultSet rs4 = ps3.executeQuery();
                 if(rs2.next())
                 	list.get(i).setUsers(getIds(rs2));
                 if(rs3.next())
                 	list.get(i).setLabels(getIds(rs3));
+                if(rs4.next())
+                	list.get(i).setFiles(getAttachments(rs4));
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return list;
+    }
+	
+	public List<Ticket> findByProject(int projectId) {
+        List<Ticket> list = new ArrayList<Ticket>();
+        Connection c = null;
+    	String sql = "SELECT t.ticket_id, t.ticket_title, t.ticket_creation_date, t.priority_id, t.type_id, t.status_id, t.project_id, t.ticket_description, t.active " + 
+            "FROM ticket as t " +
+			"WHERE t.project_id=? " +	
+			"ORDER BY t.ticket_creation_date";
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setInt(1, projectId);
+            ResultSet rs = ps.executeQuery();
+            sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
+            String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+            String sql3 = "SELECT * FROM attachment WHERE ticket_id=?";
+            PreparedStatement ps1 = c.prepareStatement(sql, 
+            		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+            		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps2 = c.prepareStatement(sql2, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps3 = c.prepareStatement(sql3, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            int i = 0;
+            while (rs.next()) {
+                list.add(processRow(rs));
+                ps1.setInt(1, list.get(i).getId());
+                ps2.setInt(1, list.get(i).getId());
+                ps3.setInt(1, list.get(i).getId());
+                ResultSet rs2 = ps1.executeQuery();
+                ResultSet rs3 = ps2.executeQuery();
+                ResultSet rs4 = ps3.executeQuery();
+                if(rs2.next())
+                	list.get(i).setUsers(getIds(rs2));
+                if(rs3.next())
+                	list.get(i).setLabels(getIds(rs3));
+                if(rs4.next())
+                	list.get(i).setFiles(getAttachments(rs4));
                 i++;
             }
         } catch (SQLException e) {
@@ -189,10 +274,14 @@ public class TicketDAO {
             ResultSet rs = ps.executeQuery();
             sql = "SELECT users_id FROM tickets_users as t WHERE t.ticket_id = ?";
             String sql2 = "SELECT label_id FROM tickets_labels as l WHERE l.ticket_id = ?";
+            String sql3 = "SELECT * FROM attachment WHERE ticket_id=?";
             PreparedStatement ps1 = c.prepareStatement(sql, 
             		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
             		  ResultSet.CONCUR_READ_ONLY);
             PreparedStatement ps2 = c.prepareStatement(sql2, 
+          		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
+          		  ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement ps3 = c.prepareStatement(sql3, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
             int i = 0;
@@ -200,12 +289,16 @@ public class TicketDAO {
                 list.add(processRow(rs));
                 ps1.setInt(1, list.get(i).getId());
                 ps2.setInt(1, list.get(i).getId());
+                ps3.setInt(1, list.get(i).getId());
                 ResultSet rs2 = ps1.executeQuery();
                 ResultSet rs3 = ps2.executeQuery();
+                ResultSet rs4 = ps3.executeQuery();
                 if(rs2.next())
                 	list.get(i).setUsers(getIds(rs2));
                 if(rs3.next())
                 	list.get(i).setLabels(getIds(rs3));
+                if(rs4.next())
+                	list.get(i).setFiles(getAttachments(rs4));
                 i++;
             }
         } catch (SQLException e) {
@@ -265,6 +358,16 @@ public class TicketDAO {
             	for(int i=0;i<labels.length;i++){
             		ps.setInt(1, id);
                     ps.setInt(2, labels[i]);
+                    ps.executeUpdate();
+            	}
+            }
+            Attachment files[] = ticket.getFiles();
+            if(files!=null){
+            	statement = "UPDATE attachment SET ticket_id=? WHERE attachment_id=?";
+            	ps = c.prepareStatement(statement);
+            	for(int i=0;i<files.length;i++){
+            		ps.setInt(1, id);
+                    ps.setInt(2, files[i].getId());
                     ps.executeUpdate();
             	}
             }
@@ -383,6 +486,32 @@ public class TicketDAO {
 			e.printStackTrace();
 		}
 		return ids;
+	}
+	
+
+	private Attachment[] getAttachments(ResultSet rs) {
+		Attachment[] list = null;
+		try {
+			int len = 0;
+			if(rs.last()){
+				len = rs.getRow();
+				System.out.println(len);
+				rs.beforeFirst();
+			}
+			list = new Attachment[len];
+			int i = 0;
+			while(rs.next()){
+				list[i] = new Attachment();
+				list[i].setId(rs.getInt("attachment_id"));
+				list[i].setFullname(rs.getString("attachment_fullname"));
+				list[i].setTicketId(rs.getInt("ticket_id"));
+				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 		
 }

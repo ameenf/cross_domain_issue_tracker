@@ -28,12 +28,13 @@ $(document).ready(function () {
         createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), userList);
     });
 
-    $('.projects').on('click', '#b_deleteProject', function () {
+    $('.projects').on('click', '#b_deleteProject', function (event) {
         console.log("closestclass");
-        console.log($('#b_deleteProject').closest("li").attr('class'));
-        var str = $('#b_deleteProject').closest("li").attr('class');
-        console.log(str.split("itemRow user"));
-        var split = str.split("itemRow user");
+        console.log($(event.target).parent().attr('class'));
+        console.log($(event.target).parent().attr('class'));
+        var str = $(event.target).parent().attr('class');
+        console.log(str.split("projectButtons"));
+        var split = str.split("projectButtons");
         projectToDelete = split[1];
         $('#m_deleteProject').modal('toggle');
     });
@@ -142,9 +143,10 @@ function filterProjects() {
     $('.projects').empty();
     for (var key in allProjects) {
         if ((allProjects[key].title).indexOf(substring.toLowerCase()) > -1) {
-            addProjectRow(allProjects[key].id, allProjects[key].title.substring(0, 1), allProjects[key].title, allProjects[key].users);
+            addProjectRow(allProjects[key].id, allProjects[key].title.substring(0, 1), allProjects[key].title, allProjects[key].users, allProjects[key].active);
         }
     }
+    $('.user' + allProjects[allProjects.length - 1].id + ' .dividerHorizontal').remove();
 }
 
 
@@ -154,7 +156,7 @@ function callbackGetProjects(result) {
     filterProjects();
 }
 
-function addProjectRow(id, tag, title, users) {
+function addProjectRow(id, tag, title, users, active) {
     console.log("addProjectRow");
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
     $('.projects').append('<li class="itemRow user' + id + '"></li>');
@@ -169,4 +171,7 @@ function addProjectRow(id, tag, title, users) {
     $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
     $('.projectButtons' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
+    if (!active) {
+        $('.innerUser' + id).addClass('inactive');
+    }
 }

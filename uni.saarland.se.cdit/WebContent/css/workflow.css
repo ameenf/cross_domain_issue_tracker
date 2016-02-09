@@ -44,6 +44,19 @@
     visibility: hidden;
 }
 
+.deleteNode {
+    position: absolute;
+    top: 0px;
+    left: -20px;
+    height: 20px;
+    width: 20px;
+    /* visibility: hidden; */
+    color: white;
+    text-align: center;
+    background-color: #ca424c;
+    border-radius: 3px;
+}
+
 .editTicket {
     position: absolute;
     top: 0px;
@@ -159,11 +172,11 @@
 }
 
 #ticketView {
-    display: none;
+    /*    display: none;*/
     color: black;
     padding: 15px;
     margin: 15px;
-    position: absolute;
+    /*    position: absolute;*/
     width: 80%;
     background: #fff;
     border-radius: 5px;
@@ -280,6 +293,11 @@
     padding: 20px;
 }
 
+#nodeExistsAlert {
+    display: none;
+    padding: 20px;
+}
+
 #addLabel {
     display: none;
     padding: 20px;
@@ -299,7 +317,7 @@
     width: 33%;
     left: 33%;
     text-align: center;
-    z-index: 1011;
+    z-index: 1012;
 }
 
 .labelstyle {
@@ -313,6 +331,7 @@
 
 .popover {
     max-width: 420px;
+    width: 500px;
 }
 
 .ticketScrollContainer {
@@ -324,7 +343,8 @@ path {
     cursor: pointer;
 }
 
-.popoverArrow {
+.popoverArrow,
+.popoverDeleteNode {
     position: absolute;
     display: none;
     background: #fff;
@@ -336,7 +356,9 @@ path {
 }
 
 .popoverArrow:after,
-.popoverArrow:before {
+.popoverArrow:before,
+.popoverDeleteNode:after,
+.popoverDeleteNode:before {
     right: 100%;
     border: solid transparent;
     content: " ";
@@ -347,7 +369,9 @@ path {
     z-index: 1011;
 }
 
-.popoverArrow:after {
+.popoverArrow:after,
+.popoverDeleteNode:after,
+{
     border-color: rgba(255, 255, 255, 0);
     border-right-color: #ffffff;
     border-width: 10px;
@@ -356,11 +380,16 @@ path {
     z-index: 1011;
 }
 
-.popoverArrow:before {
+.popoverArrow:before,
+.popoverDeleteNode:before {
     border-color: rgba(201, 201, 201, 0);
     border-right-color: #c9c9c9;
     border-width: 11px;
     top: 50%;
     margin-top: -11px;
     z-index: 1011;
+}
+
+.popup-body {
+    margin-top: 10px;
 }

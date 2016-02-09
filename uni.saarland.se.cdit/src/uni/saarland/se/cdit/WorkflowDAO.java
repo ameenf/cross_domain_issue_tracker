@@ -4,46 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkflowDAO {
-	
-	/*public List<Node> getWorkflow(int id) {
-        List<Node> list = new ArrayList<Node>();
-        Connection c = null;
-    	String sql = "SELECT node_id, project_id, source_node_id, target_node_id, x_pos, y_pos "+
-    				 "FROM nodes "+
-    				 "WHERE project_id = ?";
-    	String ticketsCountSql = "SELECT COUNT(t.ticket_id) FROM ticket as t WHERE t.project_id = ? AND t.status_id = ? AND t.active=?";
-        try {
-            c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            ps = c.prepareStatement(ticketsCountSql);
-            int i = 0;
-            while (rs.next()) {
-            	list.add(processRow(rs));
-                ps.setInt(1, id);
-                ps.setInt(2, list.get(i).getSourceNodeId());
-                ps.setBoolean(3, true);
-                ResultSet rs2 = ps.executeQuery();
-                if(rs2.next())
-                	list.get(i).setTicketsCount(rs2.getInt(1));
-                i++;
-            }
-                        
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-		} finally {
-			ConnectionHelper.close(c);
-		}
-        return list;
-    }*/
+
 	
 	public Node create(Node node) {
         Connection c = null;
@@ -190,6 +155,26 @@ public class WorkflowDAO {
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("DELETE FROM arrows WHERE arrow_id=?");
+            ps.setInt(1, id);
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public boolean removeNode(int id) {
+        Connection c = null;
+        try {
+        	c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("DELETE FROM arrows WHERE source_node_id=? OR target_node_id=?");
+            ps.setInt(1, id);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            ps = c.prepareStatement("DELETE FROM nodes WHERE node_id=?");
             ps.setInt(1, id);
             int count = ps.executeUpdate();
             return count == 1;

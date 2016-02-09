@@ -18,6 +18,21 @@ public class Ticket {
 
     private int[] users;
     private int[] labels;
+    private Attachment[] files;
+
+	/**
+	 * @return the files
+	 */
+	public Attachment[] getFiles() {
+		return files;
+	}
+
+	/**
+	 * @param files the files to set
+	 */
+	public void setFiles(Attachment[] files) {
+		this.files = files;
+	}
 
 	public int getId() {
 		return id;

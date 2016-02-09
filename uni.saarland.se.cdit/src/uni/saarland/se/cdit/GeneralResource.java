@@ -102,11 +102,8 @@ public class GeneralResource {
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Response remove(@PathParam("id") int id, @PathParam("source") String src) {
 		System.out.println("delete "+src);
-		boolean success = dao.remove(id, src);
-		if(success)
-			return Response.status(200).entity(new MessageHandler("Success.")).build();
-		else
-			return Response.status(404).entity(new MessageHandler("Wrong ID")).build();
+		return dao.remove(id, src);
+		
 	}
 	
 }

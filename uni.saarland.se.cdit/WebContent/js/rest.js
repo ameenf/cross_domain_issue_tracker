@@ -277,6 +277,26 @@ function getTicketsById(id) {
     })
 };
 
+function getTicketsByProject(id) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchById/" + id,
+        url: baseurl + "rest/tickets/getProjectTickets/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetTicketsByProject(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+        }
+    })
+};
+
 function getTicketFeedback(id) {
     $.ajax({
         type: "GET",
@@ -378,7 +398,6 @@ function updateTicket(id, title, creationDate, description, prioId, typeId, node
 function deleteTicket(id) {
     $.ajax({
         type: "DELETE",
-        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/remove/" + id,
         url: baseurl + "rest/tickets/remove/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -487,12 +506,12 @@ function getUser(id) {
     })
 }
 
-function createUser(username, password) {
+function createUser(username, password, type) {
     var data = {
         "email": "",
         "id": "",
         "password": password,
-        "type": "",
+        "type": type,
         "username": username,
     }
 
@@ -556,11 +575,16 @@ function updateUser(username, id, password) {
     })
 }
 
+<<<<<<< HEAD
 function getProjectPermissions (projectid, userid) {
+=======
+
+function getProjectPermissions(projectid, userid) {
+>>>>>>> f08b2957880ea6493b973f047c24b413ecd05003
     var data = {
-        "id": userid,
-    }
-    //TODO
+            "id": userid,
+        }
+        //TODO
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/workflow/getProjectWorkflow/" + projectId,
@@ -588,10 +612,10 @@ function getProjectPermissions (projectid, userid) {
 
 function updateProjectPermissions(projectid, userid, permissions) {
     var data = {
-        "id" : userid,
+        "id": userid,
         "permissions": permissions,
     }
-    
+
     $.ajax({
         type: "PUT",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
@@ -840,6 +864,17 @@ function createArrow(srcNode, trgNode, label) {
         }
     })
 }
+<<<<<<< HEAD
+=======
+
+function updateArrow(arrowId, srcNode, trgNode, label) {
+    var data = {
+        "id": arrowId,
+        "sourceNode": srcNode,
+        "targetNode": trgNode,
+        "label": label
+    }
+>>>>>>> f08b2957880ea6493b973f047c24b413ecd05003
 
 function deleteArrow(id) {
     $.ajax({
@@ -919,7 +954,37 @@ function getStatus() {
             }
         }
     })
-};
+}
+
+// delete node
+
+function deleteNode(id) {
+    $.ajax({
+        type: "DELETE",
+        url: baseurl + "rest/workflow/node/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackDeleteNode(result);
+            return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////Files//////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function setStatus(data) {
     $.ajax({
