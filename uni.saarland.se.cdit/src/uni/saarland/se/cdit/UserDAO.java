@@ -18,7 +18,7 @@ public class UserDAO {
 	public List<User> getAll() {
         List<User> list = new ArrayList<User>();
         Connection c = null;
-    	String sql = "SELECT users_id, users_username, group_id, active FROM users ORDER BY users_id";
+    	String sql = "SELECT users_id, users_username, users_type , group_id, active FROM users ORDER BY users_type";
         try {
             c = ConnectionHelper.getConnection();
             Statement s = c.createStatement();
@@ -521,6 +521,7 @@ public class UserDAO {
 		User user = new User();
 		user.setId(rs.getInt("users_id"));
 		user.setUsername(rs.getString("users_username"));
+		user.setType(rs.getString("users_type"));
 		user.setGroupId(rs.getInt("group_id"));
 		user.setActive(rs.getBoolean("active"));
         return user;

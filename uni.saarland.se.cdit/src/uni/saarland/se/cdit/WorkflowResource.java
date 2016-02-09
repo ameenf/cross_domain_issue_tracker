@@ -25,7 +25,7 @@ public class WorkflowResource {
 	@GET @Path("getWorkflow/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Node> getFlow(@PathParam("id") String id) {
-		System.out.println("findById " + id);
+		System.out.println("find project Id " + id);
 		return dao.getFlow(Integer.parseInt(id));
 	}
 	
