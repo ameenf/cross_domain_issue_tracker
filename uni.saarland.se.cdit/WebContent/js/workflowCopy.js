@@ -20,7 +20,8 @@ var nodeIndex;
 var lastarrowId;
 var popoverId;
 var firstNode;
-
+var nodename;
+var nodeId;
 $(document).ready(function () {
     getTickets(); // Get the amount of tickets and store number in node
     getStatus();
@@ -264,8 +265,7 @@ function listener() {
     var currentdate = new Date();
     var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
 
-    var nodename;
-    var nodeId;
+
     // Open dialog to create a ticket
     $('.addTicket').off().on('click', function (e) {
         optionsLabel = [];
@@ -279,11 +279,13 @@ function listener() {
         nodeIndex = $(this).parent().index();
         //
         //        $('#ticketAdd .title').html('New ticket in <b>' + nodename + '</b>'); // replaces the title
-
+        nodeId = workflowNodes[$(this).parent().index()].id;
         console.log("popoverid");
         console.log($(this).attr('data-toggle'));
-        console.log($(this).attr('data-toggle').substr(0, 1));
-        popoverId = $(this).attr('data-toggle').substr(0, 1);
+        console.log(nodeId);
+        //        console.log($(this).attr('data-toggle').substr(0, 1));
+        //        popoverId = $(this).attr('data-toggle').substr(0, 1);
+        popoverId = nodeId;
         console.log("[data-toggle=" + popoverId + "popoverAddTicket]");
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover({
             html: true,
@@ -305,6 +307,7 @@ function listener() {
         $('#ticketAdd').fadeOut('fast');
         $('#ticketViewWrapper').fadeOut('fast');
     });
+    //////////////////////////////////////////////////Show Tickets in node//////////////////////////////////////////////////////
 
     // Show all tickets within a node
     //    $('.showNode').off().on('click', function (e) {
@@ -318,23 +321,67 @@ function listener() {
     //    });
 
     //        $('.showNode').off().on('click', function (e) {
-    $('body').on('click', '.showNode', function (e) {
-        nodename = $(this).prev().html();
-        $('#popover-content .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
-        nodeId = workflowNodes[$(this).parent().index()].id;
-        console.log(nodeId);
-        console.log("popoverid");
-        console.log($(this).attr('data-toggle'));
-        console.log($(this).attr('data-toggle').substr(0, 1));
-        popoverId = $(this).attr('data-toggle').substr(0, 1);
-        getTicketsByNodeId(nodeId);
+
+
+    //    $('body').on('click', '.showNode', function (e) {
+    //        //        $('.showNode').not(this).popover('hide');
+    //        //
+    //        //        if ($('.popover').hasClass('in')) {
+    //        //            console.log("open");
+    //        nodename = $(this).prev().html();
+    //        nodeId = workflowNodes[$(this).parent().index()].id;
+    //        //            console.log(nodeId);
+    //        //            console.log("popoverid");
+    //        //            console.log($(this).attr('data-toggle'));
+    //        //            //        console.log($(this).attr('data-toggle').substr(0, 1));
+    //        //            //        popoverId = $(this).attr('data-toggle').substr(0, 1);
+    //        popoverId = nodeId;
+    //        //            //$("[data-toggle=" + popoverId + "popoverNodeView]").popover('show');
+    //        //            getTicketsByNodeId(nodeId);
+    //        //            $('.popover .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
+    //        //
+    //        //        } else {
+    //        //            console.log("closed");
+    //        //            $(this).popover('hide');
+    //        //            // popover is not visable
+    //        //        }
+    //        //
+    //    });
+
+    // popover listener -> no need for clicklistener??
+    var prevNode;
+    $(".showNode").popover({
+        html: true,
+        content: function (e) {
+            if (($(this).parent().attr("id")) != prevNode) { // if a previous node was clicked, dismiss the previous popup
+                $("#" + prevNode + " .showNode").trigger("click");
+            }
+            // $('.showNode').not(this).popover('hide');
+            nodename = $(this).prev().html();
+
+            nodeId = workflowNodes[$(this).parent().index()].id;
+            $('.showNode').not(this).popover('hide');
+
+            console.log("open");
+            nodename = $(this).prev().html();
+            nodeId = workflowNodes[$(this).parent().index()].id;
+            console.log(nodeId);
+            console.log("popoverid");
+            console.log($(this).attr('data-toggle'));
+            popoverId = nodeId;
+            getTicketsByNodeId(nodeId);
+            prevNode = nodeId;
+            //                getTicketsByNodeId(nodeId);
+            return $('#popover-content').html();
+        }
     });
 
     $('body').on('click', '.closePopupNodeView', function () {
-        $('.popover-content #ticketOverview').toggle();
-        $('.popover-content #ticketView').toggle();
-        $("[data-toggle=" + popoverId + "popoverNodeView]").popover('hide');
+        //        $('.popover-content #ticketOverview').toggle();
+        //        $('.popover-content #ticketView').toggle();
+        $("#" + nodeId + " .showNode").trigger("click");
     });
+
     $('body').on('click', '.closePopupAddTicketView', function () {
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
     });
@@ -559,29 +606,31 @@ function callbackCreateTicket(result) {
 
 function callbackGetTicketsByNodeId(result) {
     console.log("callbackGetTicketsByNodeId");
-
     allTicketInNode = result;
-    $('#popover-content .modal-body').empty();
+    $('.popover .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
+
+    //$('#popover-content .modal-body').empty();
     for (var key in result) {
         console.log("allticket: " + allTicketInNode);
         //        Load tickets into Nodes
-        $('#popover-content .modal-body').append('<div class="nodeTicketWrapper"></div>');
-        $('#popover-content .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].statusId + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
+        $('.popover .modal-body').append('<div class="nodeTicketWrapper"></div>');
+        $('.popover .nodeTicketWrapper').last().append('<div id="' + allTicketInNode[key].statusId + allTicketInNode[key].title + 'ticket" class="nodeTicket"><b>' + allTicketInNode[key].title + ' </b></br></br> Priority: ' + allPriorities[allTicketInNode[key].priorityId - 1].title + '</br> Type: ' + allTypes[allTicketInNode[key].typeId - 1].title + '</div>');
     }
 
 
-    $("[data-toggle=" + popoverId + "popoverNodeView]").popover({
-        html: true,
-        content: function () {
-            var nodename = $(this).prev().html();
-            $('#popover-content .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
-            var nodeId = workflowNodes[$(this).parent().index()].id;
-            console.log(nodeId);
-            //                getTicketsByNodeId(nodeId);
-            return $('#popover-content').html();
-        }
-    });
-    $("[data-toggle=" + popoverId + "popoverNodeView]").popover('show');
+    //    $("[data-toggle=" + popoverId + "popoverNodeView]").popover({
+    //        html: true,
+    //        content: function () {
+    //            var nodename = $(this).prev().html();
+    //            $('#popover-content .modal-title').html('All Tickets in <b>' + nodename + '</b>'); // replaces the title
+    //            var nodeId = workflowNodes[$(this).parent().index()].id;
+    //            console.log(nodeId);
+    //            //                getTicketsByNodeId(nodeId);
+    //            return $('#popover-content').html();
+    //        }
+    //    });
+    //
+    //    $("[data-toggle=" + popoverId + "popoverNodeView]").popover('show');
 
     listenerShowTicket();
 }
@@ -623,5 +672,5 @@ function callbackCreateNode(result) {
 function callbackDeleteNode(result) {
     console.log("callbackDeleteNode");
     console.log(result);
-    //getWorkflowForArray(projectId);
+    getWorkflowForArray(projectId);
 }
