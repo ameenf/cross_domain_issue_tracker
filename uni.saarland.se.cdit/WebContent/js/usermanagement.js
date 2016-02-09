@@ -31,12 +31,15 @@ $(document).ready(function () {
         }
     });
 
-    $('.users').on('click', '#b_deleteUser', function () {
-        console.log($('#b_deleteUser'));
-        console.log($('#b_deleteUser').closest("li").attr('class'));
-        var str = $('#b_deleteUser').closest("li").attr('class');
-        console.log(str.split("itemRow user"));
-        var split = str.split("itemRow user");
+    $('.users').on('click', '.b_deleteUser', function (event) {
+        console.log('e');
+        console.log(event);
+        console.log($(event.target).parent().attr('class'));
+        console.log($('.b_deleteUser'));
+        console.log($('.b_deleteUser').closest("li").attr('class'));
+        var str = $(event.target).parent().attr('class');
+        console.log(str.split("userButtons"));
+        var split = str.split("userButtons");
         console.log(split);
         usertoDelete = split[1];
         $('#m_deleteUser').modal('toggle');
@@ -47,7 +50,7 @@ $(document).ready(function () {
         $('#m_deleteUser').modal('toggle');
     });
 
-    $('.users').on('click', '#b_editUser', function () {
+    $('.users').on('click', '.b_editUser', function () {
         changePage("userPreferences.html");
     });
 });
@@ -97,13 +100,13 @@ function filterUsers() {
 
     for (var key in allUsers) {
         if ((allUsers[key].username).indexOf(substring.toLowerCase()) > -1) {
-            addUserRow(allUsers[key].id, allUsers[key].username.substring(0, 1), allUsers[key].username);
+            addUserRow(allUsers[key].id, allUsers[key].username.substring(0, 1), allUsers[key].username, allUsers[key].active);
         }
     }
     $('.user' + allUsers[allUsers.length - 1].id + ' .dividerHorizontal').remove();
 }
 
-function addUserRow(id, tag, username) {
+function addUserRow(id, tag, username, active) {
     console.log("addUserRow");
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
     $('.users').append('<li class="itemRow user' + id + '"></li>');
@@ -112,9 +115,12 @@ function addUserRow(id, tag, username) {
     $('.innerUser' + id).append('<a class="itemName" href="user.html">' + username + '</a>');
     $('.innerUser' + id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
     $('.innerUser' + id).append('<div class="userButtons' + id + '"></div>');
-    $('.userButtons' + id).append('<span id="b_editUser" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
-    $('.userButtons' + id).append('<span id="b_deleteUser" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
+    $('.userButtons' + id).append('<span class="glyphicon glyphicon-cog managementIcon b_editUser" aria-hidden="true"></span>');
+    $('.userButtons' + id).append('<span class="glyphicon glyphicon-trash managementIcon b_deleteUser" aria-hidden="true"></span>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
+    if (!active) {
+        $('.innerUser' + id).addClass('inactive');
+    }
 }
 
 

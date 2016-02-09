@@ -28,12 +28,13 @@ $(document).ready(function () {
         createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), userList);
     });
 
-    $('.projects').on('click', '#b_deleteProject', function () {
+    $('.projects').on('click', '#b_deleteProject', function (event) {
         console.log("closestclass");
-        console.log($('#b_deleteProject').closest("li").attr('class'));
-        var str = $('#b_deleteProject').closest("li").attr('class');
-        console.log(str.split("itemRow user"));
-        var split = str.split("itemRow user");
+        console.log($(event.target).parent().attr('class'));
+        console.log($(event.target).parent().attr('class'));
+        var str = $(event.target).parent().attr('class');
+        console.log(str.split("projectButtons"));
+        var split = str.split("projectButtons");
         projectToDelete = split[1];
         $('#m_deleteProject').modal('toggle');
     });
