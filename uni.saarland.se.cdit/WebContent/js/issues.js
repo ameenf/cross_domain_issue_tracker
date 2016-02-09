@@ -45,9 +45,7 @@ $(document).ready(function () {
     $('.filterIssues').on('keyup', function () {
         filterIssues();
     });
-    getTicketsByProject(Cookies.get('projectid'));
     getStatus();
-    getPriorities();
 });
 
 function openIssue(e) {
@@ -87,11 +85,13 @@ function addRow(id, title, description, statusId, priorityId) {
 function callbackGetStatus(result) {
     console.log(result);
     statusList = result;
+    getPriorities();
 }
 
 function callbackGetPriorities(result) {
     console.log(result);
     priorityList = result;
+    getTicketsByProject(Cookies.get('projectid'));
 }
 
 function getCharColor(char) {

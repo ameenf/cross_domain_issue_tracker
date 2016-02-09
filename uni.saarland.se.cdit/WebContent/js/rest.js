@@ -506,12 +506,12 @@ function getUser(id) {
     })
 }
 
-function createUser(username, password) {
+function createUser(username, password, type) {
     var data = {
         "email": "",
         "id": "",
         "password": password,
-        "type": "",
+        "type": type,
         "username": username,
     }
 

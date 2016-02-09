@@ -25,7 +25,7 @@ $(document).ready(function () {
 
     $('#createUser').on('click', function (e) {
         if ($("#i_name").val().length > 0 && $("#i_password").val().length > 0) {
-            createUser($("#i_name").val(), $("#i_password").val());
+            createUser($("#i_name").val(), $("#i_password").val(), $('input[name="rb_admin"]:checked', '#rb_adminCheck').val());
         } else {
             console.log("Wrong input");
         }
@@ -57,9 +57,6 @@ $(document).ready(function () {
 
 function callbackCreateUser(result) {
     console.log(result);
-    //    var elem = document.getElementById("dd_addUserProjectList");
-    //    var projectid = elem.options[elem.selectedIndex].value;
-    console.log(projectid);
 
     //After the user has been added, close the expanded view
     $(".addUserExpandable").slideUp();
