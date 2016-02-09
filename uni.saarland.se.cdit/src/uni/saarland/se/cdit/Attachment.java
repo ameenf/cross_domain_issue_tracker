@@ -6,39 +6,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Attachment {
 
 	private int id;
-	private String type;
-	private String url;
-	private int ticketID;
-	
+	private String fullname;
+	private int ticketId;
+	/**
+	 * @return the ticketId
+	 */
+	public int getTicketId() {
+		return ticketId;
+	}
+	/**
+	 * @param ticketId the ticketId to set
+	 */
+	public void setTicketId(int ticketId) {
+		this.ticketId = ticketId;
+	}
+	/**
+	 * @return the id
+	 */
 	public int getId() {
 		return id;
 	}
-
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public int getTicketId() {
-		return ticketID;
+	/**
+	 * @return the fullname
+	 */
+	public String getFullname() {
+		return fullname;
 	}
-
-	public void setTicketId(int ticketID) {
-		this.ticketID = ticketID;
-	}
-	
-	public String getType() {
-		return type;
-	}
-
-	public void setTypee(String type) {
-		this.type = type;
+	/**
+	 * @param fullname the fullname to set
+	 */
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 	
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 }

@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class FileDAO {
@@ -41,17 +44,42 @@ public class FileDAO {
 		return success;
 	}
 	
+	public List<Attachment> getProjectAttachments(int projectId) {
+		List<Attachment> list = new ArrayList<Attachment>();
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "SELECT * FROM attachment as a, ticket as t "+
+        				   "WHERE a.ticket_id=t.ticket_id AND t.project_id=?";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement);
+            
+            ps.setInt(1, projectId);
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            while(rs.next()){
+            	list.add(processRow(rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return list;
+    }
+	
 	public Attachment create(Attachment file) {
         Connection c = null;
         PreparedStatement ps = null;
-        String statement = "INSERT INTO attachment(attachment_type, attachment_url, ticket_id) VALUES (?, ?, ?)";
+        String statement = "INSERT INTO attachment(attachment_fullname, attachment_fullname, ticket_id) VALUES (?, ?, ?)";
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement, new String[] { "attachment_id" });
             
-            ps.setString(1, file.getType());
-            ps.setString(2, file.getUrl());
-            ps.setInt(3, file.getTicketId());
+            ps.setString(1, file.getFullname());
+            ps.setString(2, file.getFullname());
+            ps.setInt(3, (file.getTicketId()!=0)?file.getTicketId():null);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
@@ -66,4 +94,65 @@ public class FileDAO {
 		}
         return file;
     }
+	
+	public String create(String filename) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        String result;
+        String statement = "INSERT INTO attachment(attachment_fullname, attachment_url) VALUES (?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "attachment_id" });
+            
+            ps.setString(1, filename);
+            ps.setString(2, filename);
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            result = String.valueOf(id)+":"+filename;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return result;
+    }
+	
+	public Attachment createAttachment(String filename) {
+        Connection c = null;
+        PreparedStatement ps = null;
+        Attachment result = new Attachment();
+        result.setFullname(filename);
+        String statement = "INSERT INTO attachment(attachment_fullname, attachment_url) VALUES (?, ?)";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement, new String[] { "attachment_id" });
+            
+            ps.setString(1, filename);
+            ps.setString(2, filename);
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            // Update the id in the returned object. This is important as this value must be returned to the client.
+            int id = rs.getInt(1);
+            result.setId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return result;
+    }
+	
+	private Attachment processRow(ResultSet rs) throws SQLException{
+		Attachment file = new Attachment();
+		file.setId(rs.getInt("attachment_id"));
+		file.setFullname(rs.getString("attachment_fullname"));
+		file.setTicketId(rs.getInt("ticket_id"));
+		return file;
+	}
 }

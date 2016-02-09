@@ -105,9 +105,13 @@ public class UserResource {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public User create(User user) {
+	public Response create(User user) {
 		System.out.println("creating user");
-		return dao.create(user);
+		boolean checkUser = dao.check(user);
+		if(!checkUser)
+			return Response.status(200).entity(dao.create(user)).build();
+		else
+			return Response.status(400).entity(new MessageHandler("Username already exists.")).build();
 	}
 	
 	@JSONP(queryParam="jsonpCallback")

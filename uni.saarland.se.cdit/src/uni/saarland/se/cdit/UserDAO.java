@@ -134,6 +134,28 @@ public class UserDAO {
 		return success;
 	}
 	
+	public boolean check(User user){
+		Connection c = null;
+		String sql = "SELECT users.users_username FROM users WHERE users.users_username = ?";
+		boolean success = false;
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, user.getUsername());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				success = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return success;
+	}
+	
 	public User getUser(User user){
 		Connection c = null;
 		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username = ?";
@@ -481,9 +503,10 @@ public class UserDAO {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("UPDATE users SET active=? WHERE users_id=? AND users_type NOT LIKE 'admin'");
+            PreparedStatement ps = c.prepareStatement("UPDATE users SET active=? WHERE users_id=? AND users_username NOT LIKE ?");
             ps.setBoolean(1, false);
             ps.setInt(2, id);
+            ps.setString(3, "admin");
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
