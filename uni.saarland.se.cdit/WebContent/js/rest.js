@@ -277,6 +277,26 @@ function getTicketsById(id) {
     })
 };
 
+function getTicketsByProject(id) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/searchById/" + id,
+        url: baseurl + "rest/tickets/getProjectTickets/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetTicketsByProject(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+        }
+    })
+};
+
 function getTicketFeedback(id) {
     $.ajax({
         type: "GET",
@@ -378,7 +398,6 @@ function updateTicket(id, title, creationDate, description, prioId, typeId, node
 function deleteTicket(id) {
     $.ajax({
         type: "DELETE",
-        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/tickets/remove/" + id,
         url: baseurl + "rest/tickets/remove/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
@@ -928,7 +947,9 @@ function createNode(projId, userId, statusId, posX, posY) {
         }
     })
 }
+
 // delete node
+
 function deleteNode(id) {
     $.ajax({
         type: "DELETE",
@@ -952,6 +973,7 @@ function deleteNode(id) {
         }
     })
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Files//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

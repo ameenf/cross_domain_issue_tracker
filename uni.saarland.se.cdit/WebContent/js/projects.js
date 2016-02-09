@@ -39,6 +39,17 @@ $(document).ready(function () {
     $('.filterProjects').on('keyup', function () {
         filterProjects();
     });
+
+    $('.projects').on('click', '.itemName', function () {
+        var str = $(this).parent().attr('class');
+        console.log('--------------------------------------------------------------');
+        console.log(str);
+        console.log(str.split("innerProject"));
+        var split = str.split("innerProject");
+        Cookies.set('projectid', split[1]);
+        //         = split[1];
+        changePage('workflow.html');
+    });
 });
 
 function callbackGetProjectsFromUser(result) {
@@ -58,6 +69,7 @@ function filterProjects() {
             addProjectRow(allProjects[key].id, allProjects[key].title, allProjects[key].users);
         }
     }
+    $('.project' + allProjects[allProjects.length - 1].id + ' .dividerHorizontal').remove();
 }
 
 function addProjectRow(id, title, users) {
@@ -65,7 +77,7 @@ function addProjectRow(id, title, users) {
     $('.projects').append('<li class="itemRow project' + id + '"></li>');
     $('.project' + id).append('<div class="flexrow centeritems flexspacebetween innerProject' + id + '"></div>');
     $('.innerProject' + id).append('<div class="itemTag" style="background-color:' + getCharColor(title.substring(0, 1)) + '">' + title.substring(0, 1) + '</div>');
-    $('.innerProject' + id).append('<a class="itemName" href="workflow.html">' + title + '</a>');
+    $('.innerProject' + id).append('<a class="itemName">' + title + '</a>');
     $('.innerProject' + id).append('<div class="inneruserlist innerUserlist' + id + ' "aria-hidden="true"></div>');
     for (var keyy in users) {
         $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');

@@ -54,8 +54,8 @@ $(document).ready(function () {
 
 function callbackCreateUser(result) {
     console.log(result);
-//    var elem = document.getElementById("dd_addUserProjectList");
-//    var projectid = elem.options[elem.selectedIndex].value;
+    //    var elem = document.getElementById("dd_addUserProjectList");
+    //    var projectid = elem.options[elem.selectedIndex].value;
     console.log(projectid);
 
     //After the user has been added, close the expanded view
@@ -100,6 +100,7 @@ function filterUsers() {
             addUserRow(allUsers[key].id, allUsers[key].username.substring(0, 1), allUsers[key].username);
         }
     }
+    $('.user' + allUsers[allUsers.length - 1].id + ' .dividerHorizontal').remove();
 }
 
 function addUserRow(id, tag, username) {

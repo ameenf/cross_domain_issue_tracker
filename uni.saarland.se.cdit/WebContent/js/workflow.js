@@ -48,7 +48,7 @@ $(window).unload(function (e) {
 function listenerShowTicket() {
     // Enlarge a ticket
     $('.nodeTicket').on('click', function (e) {
-        $('#ticketViewWrapper').toggle();
+        //        $('#ticketViewWrapper').toggle();
         currentTicketIndex = $('.nodeTicket').index(this);
         console.log('currentTicketIndex');
         console.log(currentTicketIndex);
@@ -64,17 +64,30 @@ function listenerShowTicket() {
         getTicketFeedback(4);
 
 
-        $("[data-toggle=" + popoverId + "popover]").popover({
-            html: true,
-            content: function () {
-                $('#popover-content .modal-title').html('NEWTITLE'); // replaces the title
-                return $('#popover-content').html();
-            }
-        });
+
+        console.log("##############################################");
+        console.log($('#ticketOverview'));
+        console.log($('#ticketView'));
+
+        console.log("##############################################");
+        $('.popover-content #ticketOverview').hide();
+        $('.popover-content #ticketOverview').toggle();
+        $('.popover-content #ticketOverview').css('display', 'none');
+        $('.popover-content #ticketView').css('display', 'inherit');
+        //        $('.popover-content #ticketView').toggle();
+        console.log("##############################################");
+
+        //        $("[data-toggle=" + popoverId + "popoverNodeView]").popover({
+        //            html: true,
+        //            content: function () {
+        //                $('#popover-content .modal-title').html('NEWTITLE'); // replaces the title
+        //                return $('#popover-content-viewTicket').html();
+        //            }
+        //        });
 
 
         //        $('#myModal2').modal('toggle');
-        $('#ticketView').fadeToggle('fast');
+        //        $('#ticketView').fadeToggle('fast');
         //        $('#ticketView').append('<div id="ticket');
         // Title
         $('#ticketView .form-horizontal').empty();
