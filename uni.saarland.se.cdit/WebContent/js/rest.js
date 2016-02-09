@@ -861,6 +861,7 @@ function createArrow(srcNode, trgNode, label) {
         }
     })
 }
+/*
 <<<<<<< HEAD
 =======
 
@@ -871,7 +872,7 @@ function updateArrow(arrowId, srcNode, trgNode, label) {
         "targetNode": trgNode,
         "label": label
     }
->>>>>>> f08b2957880ea6493b973f047c24b413ecd05003
+>>>>>>> f08b2957880ea6493b973f047c24b413ecd05003*/
 
 function deleteArrow(id) {
     $.ajax({
