@@ -575,12 +575,9 @@ function updateUser(username, id, password) {
     })
 }
 
-<<<<<<< HEAD
-function getProjectPermissions (projectid, userid) {
-=======
 
 function getProjectPermissions(projectid, userid) {
->>>>>>> f08b2957880ea6493b973f047c24b413ecd05003
+
     var data = {
             "id": userid,
         }
