@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/metamanagement.css">
 
 </head>
 
@@ -34,7 +35,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <div class="nav navbar-nav navbar-left">
-                    <div class="headeritem pageName">Users</div>
+                    <div class="headeritem pageName">Meta Management</div>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
@@ -72,6 +73,52 @@
                 </ul>
 
             </div>
+            
+            
+            
+            <!-- actual content -->
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id="errorDiv">
+                    Cannot delete a used Priority/Label/Type/Status.
+                </div>
+                
+                <div id="priorityDiv">
+                    <h3>Priorities:</h3>
+                    <div class='input'>
+                        <input id="newPriority" type="text" class="form-control add" placeholder="New Priority">
+                        <button id="addPriority" class="btn btn-success addBtn" type="button">
+                            <span id="" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div id="labelDiv">
+                    <h3>Labels:</h3>
+                    <div class='input'>
+                        <input id="newLabel" type="text" class="form-control add" placeholder="New Label">
+                        <button id="addLabel" class="btn btn-success addBtn addBtn" type="button">
+                            <span id="" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>  
+                </div>
+                <div id="typeDiv">
+                    <h3>Types:</h3>
+                    <div class='input'>
+                        <input id="newType" type="text" class="form-control add" placeholder="New Type">
+                        <button id="addType" class="btn btn-success" type="button">
+                            <span id="" class="glyphicon glyphicon-plus addBtn" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div id="statusDiv">
+                    <h3>Statuses:</h3>
+                    <div class='input'>
+                        <input id="newStatus" type="text" class="form-control add" placeholder="New Status">
+                        <button id="addStatus" class="btn btn-success" type="button">
+                            <span id="" class="glyphicon glyphicon-plus addBtn" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -90,6 +137,8 @@
     <script src="js/js.cookie.js"></script>
     <script src="js/projectmanagement.js"></script>
     <script src="js/header.js"></script>
+    <script src="js/rest.js"></script>
+    <script src="js/metamanagement.js"></script>
 
 </body>
 
