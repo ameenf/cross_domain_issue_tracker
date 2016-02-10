@@ -82,7 +82,7 @@ $(document).ready(function () {
         deleteType(typeid);   
     });
     
-     $('#statusDiv').on('click', '.removestatus', function () {
+     $('#statusDiv').on('click', '.removeStatus', function () {
         console.log("removing status");
         var statusid = $(this).val();
         console.log(statusid);

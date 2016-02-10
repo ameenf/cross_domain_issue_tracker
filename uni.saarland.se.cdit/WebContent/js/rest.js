@@ -575,7 +575,6 @@ function updateUser(username, id, password) {
     })
 }
 
-
 function getProjectPermissions(projectid, userid) {
 
     var data = {
@@ -861,18 +860,9 @@ function createArrow(srcNode, trgNode, label) {
         }
     })
 }
-/*
-<<<<<<< HEAD
-=======
 
-function updateArrow(arrowId, srcNode, trgNode, label) {
-    var data = {
-        "id": arrowId,
-        "sourceNode": srcNode,
-        "targetNode": trgNode,
-        "label": label
-    }
->>>>>>> f08b2957880ea6493b973f047c24b413ecd05003*/
+
+
 
 function deleteArrow(id) {
     $.ajax({
@@ -984,7 +974,10 @@ function deleteNode(id) {
 //////////////////////////////////////////////////Files//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function setStatus(data) {
+function setStatus(status) {
+    var data = {
+        "title": status,
+    }
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
@@ -1029,6 +1022,11 @@ function deleteStatus(id) {
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
+            if (c == "Bad Request") {
+                console.log('showing error div');
+                $('#errorDiv').show();
+                return;
+            }
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             if (c == "Unauthorized") {
                 window.location.href = baseurl;
@@ -1062,7 +1060,10 @@ function getTypes() {
     })
 }
 
-function setTypes(data) {
+function setTypes(type) {
+    var data = {
+        "title": type,
+    }
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
@@ -1093,7 +1094,7 @@ function setTypes(data) {
 function deleteType(id) {
     $.ajax({
         type: "DELETE",
-        url: baseurl + "rest/general/types/" + id,
+        url: baseurl + "rest/general/type/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
@@ -1105,6 +1106,11 @@ function deleteType(id) {
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
+            if (c == "Bad Request") {
+                console.log('showing error div');
+                $('#errorDiv').show();
+                return;
+            }
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             if (c == "Unauthorized") {
                 window.location.href = baseurl;
@@ -1187,7 +1193,16 @@ function deletePriority(id) {
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
+        
+            if (c == "Bad Request") {
+                console.log('showing error div');
+                $('#errorDiv').show();
+                return;
+            }
+        
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+        
+            
             if (c == "Unauthorized") {
                 window.location.href = baseurl;
             }
@@ -1220,7 +1235,10 @@ function getLabels() {
     })
 }
 
-function setLabels(data) {
+function setLabels(label) {
+    var data = {
+        "title": label,
+    }
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
@@ -1265,6 +1283,11 @@ function deleteLabel(id) {
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
+            if (c == "Bad Request") {
+                console.log('showing error div');
+                $('#errorDiv').show();
+                return;
+            }
             document.body.innerHTML = a + " " + b + " " + c + "ERROR";
             if (c == "Unauthorized") {
                 window.location.href = baseurl;

@@ -25,3 +25,7 @@
 #labels{
     float: none;
 }
+
+#errorDiv {
+    display: none;
+}
