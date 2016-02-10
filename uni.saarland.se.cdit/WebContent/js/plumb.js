@@ -91,6 +91,8 @@ function startJsplumb() {
         var trgClick = "";
         var found = false;
 
+        //////////////////////////////////////////////////Connect nodes//////////////////////////////////////////////////////
+
         // connect 2 nodes together
         function connectNodes() {
 
@@ -99,7 +101,10 @@ function startJsplumb() {
                 $('#' + workflowNodes[key].id + ' .deleteNode').append('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>');
             }
 
-            $('body').on('click', '.item', function () {
+            $('body').on('click', '.item', function (e) {
+                if (e.target !== this)
+                    return;
+
                 if (srcClick == "") {
                     srcClick = $(this).attr("id");
                     firstNode = $(this);
@@ -229,11 +234,11 @@ function startJsplumb() {
         //////////////////////////////////////////////////Deleting Nodes//////////////////////////////////////////////////////
         var nodeObject, nodeStatusId, nodeIndex, nodeId;
         $('body').on('click', '.deleteNode', function (e) {
+
             nodeObject = $(this).parent();
             nodeIndex = $(this).parent().index();
             nodeStatusId = workflowNodes[$(this).parent().index()].statusId;
             nodeId = workflowNodes[$(this).parent().index()].id;
-            deleteNode(37);
 
             console.log("deletenode");
             var offset = $(this).offset();
@@ -249,8 +254,9 @@ function startJsplumb() {
             console.log("dom object: " + nodeObject);
             console.log("node statusid: " + nodeStatusId);
             console.log("nodeid: " + nodeId);
-            //            deleteNode(nodeId);
+            deleteNode(nodeId);
 
+            srcClick = ""; // make srcClick empty to avoid conencting nodes with a deleted node
 
             // delete node in UI
             for (var key in arrConnect) {
@@ -261,7 +267,7 @@ function startJsplumb() {
                 }
             }
 
-            //jsPlumb.remove(nodeId + "");
+            jsPlumb.remove(nodeId + "");
             console.log(workflowNodes[nodeIndex]);
             $('.popoverDeleteNode').hide();
         });
@@ -288,12 +294,12 @@ function startJsplumb() {
                     found = true;
                 }
             }
-            if (found == true) {
+            if (found == true) { // node exists already
                 $("#connectionExistsAlert").show();
                 $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
                     $("#connectionExistsAlert").hide();
                 });
-            } else {
+            } else { // add the new node
 
                 //                $(".bgRaster").append('<div id="" class="item jsplumb-draggable jsplumb-endpoint-anchor jsplumb-connected"><div class="topTitle">' + allNodes[statusIdTemp].title + '</div></div>');
                 console.log(allNodes[statusIdTemp].title);
@@ -400,7 +406,6 @@ function startJsplumb() {
                     arrConnect[key].toggleType("edit");
                 }
                 connectNodes();
-                deleteNodes();
             } else { // if switch is turned off, delete clicklistener
                 editmode = false;
                 for (var key in arrConnect) {
