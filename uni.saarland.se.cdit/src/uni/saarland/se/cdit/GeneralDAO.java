@@ -252,9 +252,13 @@ public class GeneralDAO {
         boolean success = false;
         String msg = "";
         int status = 500;
+        PreparedStatement ps;
         try {
             c = ConnectionHelper.getConnection();
-            PreparedStatement ps = c.prepareStatement("SELECT ticket_id FROM ticket WHERE "+src+"_id = ? LIMIT 1");
+            if(!src.equals("label"))
+            	ps = c.prepareStatement("SELECT ticket_id FROM ticket WHERE "+src+"_id = ? LIMIT 1");
+            else
+            	ps = c.prepareStatement("SELECT ticket_id FROM tickets_labels WHERE "+src+"_id = ? LIMIT 1");
             ps.setInt(1, id);
             success = !ps.executeQuery().next();
             if(success){

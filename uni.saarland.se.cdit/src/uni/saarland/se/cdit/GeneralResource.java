@@ -102,6 +102,7 @@ public class GeneralResource {
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Response remove(@PathParam("id") int id, @PathParam("source") String src) {
 		System.out.println("delete "+src);
+		System.out.println("Label deletion fixed.");
 		return dao.remove(id, src);
 		
 	}
