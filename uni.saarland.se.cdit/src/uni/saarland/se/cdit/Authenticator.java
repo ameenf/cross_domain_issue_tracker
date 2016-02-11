@@ -34,7 +34,7 @@ public class Authenticator implements ContainerRequestFilter{
 	@Override
     public void filter(ContainerRequestContext requestContext)
     {
-		UserDAO dao = new UserDAO();
+		UserManagementDAO dao = new UserManagementDAO();
 		User user = new User();
 		Method method = resourceInfo.getResourceMethod();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();

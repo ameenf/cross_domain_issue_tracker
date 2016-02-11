@@ -24,9 +24,9 @@ public class WorkflowResource {
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getWorkflow/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public List<Node> getFlow(@PathParam("id") String id) {
+	public List<Node> getWorkflowByProjectId(@PathParam("id") int id) {
 		System.out.println("find project Id " + id);
-		return dao.getFlow(Integer.parseInt(id));
+		return dao.getFlow(id);
 	}
 	
 	@JSONP(queryParam="jsonpCallback")

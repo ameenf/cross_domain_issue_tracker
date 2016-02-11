@@ -17,9 +17,9 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.JSONP;
 
 @Path("/users")
-public class UserResource {
+public class UserManagementResource {
 
-	UserDAO dao = new UserDAO();
+	UserManagementDAO dao = new UserManagementDAO();
 	@PermitAll
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("login")
@@ -45,7 +45,7 @@ public class UserResource {
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("byId/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public User getUser(@PathParam("id") int id) {
+	public User getUserByUserId(@PathParam("id") int id) {
 		System.out.println("getAll");
 		return dao.getUser(id);
 	}
@@ -53,7 +53,7 @@ public class UserResource {
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getProfile/{user_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public UserProfile getUserProfile(@PathParam("user_id") int id){
+	public UserProfile getProfileByUserId(@PathParam("user_id") int id){
 		System.out.println("get user profile" + id);
 		return dao.getProfile(id);
 	}
@@ -69,7 +69,7 @@ public class UserResource {
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("findByProject/{project_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public List<User> findUsersByProject(@PathParam("project_id") int id) {
+	public List<User> getUsersByProjectId(@PathParam("project_id") int id) {
 		System.out.println("get users by project id");
 		return dao.findByProjectId(id);
 	}
@@ -78,7 +78,7 @@ public class UserResource {
 	@POST @Path("getProjectPermissions/{project_id}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public User findUsersByProject(User user, @PathParam("project_id") int id) {
+	public User getProjectPermissions(User user, @PathParam("project_id") int id) {
 		System.out.println("get user by project id");
 		return dao.findByProjectId(user,id);
 	}
@@ -87,7 +87,7 @@ public class UserResource {
 	@POST @Path("groups")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Group createGroup(Group group) {
+	public Group addGroup(Group group) {
 		System.out.println("creating group");
 		return dao.createGroup(group);
 	}
@@ -105,7 +105,7 @@ public class UserResource {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Response create(User user) {
+	public Response addUser(User user) {
 		System.out.println("creating user");
 		boolean checkUser = dao.check(user);
 		if(!checkUser)
@@ -118,7 +118,7 @@ public class UserResource {
 	@POST @Path("addProjectPermissions/{projectId}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Response addPermissions(User user, @PathParam("projectId") int projectId) {
+	public Response addProjectPermissions(User user, @PathParam("projectId") int projectId) {
 		System.out.println("adding permissions");
 		boolean success = dao.addPermissions(user,projectId);
 		if(success)
@@ -131,7 +131,7 @@ public class UserResource {
 	@PUT @Path("updateProjectPermissions/{projectId}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Response updatePermissions(User user, @PathParam("projectId") int projectId) {
+	public Response updateProjectPermissions(User user, @PathParam("projectId") int projectId) {
 		System.out.println("updating permissions");
 		boolean success = dao.updatePermissions(user,projectId);
 		if(success)
@@ -144,9 +144,18 @@ public class UserResource {
 	@POST @Path("createProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public UserProfile createProfile(UserProfile profile) {
+	public UserProfile addProfile(UserProfile profile) {
 		System.out.println("creating user profile");
 		return dao.createProfile(profile);
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
+	@PUT 
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public User updateUser(User user) {
+		System.out.println("updating user");
+		return dao.updateUser(user);
 	}
 	
 	@PUT @Path("updatePassword")
@@ -170,7 +179,18 @@ public class UserResource {
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("remove/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public boolean remove(@PathParam("id") int id) {
-		return dao.remove(id);
+	public boolean removeUser(@PathParam("id") int id) {
+		return dao.removeUser(id);
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
+	@DELETE @Path("groups/remove/{id}")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public Response removeGroup(@PathParam("id") int id) {
+		boolean success = dao.removeGroup(id);
+		if(success)
+			return Response.status(200).entity(new MessageHandler("Success.")).build();
+		else
+			return Response.status(400).entity(new MessageHandler("ID not found")).build();
 	}
 }

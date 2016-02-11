@@ -47,7 +47,7 @@ public class FileResource {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Attachment create(Attachment file) {
+	public Attachment addFile(Attachment file) {
 		System.out.println("creating file");
 		return file;
 	}

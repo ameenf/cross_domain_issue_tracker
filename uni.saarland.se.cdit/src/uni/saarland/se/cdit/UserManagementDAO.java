@@ -13,7 +13,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class UserDAO {
+public class UserManagementDAO {
 
 	public List<User> getAll() {
         List<User> list = new ArrayList<User>();
@@ -476,6 +476,29 @@ public class UserDAO {
 		}
     }
 	
+	public User updateUser(User user) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE users " +
+            										  "SET users_username = ?, users_email=?, users_type=?, group_id=?" +
+            										  "WHERE users.users_id = ?");
+            
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getType());
+            ps.setInt(4, user.getGroupId());
+            ps.setInt(2, user.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return user;
+    }
+	
 	public boolean updateProfile(UserProfile profile) {
         Connection c = null;
         try {
@@ -499,7 +522,7 @@ public class UserDAO {
 		}
     }
 	
-	public boolean remove(int id) {
+	public boolean removeUser(int id) {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
@@ -507,6 +530,22 @@ public class UserDAO {
             ps.setBoolean(1, false);
             ps.setInt(2, id);
             ps.setString(3, "admin");
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public boolean removeGroup(int id) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE groups SET active=? WHERE group_id=?");
+            ps.setBoolean(1, false);
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
