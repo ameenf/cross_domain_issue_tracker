@@ -157,8 +157,10 @@ public class UserManagementDAO {
 	}
 	
 	public User getUser(User user){
+
+		System.out.print(user.getUsername());
 		Connection c = null;
-		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username = ?";
+		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username LIKE ?";
 		String permissionsSql = "SELECT permission_name "+
 								"FROM group_permissions as gp, permissions as p "+
 								"WHERE gp.permission_id = p.permission_id AND group_id=?";
@@ -171,6 +173,7 @@ public class UserManagementDAO {
 			ps = c.prepareStatement(permissionsSql, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
+			
 			if (rs.next()){
 				user.setId( rs.getInt("users_id"));
 				user.setGroupId(rs.getInt("group_id"));
@@ -546,6 +549,7 @@ public class UserManagementDAO {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE groups SET active=? WHERE group_id=?");
             ps.setBoolean(1, false);
+            ps.setInt(2, id);
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
@@ -570,6 +574,7 @@ public class UserManagementDAO {
 		Group group = new Group();
 		group.setId(rs.getInt("group_id"));
 		group.setName(rs.getString("group_name"));
+		group.setActive(rs.getBoolean("active"));
 		group.setDescription(rs.getString("group_description"));
         return group;
     }
