@@ -106,7 +106,7 @@ public class UserManagementResource {
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Group updateGroup(Group group) {
 		System.out.println("updating group");
-		return dao.createGroup(group);
+		return dao.updateGroup(group);
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
