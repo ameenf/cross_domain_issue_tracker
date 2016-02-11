@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class UserDAO {
+public class UserManagementDAO {
 
 	public List<User> getAll() {
         List<User> list = new ArrayList<User>();
@@ -157,8 +158,10 @@ public class UserDAO {
 	}
 	
 	public User getUser(User user){
+
+		System.out.print(user.getUsername());
 		Connection c = null;
-		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username = ?";
+		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username LIKE ?";
 		String permissionsSql = "SELECT permission_name "+
 								"FROM group_permissions as gp, permissions as p "+
 								"WHERE gp.permission_id = p.permission_id AND group_id=?";
@@ -171,6 +174,7 @@ public class UserDAO {
 			ps = c.prepareStatement(permissionsSql, 
           		  ResultSet.TYPE_SCROLL_INSENSITIVE, 
           		  ResultSet.CONCUR_READ_ONLY);
+			
 			if (rs.next()){
 				user.setId( rs.getInt("users_id"));
 				user.setGroupId(rs.getInt("group_id"));
@@ -223,7 +227,7 @@ public class UserDAO {
 		
 	}
 	
-	public List<Group> getGroups(){
+	public List<Group> getGroupsWithPermissions(){
 		List<Group> list = new ArrayList<Group>();
 		Connection c = null;
 		String sql = "SELECT * FROM groups";
@@ -243,6 +247,32 @@ public class UserDAO {
 				ps.setInt(1, list.get(i).getId());
 				list.get(i).setPermissions(getPermissions(ps.executeQuery()));
 				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return list;
+		
+	}
+	
+	public List<Group> getGroups(){
+		List<Group> list = new ArrayList<Group>();
+		Connection c = null;
+		String sql = "SELECT * FROM groups WHERE active=?";
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setBoolean(1, true);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()){
+				Group group = new Group();
+				group.setId(rs.getInt("group_id"));
+				group.setName(rs.getString("group_name"));
+				list.add(group);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -476,6 +506,32 @@ public class UserDAO {
 		}
     }
 	
+	public User updateUser(User user) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE users " +
+            										  "SET users_username = ?, users_email=?, users_type=?, group_id=?" +
+            										  "WHERE users.users_id = ?");
+            
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getType());
+            if(user.getGroupId()!=0)
+            	ps.setInt(4, user.getGroupId());
+            else
+            	ps.setNull(4, Types.INTEGER);
+            ps.setInt(5, user.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return user;
+    }
+	
 	public boolean updateProfile(UserProfile profile) {
         Connection c = null;
         try {
@@ -499,7 +555,7 @@ public class UserDAO {
 		}
     }
 	
-	public boolean remove(int id) {
+	public boolean removeUser(int id) {
         Connection c = null;
         try {
             c = ConnectionHelper.getConnection();
@@ -507,6 +563,23 @@ public class UserDAO {
             ps.setBoolean(1, false);
             ps.setInt(2, id);
             ps.setString(3, "admin");
+            int count = ps.executeUpdate();
+            return count == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public boolean removeGroup(int id) {
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("UPDATE groups SET active=? WHERE group_id=?");
+            ps.setBoolean(1, false);
+            ps.setInt(2, id);
             int count = ps.executeUpdate();
             return count == 1;
         } catch (Exception e) {
@@ -531,6 +604,7 @@ public class UserDAO {
 		Group group = new Group();
 		group.setId(rs.getInt("group_id"));
 		group.setName(rs.getString("group_name"));
+		group.setActive(rs.getBoolean("active"));
 		group.setDescription(rs.getString("group_description"));
         return group;
     }

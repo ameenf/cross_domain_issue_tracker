@@ -6,7 +6,22 @@ public class Group {
 	private int id;
 	private String name;
 	private String description;
+	private boolean active = true;
 	private String[] permissions;
+	
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	/**
 	 * @return the id
 	 */

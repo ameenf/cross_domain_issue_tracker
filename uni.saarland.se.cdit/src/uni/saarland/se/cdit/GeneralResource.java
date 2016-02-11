@@ -65,7 +65,7 @@ public class GeneralResource {
 	@POST @Path("/label")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Label create(Label label) {
+	public Label addLabel(Label label) {
 		System.out.println("create label");
 		return dao.create(label);
 	}
@@ -74,7 +74,7 @@ public class GeneralResource {
 	@POST @Path("/status")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Status create(Status status) {
+	public Status addStatus(Status status) {
 		System.out.println("create status");
 		return dao.create(status);
 	}
@@ -83,7 +83,7 @@ public class GeneralResource {
 	@POST @Path("/type")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Type create(Type type) {
+	public Type addType(Type type) {
 		System.out.println("create label");
 		return dao.create(type);
 	}
@@ -92,7 +92,7 @@ public class GeneralResource {
 	@POST @Path("/priority")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Priority create(Priority priority) {
+	public Priority addPriority(Priority priority) {
 		System.out.println("create label");
 		return dao.create(priority);
 	}

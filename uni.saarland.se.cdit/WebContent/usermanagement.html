@@ -112,6 +112,41 @@
                     </div>
                 </div>
 
+                <div class="updateUserExpandable">
+                    <div class="dialog-header">
+                        <h4 class="modal-title" id="ml_addUser">Update User</h4>
+                    </div>
+                    <div class="modal-body">
+                        Name :
+                        <input type="text" class="form-control" id="i_name_update">
+                        <br> Password :
+                        <input type="text" class="form-control" id="i_password_update">
+
+                        <form id="rb_adminCheck">
+                            <div class="radio">
+                                <input id="rb_admin_update" type="radio" name="rb_admin" value="admin">
+                                <label for="radio3">
+                                    Admin
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <input id="rb_user_update" type="radio" name="rb_admin" value="user" checked>
+                                <label for="radio4">
+                                    User
+                                </label>
+                            </div>
+                        </form>
+                        <!--
+                        <br> Project:
+                        <select id="dd_addUserProjectList" class="form-control">
+-->
+                    </div>
+                    <div class="dialog-footer">
+                        <!--                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        <button id="updateUser" type="submit" class="btn btn-primary">Update User</button>
+                    </div>
+                </div>
+
                 <ul class="noList users"></ul>
             </div>
 

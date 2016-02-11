@@ -24,7 +24,7 @@ import org.glassfish.jersey.server.JSONP;
 		@JSONP(queryParam="jsonpCallback")
 		@GET
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public List<Project> findAll() {
+		public List<Project> getAll() {
 			System.out.println("findAll");
 			return dao.findAll();
 		}
@@ -32,7 +32,7 @@ import org.glassfish.jersey.server.JSONP;
 		@JSONP(queryParam="jsonpCallback")
 		@GET @Path("searchByUser/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public List<Project> findByUserId(@PathParam("id") String id) {
+		public List<Project> getProjectByUserId(@PathParam("id") String id) {
 			System.out.println("findByUser " + id);
 			return dao.findByUser(Integer.parseInt(id));
 		}
@@ -41,7 +41,7 @@ import org.glassfish.jersey.server.JSONP;
 		@POST
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public Project create(Project project) {
+		public Project addProject(Project project) {
 			System.out.println("creating project");
 			return dao.create(project);
 		}
@@ -50,7 +50,7 @@ import org.glassfish.jersey.server.JSONP;
 		@PUT @Path("addUsers")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public Project addUsers(Project project) {
+		public Project addUsersToProject(Project project) {
 			System.out.println("adding users to project");
 			return dao.addUsers(project);
 		}
@@ -59,7 +59,7 @@ import org.glassfish.jersey.server.JSONP;
 		@PUT @Path("update")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public Project update(Project project) {
+		public Project updateProject(Project project) {
 			System.out.println("Updating project: " + project.getTitle());
 			dao.update(project);
 			return project;
@@ -68,7 +68,7 @@ import org.glassfish.jersey.server.JSONP;
 		@JSONP(queryParam="jsonpCallback")
 		@DELETE @Path("remove/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public boolean remove(@PathParam("id") int id) {
+		public boolean removeProject(@PathParam("id") int id) {
 			return dao.remove(id);
 		}
 		
