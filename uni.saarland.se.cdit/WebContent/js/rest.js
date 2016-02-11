@@ -1,4 +1,4 @@
-var port = 8990;
+var port = 8080;
 var baseurl = 'http://localhost:' + port + '/uni.saarland.se.cdit/';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Projects/////////////////////////////////////////////////////
@@ -564,6 +564,40 @@ function updateUser(username, id, password) {
         async: true,
         success: function (result) {
             return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+function updatePW(username, id, password) {
+    var data = {
+        "email": "",
+        "id": id,
+        "password": password,
+        "type": "",
+        "username": username,
+    }
+
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
+        url: baseurl + "rest/users/updatePassword",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            location.reload();
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
