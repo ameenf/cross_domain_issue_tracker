@@ -159,9 +159,8 @@ public class UserManagementDAO {
 	
 	public User getUser(User user){
 
-		System.out.print(user.getUsername());
 		Connection c = null;
-		String sql = "SELECT users.users_id, users.group_id FROM users WHERE users.users_username LIKE ?";
+		String sql = "SELECT users.users_id, users.group_id, users.users_type FROM users WHERE users.users_username LIKE ?";
 		String permissionsSql = "SELECT permission_name "+
 								"FROM group_permissions as gp, permissions as p "+
 								"WHERE gp.permission_id = p.permission_id AND group_id=?";
@@ -178,6 +177,7 @@ public class UserManagementDAO {
 			if (rs.next()){
 				user.setId( rs.getInt("users_id"));
 				user.setGroupId(rs.getInt("group_id"));
+				user.setType(rs.getString("users_type"));
 				ps.setInt(1, user.getGroupId());
 				rs = ps.executeQuery();
 				user.setPermissions(getPermissions(rs));
