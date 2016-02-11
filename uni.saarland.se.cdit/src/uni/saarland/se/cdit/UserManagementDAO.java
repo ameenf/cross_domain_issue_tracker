@@ -226,7 +226,7 @@ public class UserManagementDAO {
 		
 	}
 	
-	public List<Group> getGroups(){
+	public List<Group> getGroupsWithPermissions(){
 		List<Group> list = new ArrayList<Group>();
 		Connection c = null;
 		String sql = "SELECT * FROM groups";
@@ -246,6 +246,32 @@ public class UserManagementDAO {
 				ps.setInt(1, list.get(i).getId());
 				list.get(i).setPermissions(getPermissions(ps.executeQuery()));
 				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+		return list;
+		
+	}
+	
+	public List<Group> getGroups(){
+		List<Group> list = new ArrayList<Group>();
+		Connection c = null;
+		String sql = "SELECT * FROM groups WHERE active=?";
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setBoolean(1, true);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()){
+				Group group = new Group();
+				group.setId(rs.getInt("group_id"));
+				group.setName(rs.getString("group_name"));
+				list.add(group);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

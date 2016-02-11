@@ -59,11 +59,19 @@ public class UserManagementResource {
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
-	@GET @Path("groups")
+	@GET @Path("groups/list")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Group> getGroups(){
 		System.out.println("get groups");
 		return dao.getGroups();
+	}
+	
+	@JSONP(queryParam="jsonpCallback")
+	@GET @Path("groups")
+	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
+	public List<Group> getGroupsWithPermissions(){
+		System.out.println("get groups");
+		return dao.getGroupsWithPermissions();
 	}
 	
 	@JSONP(queryParam="jsonpCallback")
