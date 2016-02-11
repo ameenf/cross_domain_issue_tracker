@@ -970,9 +970,6 @@ function deleteNode(id) {
     })
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////Files//////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function setStatus(status) {
     var data = {
@@ -1295,3 +1292,69 @@ function deleteLabel(id) {
         }
     })
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////Groups//////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function getGroups() {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetGroups(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
+}
+
+function createGroup(name) {
+    var data = {
+        "description": "",
+        "name": name,
+        "permissions": [],
+    }
+    
+    console.log(data);
+    
+    $.ajax({
+        type: "POST",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackCreateGroup(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
+}
