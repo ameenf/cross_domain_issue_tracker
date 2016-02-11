@@ -491,7 +491,7 @@ public class UserManagementDAO {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getType());
             ps.setInt(4, user.getGroupId());
-            ps.setInt(2, user.getId());
+            ps.setInt(5, user.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
