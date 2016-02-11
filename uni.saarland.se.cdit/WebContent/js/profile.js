@@ -1,12 +1,22 @@
 "use strict";
 
 $(document).ready(function () {
-    console.log("Getting ID");
     var userid;
-    userid = Cookies.get('userid')
-    console.log("User ID " + userid);
+    userid = Cookies.get('userid');
+    var profileid;
+    profileid = Cookies.get('profileid');
+    console.log("Profile ID " + profileid);
+    if(profileid == "-1"){
+        profileid = userid;
+    }
     
-    getProfile(userid);
+    if(userid != profileid){
+        $('#cogBtn').remove();
+        $('#editBtns').remove();
+        $('#changePW').remove();
+    }
+    
+    getProfile(profileid);
     
     $('#cogBtn').on('click', function (e) {
         console.log("EDIT PROFILE BTN");
