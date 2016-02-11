@@ -2,6 +2,7 @@
 var allUsers = [];
 var allProjects = [];
 var usertoDelete;
+var selectedUser;
 
 $(document).ready(function () {
     console.log("users.js");
@@ -23,9 +24,35 @@ $(document).ready(function () {
         expandAddUser();
     });
 
+    $('.users').on('click', '.itemName', function (event) {
+        var str = $(event.target).parent().attr('class');
+        var split = str.split("innerUser");
+        console.log(split);
+        var findUserId = split[1];
+
+        selectedUser = $.grep(allUsers, function (e) {
+            return e.id == findUserId;
+        });
+
+        console.log('selectedUser : ', selectedUser);
+
+        expandUpdateUser();
+    });
+
+    //    $('#b_closeAddUser').on('click', function (e) {
+    //        expandAddUser();
+    //    });
+
     $('#createUser').on('click', function (e) {
         if ($("#i_name").val().length > 0 && $("#i_password").val().length > 0) {
             createUser($("#i_name").val(), $("#i_password").val(), $('input[name="rb_admin"]:checked', '#rb_adminCheck').val());
+        } else {
+            console.log("Wrong input");
+        }
+    });
+    $('#updateUser').on('click', function (e) {
+        if ($("#i_name_update").val().length > 0 && $("#i_password_update").val().length > 0) {
+            updateUser1(selectedUser[0].id, $("#i_name_update").val(), $("#i_password_update").val(), $('input[name="rb_admin"]:checked', '#rb_adminCheck').val());
         } else {
             console.log("Wrong input");
         }
@@ -83,6 +110,25 @@ function expandAddUser() {
 }
 
 
+function expandUpdateUser() {
+    console.log("expandUpdateUser");
+
+    console.log(selectedUser);
+    document.getElementById("i_name_update").value = selectedUser[0].username;;
+    document.getElementById("i_password_update").value = selectedUser[0].password;
+
+    if (selectedUser.type === 'admin') {
+        $("#rb_admin_update").prop("checked", true);
+    }
+
+
+    //Toggle to switch icons
+    $(".updateUserExpandable").slideToggle("slow", function () {
+        $("#s_newUserIcon").toggleClass("glyphicon-plus glyphicon-minus");
+    });
+}
+
+
 
 function openUser(e) {
     //e.preventDefault(); //Prevents link from forwarding
@@ -109,7 +155,7 @@ function addUserRow(id, tag, username, active) {
     $('.users').append('<li class="itemRow user' + id + '"></li>');
     $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');
     $('.innerUser' + id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + tag + '</div>');
-    $('.innerUser' + id).append('<a class="itemName" href="user.html">' + username + '</a>');
+    $('.innerUser' + id).append('<a class="itemName">' + username + '</a>');
     $('.innerUser' + id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
     $('.innerUser' + id).append('<div class="userButtons' + id + '"></div>');
     $('.userButtons' + id).append('<span class="glyphicon glyphicon-cog managementIcon b_editUser" aria-hidden="true"></span>');
