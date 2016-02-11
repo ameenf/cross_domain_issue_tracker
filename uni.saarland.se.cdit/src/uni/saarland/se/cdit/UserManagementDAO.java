@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -516,7 +517,10 @@ public class UserManagementDAO {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getType());
-            ps.setInt(4, user.getGroupId());
+            if(user.getGroupId()!=0)
+            	ps.setInt(4, user.getGroupId());
+            else
+            	ps.setNull(4, Types.INTEGER);
             ps.setInt(5, user.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
