@@ -65,7 +65,7 @@ public class FileResource {
 	}
 	
 	@GET
-	@Path("/getProjectFiles/{projectId")
+	@Path("/getProjectFiles/{projectId}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Attachment> getProjectAttachments(@PathParam("projectId") int id) {
 	    return dao.getProjectAttachments(id);

@@ -36,7 +36,7 @@ public class FeedbackDAO {
 	public Feedback create(Feedback feedback) {
         Connection c = null;
         PreparedStatement ps = null;
-        String statement= "INSERT INTO feedback(feedback_text, ticket_id, user_id) VALUES (?, ?)";
+        String statement= "INSERT INTO feedback(feedback_text, ticket_id, user_id) VALUES (?, ?, ?)";
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement, new String[] { "feedback_id", "feedback_date" });
@@ -88,6 +88,27 @@ public class FeedbackDAO {
             ps.setInt(1, id);
             int count = ps.executeUpdate();
             return count == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public int getTicketIdByFeedbackId(int id) {
+		int projectId = 0;
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT ticket_id FROM feedback "
+            										+ "WHERE ticket_id=?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+            	projectId = rs.getInt(1);
+            }
+            return projectId;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

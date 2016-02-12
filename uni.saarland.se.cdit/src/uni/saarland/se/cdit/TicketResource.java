@@ -3,6 +3,7 @@ package uni.saarland.se.cdit;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,6 +28,7 @@ import org.glassfish.jersey.server.JSONP;
 		TicketDAO dao = new TicketDAO();
 		int counter = 0;
 		
+		@RolesAllowed("user")
 		@JSONP(queryParam = "jsonpCallback")
 		@GET
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -96,7 +98,7 @@ import org.glassfish.jersey.server.JSONP;
 		
 		@DELETE @Path("remove/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public boolean removeTicket(@PathParam("id") int id) {
+		public boolean deleteTicket(@PathParam("id") int id) {
 			return dao.remove(id);
 		}
 		

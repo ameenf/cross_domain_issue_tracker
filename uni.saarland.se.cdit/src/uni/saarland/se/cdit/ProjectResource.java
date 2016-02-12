@@ -3,6 +3,7 @@ package uni.saarland.se.cdit;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,6 +22,7 @@ import org.glassfish.jersey.server.JSONP;
 
 		ProjectDAO dao = new ProjectDAO();
 		
+		@RolesAllowed({"admin"})
 		@JSONP(queryParam="jsonpCallback")
 		@GET
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -29,6 +31,7 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.findAll();
 		}
 		
+		@RolesAllowed({"admin","user"})
 		@JSONP(queryParam="jsonpCallback")
 		@GET @Path("searchByUser/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -37,6 +40,7 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.findByUser(Integer.parseInt(id));
 		}
 		
+		@RolesAllowed({"admin"})
 		@JSONP(queryParam="jsonpCallback")
 		@POST
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -46,6 +50,7 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.create(project);
 		}
 		
+		@RolesAllowed({"admin"})
 		@JSONP(queryParam="jsonpCallback")
 		@PUT @Path("addUsers")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -55,6 +60,7 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.addUsers(project);
 		}
 		
+		@RolesAllowed({"admin"})
 		@JSONP(queryParam="jsonpCallback")
 		@PUT @Path("update")
 		@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -65,6 +71,7 @@ import org.glassfish.jersey.server.JSONP;
 			return project;
 		}
 		
+		@RolesAllowed({"admin"})
 		@JSONP(queryParam="jsonpCallback")
 		@DELETE @Path("remove/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })

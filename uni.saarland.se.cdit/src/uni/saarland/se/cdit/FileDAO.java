@@ -48,15 +48,14 @@ public class FileDAO {
 		List<Attachment> list = new ArrayList<Attachment>();
         Connection c = null;
         PreparedStatement ps = null;
-        String statement = "SELECT * FROM attachment as a, ticket as t "+
+        String statement = "SELECT attachment_id, attachment_fullname, a.ticket_id FROM attachment as a, ticket as t "+
         				   "WHERE a.ticket_id=t.ticket_id AND t.project_id=?";
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement);
             
             ps.setInt(1, projectId);
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs = ps.executeQuery();;
             while(rs.next()){
             	list.add(processRow(rs));
             }

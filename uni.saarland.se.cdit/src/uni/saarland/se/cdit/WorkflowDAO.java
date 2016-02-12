@@ -186,6 +186,25 @@ public class WorkflowDAO {
 		}
     }
 	
+	public int getArrowSourceNode(int id) {
+		int nodeId = 0;
+        Connection c = null;
+        try {
+        	c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT source_node_id FROM arrows WHERE arrow_id=?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            	nodeId = rs.getInt(1);
+            return nodeId;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
 	protected Node processTestRow(ResultSet rs) throws SQLException {
 		Node workflow = new Node();
 		workflow.setId(rs.getInt("node_id"));
