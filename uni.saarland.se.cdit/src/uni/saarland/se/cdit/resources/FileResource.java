@@ -59,7 +59,7 @@ public class FileResource {
 	}
 	
 	@PermitAll
-	@GET @Path("/download/{id}/{query}")
+	@GET @Path("/{id}/{query}/download")
 	public Response downloadFile(@PathParam("id") int fileId, @PathParam("query") String fileName) {
 		FileDAO dao = new FileDAO();
 		boolean success = dao.checkFile(fileId, fileName);

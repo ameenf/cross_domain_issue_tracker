@@ -82,7 +82,7 @@ public class FileDAO {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement);
             ps.setInt(1, fileId);
-            ps.setString(1, fileName);
+            ps.setString(2, fileName);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
             	success = true;
