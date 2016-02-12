@@ -39,9 +39,7 @@ $(document).ready(function () {
         $('#m_deleteProject').modal('toggle');
     });
     $('.projects').on('click', '#b_editProject', function () {
-        Cookies.set('projectid', $(this).data('id')); 
-        //console.log(Cookies.get('projectid'));
-        changePage('permissions_project.html')
+        changePage('permissions.html')
     });
 
     $('#deleteProject').on('click', function () {
@@ -170,7 +168,7 @@ function addProjectRow(id, tag, title, users, active) {
         $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
     }
     $('.innerUser' + id).append('<div class="projectButtons' + id + '"></div>');
-    $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true" data-id="' + id + '"></span>');
+    $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true"></span>');
     $('.projectButtons' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
     if (!active) {

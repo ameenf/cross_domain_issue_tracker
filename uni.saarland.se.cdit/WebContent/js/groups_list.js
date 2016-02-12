@@ -1,6 +1,6 @@
 "use strict";
 var allGroups = [];
-var grouptoDelete;
+var usertoDelete;
 
 $(document).ready(function () {
     console.log("users.js");
@@ -43,14 +43,13 @@ $(document).ready(function () {
         console.log(str.split("userButtons"));
         var split = str.split("userButtons");
         console.log(split);
-        grouptoDelete = split[1];
+        usertoDelete = split[1];
         $('#m_deleteUser').modal('toggle');
     });
 
 
     $('#deleteUser').on('click', function () {
-        console.log(grouptoDelete);
-        deleteGroup(grouptoDelete);
+        //deleteUser(usertoDelete);
         $('#m_deleteUser').modal('toggle');
     });
 
@@ -68,7 +67,7 @@ function callbackCreateGroup(result) {
     $("#s_newUserIcon").removeClass("glyphicon-minus");
     $("#s_newUserIcon").addClass("glyphicon-plus");
 
-    addGroupRow(result.id, result.name.substring(0, 1), result.name, result.description, result.active);
+    addGroupRow(result.id, result.name.substring(0, 1), result.name, result.description);
 }
 
 function expandAddUser() {
@@ -76,6 +75,9 @@ function expandAddUser() {
     //Clear dropdown
     $('#dd_addUserProjectList').empty();
     //Add available projects to the dropdown
+    for (var key in allProjects) {
+        $('#dd_addUserProjectList').append('<option value="' + allProjects[key].id + '" selected="">' + allProjects[key].title + '</option>');
+    }
 
     //Toggle to switch icons
     $(".addUserExpandable").slideToggle("slow", function () {
@@ -98,20 +100,14 @@ function filterGroups() {
 
     for (var key in allGroups) {
         if ((allGroups[key].name).indexOf(substring.toLowerCase()) > -1) {
-            addGroupRow(allGroups[key].id, allGroups[key].name.substring(0, 1), allGroups[key].name, allGroups[key].description, allGroups[key].active);
+            addGroupRow(allGroups[key].id, allGroups[key].name.substring(0, 1), allGroups[key].name, allGroups[key].description);
         }
     }
     $('.user' + allGroups[allGroups.length - 1].id + ' .dividerHorizontal').remove();
 }
 
-function addGroupRow(id, tag, name, description, active) {
-    console.log("addUserRow"); 
-    console.log(active);
-    if (!active){
-        console.log("not active");
-        return;
-    }
-    
+function addGroupRow(id, tag, name, description) {
+    console.log("addUserRow");
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
     $('.users').append('<li class="itemRow user' + id + '"></li>');
     $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');

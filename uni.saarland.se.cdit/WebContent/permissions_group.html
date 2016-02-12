@@ -51,7 +51,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="sidebar">
+            <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     <li><a href="projects.html">Projects</a>
                     </li>
@@ -59,15 +59,7 @@
                 <ul class="nav nav-sidebar">
                     <li><a href="usermanagement.html">Management</a>
                     </li>
-
-                    <li class="nav_secondlevel"><a href="usermanagement.html">Users</a></li>
-                    <li class="nav_secondlevel"><a href="projectmanagement.html">Projects</a>
-                    </li>
-                    <li class="nav_secondlevel"><a href="metamanagement.html">Meta</a>
-                        
-                    </li>
-                    <li class="nav_secondlevel active"><a href="groups_list.html">Groups<span class="sr-only">(current)</span></a></li>
-                    <li><a href="profile.html" id="profileLink">Profile</a>
+                    <li class="active"><a href="#">Profile<span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
 
@@ -78,22 +70,7 @@
             
             <!-- actual content -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1>Group Permissions</h1>
-                
-                <div>
-                    <label class="col-sm-2 control-label fieldLabel">Name:</label>
-                    
-                    <div class="col-sm-10 editField form-group">
-                        <input id="name" type="text" class="form-control updCreat">
-                    </div>
-                </div>
-                <div>
-                    <label class="col-sm-2 control-label fieldLabel">Description:</label>
-                    <br>
-                    <div class="col-sm-10 editField form-group">
-                        <textarea id="description" class="form-control updDesc"></textarea>
-                    </div>
-                </div>
+                <h1>General Permissions</h1>
 
                 <div id="permissionsList">
                     <h4>"Add" Permissions:</h4>
@@ -205,7 +182,7 @@
                         <input type="checkbox" id="deleteUser" value="true">
                     </div>
                     
-                    <button id="saveBtn" type="button" class="btn btn-default editBtn">Save Changes</button>
+                    <button id="updatePermissions" type="button" class="btn btn-default editBtn">Update Permissions</button>
                 </div> 
             </div>
         </div>
@@ -231,7 +208,7 @@
     <script src="js/header.js"></script>
     <script src="js/js.cookie.js"></script>
     <script src="js/rest.js"></script>
-    <script src="js/permissions_group.js"></script>
+    <script src="js/permissions.js"></script>
 </body>
 
 </html>

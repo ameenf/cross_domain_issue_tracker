@@ -6,10 +6,9 @@ $(document).ready(function () {
     var projectid;
     //userid = Cookies.get('userid')
     userid = 1;
-    projectid = Cookies.get('projectid');
+    projectid = 1;
     
     console.log("User ID " + userid);
-    console.log("Project ID " + projectid);
     getProjectPermissions(projectid, userid);
 
     
