@@ -25,6 +25,8 @@ var nodename;
 var nodeId;
 var ticketLabel = [];
 var ticketUser = [];
+var fileId;
+var ticketFiles = [];
 
 $(document).ready(function () {
     if (userName == "admin") { // if user is admin, add adminarea
@@ -37,41 +39,14 @@ $(document).ready(function () {
         $('#adminArea .editRow').append('<div class="popover"><div class="form-group"><div class="col-md-8 checkbox"></div></div><button id="closeAddNode" type="button" class="btn btn-default btn-block">Close</button><button id="saveAddNode" type="button" class="btn btn-primary btn-block">Save</button></div>');
 
     };
-        //    $('#btnFileUpload').click(function () {
+    //    $('#btnFileUpload').click(function () {
     $('body').on('click', '#btnFileUpload', function () {
-        var formData = new FormData($('form')[0]);
-        $.ajax({
-            url: baseurl + "rest/files/upload",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
-            },
-            type: 'POST',
-            xhr: function () { // Custom XMLHttpRequest
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) { // Check if upload property exists
-                    myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
-                }
-                return myXhr;
-            },
-            //Ajax events
-            //            beforeSend: beforeSendHandler,
-            success: function (data, textStatus, jqXHR) {
-                console.log("SUCCESS");
-            },
-            error: function (a, b, c) {
-                console.log("ERROR");
-                console.log(a);
-                console.log(b);
-                console.log(c);
 
-            },
-            // Form data
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
-        });
+        var formData = new FormData($('form')[2]);
+        //        var formData = new FormData($('.popover-content-addTicket #uploadFile'));
+        //        var formData = new FormData($('.uploadFile'));
+        $('#submitTicket').attr("disabled", "disabled"); //Most likely wrong selector
+        createFile(formData);
     });
 
     getTickets(); // Get the amount of tickets and store number in node
@@ -81,6 +56,12 @@ $(document).ready(function () {
     getUsers();
     getLabels();
 });
+
+function callbackCreateFile(result) {
+    $('#submitTicket').removeAttr("disabled");
+    ticketFiles.push(result);
+    console.log('TickerFuiles : ', ticketFiles);
+}
 
 function progressHandlingFunction(a) {
     console.log(a);
@@ -453,7 +434,7 @@ function listener() {
         }
 
         // call to create a ticket
-        createTicket(subTicketTitle, datetime, subTicketDesc, prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
+        createTicket(subTicketTitle, datetime, subTicketDesc, prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel, ticketFiles);
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
 
     });

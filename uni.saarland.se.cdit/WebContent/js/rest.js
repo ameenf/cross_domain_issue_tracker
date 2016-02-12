@@ -316,7 +316,7 @@ function getTicketFeedback(id) {
     })
 };
 
-function createTicket(title, date, description, prioId, typeId, nodeId, projId, users, labels) {
+function createTicket(title, date, description, prioId, typeId, nodeId, projId, users, labels, files) {
     var data = {
         "title": title,
         "creationDate": date,
@@ -326,7 +326,8 @@ function createTicket(title, date, description, prioId, typeId, nodeId, projId, 
         "statusId": nodeId,
         "projectId": projId,
         "users": users,
-        "labels": labels
+        "labels": labels,
+        "files": files
     }
 
     $.ajax({
@@ -978,6 +979,43 @@ function getFiles(id) {
         }
     })
 };
+
+function createFile(formData) {
+    $.ajax({
+        url: baseurl + "rest/files/upload",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        type: 'POST',
+        xhr: function () { // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) { // Check if upload property exists
+                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+        //Ajax events
+        //            beforeSend: beforeSendHandler,
+        success: function (data, textStatus, jqXHR) {
+            console.log("SUCCESS");
+            callbackCreateFile(data);
+            fileId = data.id;
+
+        },
+        error: function (a, b, c) {
+            console.log("ERROR");
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        },
+        // Form data
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////General//////////////////////////////////////////////////////
