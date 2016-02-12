@@ -105,7 +105,7 @@ function updateProject(id, title, desc, users) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackUpdateProject(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -563,7 +563,7 @@ function updateUser(username, id, password) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackUpdateUser(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");

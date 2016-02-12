@@ -287,3 +287,7 @@ function addProjectRow(id, tag, title, users, active) {
         $('.innerUser' + id).addClass('inactive');
     }
 }
+
+function callbackUpdateProject(result) {
+    changePage('projectmanagement.html');
+}

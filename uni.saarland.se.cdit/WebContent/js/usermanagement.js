@@ -176,3 +176,7 @@ function callbackGetUsers(result) {
 function callbackGetProjects(result) {
     allProjects = result;
 }
+
+function callbackUpdateUser(result) {
+    changePage('usermanagement.html');
+}
