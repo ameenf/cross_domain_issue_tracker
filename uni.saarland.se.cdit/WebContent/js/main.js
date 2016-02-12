@@ -8,13 +8,13 @@ $(document).ready(function () {
         window.stop();
         window.location = "index.html";
     }
-    
-    
+
+
     $('#profileLink').on('click', function (e) {
-        Cookies.set('profileid', "-1"); 
+        Cookies.set('profileid', "-1");
         console.log('profileid set');
     });
-    
+
 });
 
 function changePage(newurl) {

@@ -6,10 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Dashboard Template for Bootstrap</title>
+    <title>CDIT</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
@@ -39,11 +36,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
                 </ul>
-                <!--
-<form class="navbar-form navbar-right">
-    <input type="text" class="form-control" placeholder="Search...">
-</form>
--->
             </div>
         </div>
     </nav>
@@ -58,26 +50,22 @@
                 <ul class="nav nav-sidebar">
                     <li><a href="usermanagement.html">Management</a>
                     </li>
-
                     <li class="nav_secondlevel"><a href="usermanagement.html">Users</a>
                     </li>
                     <li class="nav_secondlevel active"><a href="#">Projects<span class="sr-only">(current)</span></a></li>
                     <li class="nav_secondlevel"><a href="metamanagement.html">Meta</a>
                     </li>
                     <li class="nav_secondlevel"><a href="groups_list.html">Groups</a></li>
-
                     <li><a href="profile.html" id="profileLink">Profile</a>
                     </li>
-
                 </ul>
-
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="input-group">
                     <input type="text" class="form-control filterProjects" placeholder="Filter...">
                     <span class="input-group-btn">
-        <button class="btn btn-success b_addProject" type="button">
-            <span id="s_newProjectIcon" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <button class="btn btn-success b_addProject" type="button">
+                    <span id="s_newProjectIcon" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     <span> New Project</span>
                     </button>
                     </span>
@@ -98,7 +86,6 @@
                         <div class="scrollContainer"></div>
                     </div>
                     <div class="dialog-footer">
-                        <!--                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
                         <button id="createProject" type="submit" class="btn btn-primary">Add Project</button>
                     </div>
                 </div>
@@ -118,13 +105,9 @@
                         <div class="updateScrollContainer"></div>
                     </div>
                     <div class="dialog-footer">
-                        <!--                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
                         <button id="updateProject" type="submit" class="btn btn-primary">Add Project</button>
                     </div>
                 </div>
-
-
-
                 <ul class="noList projects"></ul>
             </div>
 
@@ -167,7 +150,6 @@
                                 </div>
                                 <div class="warningtext">Do you really want to delete this project?</div>
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -184,20 +166,13 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!--
-    <script>
-        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-    </script>
--->
-    <!-- Latest compiled and minified JavaScript -->
+    <script src="js/jquery-1.12.0.min.js"></script>
     <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/js.cookie.js"></script>
     <script src="js/rest.js"></script>
     <script src="js/projectmanagement.js"></script>
     <script src="js/header.js"></script>
-
 
 </body>
 

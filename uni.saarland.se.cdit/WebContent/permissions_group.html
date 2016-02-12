@@ -6,10 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Dashboard Template for Bootstrap</title>
+    <title>CDIT</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
@@ -40,11 +37,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
                 </ul>
-                <!--
-<form class="navbar-form navbar-right">
-    <input type="text" class="form-control" placeholder="Search...">
-</form>
--->
             </div>
         </div>
     </nav>
@@ -57,32 +49,27 @@
                     </li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li><a href="usermanagement.html">Management</a> 
+                    <li><a href="usermanagement.html">Management</a>
                     </li>
-
                     <li class="nav_secondlevel"><a href="usermanagement.html">Users</a></li>
                     <li class="nav_secondlevel"><a href="projectmanagement.html">Projects</a>
                     </li>
                     <li class="nav_secondlevel"><a href="metamanagement.html">Meta</a>
-                        
+
                     </li>
                     <li class="nav_secondlevel active"><a href="groups_list.html">Groups<span class="sr-only">(current)</span></a></li>
                     <li><a href="profile.html" id="profileLink">Profile</a>
                     </li>
                 </ul>
-
             </div>
 
-            
-            
-            
             <!-- actual content -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1>Group Permissions</h1>
-                
+
                 <div>
                     <label class="col-sm-2 control-label fieldLabel">Name:</label>
-                    
+
                     <div class="col-sm-10 editField form-group">
                         <input id="name" type="text" class="form-control updCreat">
                     </div>
@@ -109,11 +96,6 @@
                         <label class="permissionLabel">File:</label>
                         <input type="checkbox" id="addFile" value="true">
                     </div>
-                    <!-- missing -->
-                    <!--<div class="permissionDiv">
-                        <label class="permissionLabel">Node:</label>
-                        <input type="checkbox" id="addNode" value="true">
-                    </div>-->
                     <div class="permissionDiv">
                         <label class="permissionLabel">Project:</label>
                         <input type="checkbox" id="addProject" value="true">
@@ -127,15 +109,15 @@
                         <input type="checkbox" id="addLabel" value="true">
                     </div>
                     <div class="permissionDiv">
-                       <label class="permissionLabel">Type:</label>
+                        <label class="permissionLabel">Type:</label>
                         <input type="checkbox" id="addType" value="true">
                     </div>
                     <div class="permissionDiv">
-                       <label class="permissionLabel">Status:</label>
+                        <label class="permissionLabel">Status:</label>
                         <input type="checkbox" id="addStatus" value="true">
                     </div>
-                    
-                    
+
+
                     <h4>"Update" Permissions:</h4>
                     <div class="permissionDiv">
                         <label class="permissionLabel">Ticket:</label>
@@ -153,10 +135,6 @@
                         <label class="permissionLabel">Project:</label>
                         <input type="checkbox" id="updateProject" value="true">
                     </div>
-                    <!--<div class="permissionDiv">
-                        <label class="permissionLabel">User:</label>
-                        <input type="checkbox" name="updateUser" value="true">
-                    </div>-->
                     <div class="permissionDiv">
                         <label class="permissionLabel">Label:</label>
                         <input type="checkbox" id="updateLabel" value="true">
@@ -173,8 +151,8 @@
                         <label class="permissionLabel">Password:</label>
                         <input type="checkbox" id="updatePassword" value="true">
                     </div>
-                    
-                    
+
+
                     <h4>"Delete"/"Inactive" Permissions:</h4>
                     <div class="permissionDiv">
                         <label class="permissionLabel">Project:</label>
@@ -204,35 +182,24 @@
                         <label class="permissionLabel">User:</label>
                         <input type="checkbox" id="deleteUser" value="true">
                     </div>
-                    
+
                     <button id="saveBtn" type="button" class="btn btn-default editBtn">Save Changes</button>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
 
-
-
-
-
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!--
-    <script>
-        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-    </script>
--->
-    <!-- Latest compiled and minified JavaScript -->
-
+    <script src="js/jquery-1.12.0.min.js"></script>
     <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
     <script src="js/header.js"></script>
     <script src="js/js.cookie.js"></script>
     <script src="js/rest.js"></script>
     <script src="js/permissions_group.js"></script>
     <script src="js/main.js"></script>
+
 </body>
 
 </html>
