@@ -226,13 +226,90 @@ public class ProjectDAO {
         return project;
     }
 	
-	/*protected int[] processRowUsers(ResultSet rs) throws SQLException {
-		int[] users = new int[rs.];
-		project.setId(rs.getInt("project_id"));
-		project.setTitle(rs.getString("project_title"));
-		project.setDescription(rs.getString("project_description"));
-        return users;
-    }*/
+
+	public int isUserInTicketProject(int userId, int ticketId) {
+        Connection c = null;
+        int id = 0;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT pu.project_id FROM project_users as pu, ticket as t " + 
+            										  "WHERE pu.project_id = t.project_id AND pu.users_id=? AND t.ticket_id=?");
+            ps.setInt(1, userId);
+            ps.setInt(2, ticketId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            	id = rs.getInt(1);
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public int isUserInNodeProject(int userId, int nodeId) {
+        Connection c = null;
+        int id = 0;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT pu.project_id FROM project_users as pu, nodes as n " + 
+            										  "WHERE pu.project_id = n.project_id AND pu.users_id=? AND n.node_id=?");
+            ps.setInt(1, userId);
+            ps.setInt(2, nodeId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            	id = rs.getInt(1);
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public int isUserInProject(int userId, int projectId) {
+        Connection c = null;
+        int id = 0;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT project_id FROM project_users " + 
+            										  "WHERE users_id=? AND project_id=?");
+            ps.setInt(1, userId);
+            ps.setInt(2, projectId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            	id = rs.getInt(1);
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
+	public int areUserInProject(int userOneId, int userTwoId) {
+        Connection c = null;
+        int id = 0;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT upOne.project_id FROM project_users as upOne, project_users as upTwo " + 
+            										  "WHERE upOne.users_id=? AND upTwo.users_id=? AND upOne.project_id = upTwo.project_id");
+            ps.setInt(1, userOneId);
+            ps.setInt(2, userTwoId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            	id = rs.getInt(1);
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
 	
 	
 	protected int[] getIds(ResultSet rs){

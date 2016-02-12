@@ -96,6 +96,27 @@ public class FeedbackDAO {
 		}
     }
 	
+	public int getTicketIdByFeedbackId(int id) {
+		int projectId = 0;
+        Connection c = null;
+        try {
+            c = ConnectionHelper.getConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT ticket_id FROM feedback "
+            										+ "WHERE ticket_id=?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+            	projectId = rs.getInt(1);
+            }
+            return projectId;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+    }
+	
 	protected Feedback processRow(ResultSet rs) throws SQLException {
 		Feedback feedback = new Feedback();
 		feedback.setId(rs.getInt("feedback_id"));

@@ -3,6 +3,7 @@ package uni.saarland.se.cdit;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,6 +22,7 @@ public class GeneralResource {
 
 	GeneralDAO dao = new GeneralDAO();
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam = "jsonpCallback")
 	@GET @Path("/status")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -29,6 +31,7 @@ public class GeneralResource {
 		return dao.getAllStatus();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam = "jsonpCallback")
 	@GET @Path("/type")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -37,6 +40,7 @@ public class GeneralResource {
 		return dao.getAllTypes();
 	}
 
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam = "jsonpCallback")
 	@GET @Path("/priority")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -45,6 +49,7 @@ public class GeneralResource {
 		return dao.getAllPriority();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam = "jsonpCallback")
 	@GET @Path("/label")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -53,14 +58,16 @@ public class GeneralResource {
 		return dao.getAllLabels();
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam = "jsonpCallback")
 	@GET @Path("/permissions")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Permission> getAllPermissions() {
-		System.out.println("findAlllabels");
+		System.out.println("findAllpermissions");
 		return dao.getAllPermissions();
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam = "jsonpCallback")
 	@POST @Path("/label")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -70,6 +77,7 @@ public class GeneralResource {
 		return dao.create(label);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam = "jsonpCallback")
 	@POST @Path("/status")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -79,30 +87,32 @@ public class GeneralResource {
 		return dao.create(status);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam = "jsonpCallback")
 	@POST @Path("/type")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Type addType(Type type) {
-		System.out.println("create label");
+		System.out.println("create type");
 		return dao.create(type);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam = "jsonpCallback")
 	@POST @Path("/priority")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Priority addPriority(Priority priority) {
-		System.out.println("create label");
+		System.out.println("create priority");
 		return dao.create(priority);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam = "jsonpCallback")
 	@DELETE @Path("/{source}/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public Response remove(@PathParam("id") int id, @PathParam("source") String src) {
 		System.out.println("delete "+src);
-		System.out.println("Label deletion fixed.");
 		return dao.remove(id, src);
 		
 	}

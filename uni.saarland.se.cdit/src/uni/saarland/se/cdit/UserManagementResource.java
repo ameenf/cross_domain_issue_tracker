@@ -3,6 +3,7 @@ package uni.saarland.se.cdit;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,6 +35,7 @@ public class UserManagementResource {
 
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -42,6 +44,7 @@ public class UserManagementResource {
 		return dao.getAll();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("byId/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -50,6 +53,7 @@ public class UserManagementResource {
 		return dao.getUser(id);
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getProfile/{user_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -58,6 +62,7 @@ public class UserManagementResource {
 		return dao.getProfile(id);
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("groups/list")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -66,6 +71,7 @@ public class UserManagementResource {
 		return dao.getGroups();
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("groups")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -74,6 +80,7 @@ public class UserManagementResource {
 		return dao.getGroupsWithPermissions();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("findByProject/{project_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -82,6 +89,7 @@ public class UserManagementResource {
 		return dao.findByProjectId(id);
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("getProjectPermissions/{project_id}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -91,6 +99,7 @@ public class UserManagementResource {
 		return dao.findByProjectId(user,id);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("groups")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -100,6 +109,7 @@ public class UserManagementResource {
 		return dao.createGroup(group);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@PUT @Path("groups")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -109,6 +119,7 @@ public class UserManagementResource {
 		return dao.updateGroup(group);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -122,6 +133,7 @@ public class UserManagementResource {
 			return Response.status(400).entity(new MessageHandler("Username already exists.")).build();
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("addProjectPermissions/{projectId}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -135,6 +147,7 @@ public class UserManagementResource {
 			return Response.status(500).entity(new MessageHandler("Error Occurred.")).build();
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@PUT @Path("updateProjectPermissions/{projectId}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -148,6 +161,7 @@ public class UserManagementResource {
 			return Response.status(500).entity(new MessageHandler("Error Occurred.")).build();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("createProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -157,6 +171,7 @@ public class UserManagementResource {
 		return dao.createProfile(profile);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@PUT 
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -175,6 +190,7 @@ public class UserManagementResource {
 				.build();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@PUT @Path("updateProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response updateProfile(UserProfile profile) {
@@ -184,6 +200,7 @@ public class UserManagementResource {
 				.build();
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("remove/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -191,6 +208,7 @@ public class UserManagementResource {
 		return dao.removeUser(id);
 	}
 	
+	@RolesAllowed({"admin"})
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("groups/remove/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })

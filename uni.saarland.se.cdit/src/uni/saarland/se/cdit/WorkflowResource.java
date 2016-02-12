@@ -68,7 +68,7 @@ public class WorkflowResource {
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("arrow/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Response removeArrow(@PathParam("id") int id){
+	public Response deleteArrow(@PathParam("id") int id){
 		System.out.println("updating arrow");
 		boolean success = dao.removeArrow(id);
 		if(success)
@@ -80,7 +80,7 @@ public class WorkflowResource {
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("node/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public Response removeNode(@PathParam("id") int id){
+	public Response deleteNode(@PathParam("id") int id){
 		System.out.println("updating arrow");
 		boolean success = dao.removeNode(id);
 		if(success)
