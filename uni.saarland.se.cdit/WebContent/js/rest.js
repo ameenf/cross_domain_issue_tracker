@@ -925,11 +925,11 @@ function deleteArrow(id) {
 //////////////////////////////////////////////////Files//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function getFiles() {
+function getFiles(id) {
     $.ajax({
         type: "GET",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
-        url: baseurl + "rest/files",
+        url: baseurl + "rest/files/getProjectFiles/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
