@@ -9,9 +9,11 @@
     height: 100%;
     background-repeat: repeat;
 }
-.hoverdrop{
-        border: 5px solid #42ca67;
+
+.hoverdrop {
+    border: 5px solid #42ca67;
 }
+
 .item {
     color: white;
     font-size: 14px;
@@ -119,8 +121,9 @@
 
 .amountTickets {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    text-align: center;
+    width: 100%;
+    top: 40%;
     /*    width: 80px;
     height: 80px;
     border-radius: 50%;
