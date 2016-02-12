@@ -2,7 +2,6 @@ package uni.saarland.se.cdit;
 
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -75,7 +74,7 @@ import org.glassfish.jersey.server.JSONP;
 		@JSONP(queryParam="jsonpCallback")
 		@DELETE @Path("remove/{id}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-		public boolean removeProject(@PathParam("id") int id) {
+		public boolean deleteProject(@PathParam("id") int id) {
 			return dao.remove(id);
 		}
 		

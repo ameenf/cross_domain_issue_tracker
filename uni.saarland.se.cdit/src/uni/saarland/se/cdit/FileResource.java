@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,7 +26,7 @@ public class FileResource {
 	
 	FileDAO dao = new FileDAO();
 	
-	@PermitAll
+	@RolesAllowed({"admin","user"})
 	@POST
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -43,6 +44,7 @@ public class FileResource {
 			return Response.status(500).entity(new MessageHandler("Uploading file failed. Please try again.")).build();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -52,7 +54,7 @@ public class FileResource {
 		return file;
 	}
 	
-
+	@RolesAllowed({"admin","user"})
 	@GET
 	@Path("/{query}")
 	//@Produces("application/pdf")
@@ -64,7 +66,7 @@ public class FileResource {
 	    return response.build();
 	}
 	
-
+	@RolesAllowed({"admin","user"})
 	@GET
 	@Path("/getProjectFiles/{projectId}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })

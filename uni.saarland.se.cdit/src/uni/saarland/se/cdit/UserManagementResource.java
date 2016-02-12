@@ -44,6 +44,7 @@ public class UserManagementResource {
 		return dao.getAll();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("byId/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -52,6 +53,7 @@ public class UserManagementResource {
 		return dao.getUser(id);
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getProfile/{user_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -60,7 +62,7 @@ public class UserManagementResource {
 		return dao.getProfile(id);
 	}
 	
-	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("groups/list")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -78,6 +80,7 @@ public class UserManagementResource {
 		return dao.getGroupsWithPermissions();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("findByProject/{project_id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -86,6 +89,7 @@ public class UserManagementResource {
 		return dao.findByProjectId(id);
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("getProjectPermissions/{project_id}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -157,6 +161,7 @@ public class UserManagementResource {
 			return Response.status(500).entity(new MessageHandler("Error Occurred.")).build();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@POST @Path("createProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -185,6 +190,7 @@ public class UserManagementResource {
 				.build();
 	}
 	
+	@RolesAllowed({"admin","user"})
 	@PUT @Path("updateProfile")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response updateProfile(UserProfile profile) {

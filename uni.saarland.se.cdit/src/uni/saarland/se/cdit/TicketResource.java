@@ -2,7 +2,6 @@ package uni.saarland.se.cdit;
 
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,21 +13,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-
-
 
 import org.glassfish.jersey.server.JSONP;
 
-	
 	@Path("/tickets")
 	public class TicketResource {
 
 		TicketDAO dao = new TicketDAO();
-		int counter = 0;
 		
-		@RolesAllowed("user")
+		@RolesAllowed("admin")
 		@JSONP(queryParam = "jsonpCallback")
 		@GET
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -37,6 +30,7 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.findAll();
 		}
 		
+		@RolesAllowed({"admin","user"})
 		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("searchByTitle/{query}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -61,6 +55,7 @@ import org.glassfish.jersey.server.JSONP;
 			return dao.findByProject(id);
 		}
 		
+		@RolesAllowed({"admin","user"})
 		@JSONP(queryParam = "jsonpCallback")
 		@GET @Path("searchByType/{query}")
 		@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })

@@ -2,6 +2,7 @@ package uni.saarland.se.cdit;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,6 +21,7 @@ public class FeedbackResource {
 
 	FeedbackDAO dao = new FeedbackDAO();
 	
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET @Path("getTicketFeedback/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
@@ -50,7 +52,7 @@ public class FeedbackResource {
 	@JSONP(queryParam="jsonpCallback")
 	@DELETE @Path("remove/{id}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
-	public boolean removeFeedback(@PathParam("id") int id) {
+	public boolean deleteFeedback(@PathParam("id") int id) {
 		return dao.remove(id);
 	}
 }
