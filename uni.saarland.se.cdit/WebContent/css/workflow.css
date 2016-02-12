@@ -51,6 +51,11 @@
     flex-direction: column;
 }
 
+.addTicket:hover {
+    transition: background-color 0.3s ease-in;
+    background-color: #287e56;
+}
+
 .addTicket {
     /*
     position: absolute;
@@ -65,9 +70,9 @@
     left: 70px;
     background-color: #42ca67;
     border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    padding-top: 3px;
+    height: 25px;
+    width: 25px;
+    padding-top: 6px;
     padding-left: 1px;
     text-align: center;
     font-size: 10px;
@@ -92,6 +97,10 @@
     top: 0px;
     right: 0px;
     margin: 10px;
+}
+
+.uploadButtonsEditTicket {
+    visibility: hidden;
 }
 
 .closeTicket {
@@ -160,13 +169,18 @@
     left: 70px;
     background-color: #42ca67;
     border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    padding-top: 3px;
+    height: 25px;
+    width: 25px;
+    padding-top: 6px;
     padding-left: 1px;
     text-align: center;
     font-size: 10px;
     visibility: hidden;
+}
+
+.showNode:hover {
+    transition: background-color 0.3s ease-in;
+    background-color: #287e56;
 }
 
 .dropdown-menu {
