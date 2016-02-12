@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/workflow.css">
 
-
 </head>
 
 <body>
@@ -159,10 +158,18 @@
                                         </ul>
                                     </div>
                                     <div class="btn-group">
+                                        <form enctype="multipart/form-data">
+                                            <input name="file" type="file" />
+                                            <input id="btnFileUpload" type="button" value="Upload" />
+                                        </form>
+                                    </div>
+                                    <!--
+                                    <div class="btn-group">
                                         <button class="btn btn-default" type="button" id="btnFileUpload">
                                             <span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span> Add File
                                         </button>
                                     </div>
+-->
                                 </div>
                             </div>
                         </form>
@@ -204,7 +211,7 @@
                     </button>
                     </span>
                 </div>
-<!--
+                <!--
                 <div id="adminArea">
                     <form class="form-inline">
                         <div class="row editRow">

@@ -27,7 +27,7 @@ var ticketLabel = [];
 var ticketUser = [];
 
 $(document).ready(function () {
-    if (userName == "admin") {  // if user is admin, add adminarea
+    if (userName == "admin") { // if user is admin, add adminarea
         console.log("ADMIN HERE");
         $('.alertPlaceholder').before('<div id="adminArea"></div>');
         $('#adminArea').append('<form class="form-inline"></form>');
@@ -36,7 +36,44 @@ $(document).ready(function () {
         $('#adminArea .editRow').append('<button id="addNode" type="button" class="btn btn-default" data-toggle="popover" title="Select status" data-placement="bottom">Add Node</button>');
         $('#adminArea .editRow').append('<div class="popover"><div class="form-group"><div class="col-md-8 checkbox"></div></div><button id="closeAddNode" type="button" class="btn btn-default btn-block">Close</button><button id="saveAddNode" type="button" class="btn btn-primary btn-block">Save</button></div>');
 
-    }
+    };
+        //    $('#btnFileUpload').click(function () {
+    $('body').on('click', '#btnFileUpload', function () {
+        var formData = new FormData($('form')[0]);
+        $.ajax({
+            url: baseurl + "rest/files/upload",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+            },
+            type: 'POST',
+            xhr: function () { // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { // Check if upload property exists
+                    myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
+                }
+                return myXhr;
+            },
+            //Ajax events
+            //            beforeSend: beforeSendHandler,
+            success: function (data, textStatus, jqXHR) {
+                console.log("SUCCESS");
+            },
+            error: function (a, b, c) {
+                console.log("ERROR");
+                console.log(a);
+                console.log(b);
+                console.log(c);
+
+            },
+            // Form data
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+
     getTickets(); // Get the amount of tickets and store number in node
     getStatus();
     getTypes();
@@ -44,6 +81,10 @@ $(document).ready(function () {
     getUsers();
     getLabels();
 });
+
+function progressHandlingFunction(a) {
+    console.log(a);
+}
 // If user leaves workflow, the position of the nodes will be updated
 $(window).unload(function (e) {
 
@@ -336,18 +377,16 @@ function listener() {
     var currentdate = new Date();
     var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
     console.log("LISTENER ACITVATET");
+
+
     //////////////////////////////////////////////////Create Ticket//////////////////////////////////////////////////////
     // Open dialog to create a ticket
     $('.addTicket').off().on('click', function (e) {
         optionsLabel = [];
         optionsUser = [];
         nodeIndex = $(this).parent().index();
-
         nodeId = workflowNodes[$(this).parent().index()].id;
-
         popoverId = nodeId;
-
-
     });
     // Popover for adding a ticket
     $(".addTicket").popover({
@@ -369,9 +408,17 @@ function listener() {
         e.preventDefault();
     });
 
+    ////////// Fileupload
+    var files;
+    // Clicklistener to upload file
+    $('body').on('click', '#fileuploader', function (e) {
+        console.log("ADD FILE");
+
+        // select file and upload 
+    });
+
     // Closebutton for the popover creating ticket
     $('body').on('click', '.closePopupAddTicketView', function () {
-        console.log("ASDSASD");
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
     });
 
@@ -498,9 +545,6 @@ function listener() {
     });
 
 
-    $('#btnFileUpload').off().on('click', function (event) {
-        // select file and upload 
-    });
 } // listener()
 
 
