@@ -483,6 +483,30 @@ function getUsers() {
     })
 }
 
+function getUsersByProject(projectid) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users",
+        url: baseurl + "rest/users/findByProject/" + projectid,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            callbackGetUsersByProject(result);
+            //return result;
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c === "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
 function getUser(id) {
     $.ajax({
         type: "GET",
@@ -1485,7 +1509,7 @@ function getGroups() {
             }
         }
     })
-    
+
 }
 
 function getGroupsWithPermissions(id) {
@@ -1510,7 +1534,7 @@ function getGroupsWithPermissions(id) {
             }
         }
     })
-    
+
 }
 
 function createGroup(name) {
@@ -1519,9 +1543,9 @@ function createGroup(name) {
         "name": name,
         "permissions": [],
     }
-    
+
     console.log(data);
-    
+
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
@@ -1546,7 +1570,7 @@ function createGroup(name) {
             }
         }
     })
-    
+
 }
 
 function deleteGroup(id) {
@@ -1572,7 +1596,7 @@ function deleteGroup(id) {
             }
         }
     })
-    
+
 }
 
 function updateGroup(id, name, description, permissions) {
@@ -1582,9 +1606,9 @@ function updateGroup(id, name, description, permissions) {
         "name": name,
         "permissions": permissions,
     }
-    
+
     console.log(data);
-    
+
     $.ajax({
         type: "PUT",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
@@ -1609,5 +1633,5 @@ function updateGroup(id, name, description, permissions) {
             }
         }
     })
-    
+
 }

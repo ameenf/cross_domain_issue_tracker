@@ -23,13 +23,11 @@ $(document).ready(function () {
         createUser();
     });
 
-
     $('.b_addUserProjectList').on('click', function (e) {
         console.log("LGODAGFJAPSOFD");
         $('#dd_addUserProjectListTitle').text = "TEST";
     });
-    
-    
+
     $('.users').on('click', '#profileLink', function () {
         Cookies.set('profileid', $(this).data('id'));
         console.log(Cookies.get('profileid'));
@@ -37,13 +35,14 @@ $(document).ready(function () {
     });
 
 
-    getUsers();
+    getUsersByProject(Cookies.get('projectid'));
 });
 
 function openIssue(e) {
     e.preventDefault(); //Prevents link from forwarding
     console.log('openIssue()');
-    getUsers();
+    //    getUsers();
+    getUsersByProject();
 }
 
 //function filterUsers() {
@@ -104,7 +103,13 @@ function addUserRow(id, tag, username) {
 }
 
 
-function callbackGetUsers(result) {
+//function callbackGetUsers(result) {
+//    console.log(result);
+//    allUsers = result;
+//    filterUsers();
+//}
+
+function callbackGetUsersByProject(result) {
     console.log(result);
     allUsers = result;
     filterUsers();
