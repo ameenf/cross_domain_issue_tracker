@@ -15,7 +15,7 @@ $(document).ready(function () {
     //        filterIssues();
     //    });
 
-    getFiles();
+    getFiles(Cookies.get('projectid'));
 });
 
 function openIssue(e) {

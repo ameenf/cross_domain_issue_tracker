@@ -9,12 +9,20 @@ $(document).ready(function () {
         window.location = "index.html";
     });
 
-    //Changehandler for the search bar. Change something and press enter to call this
-    $('.searchHeader').on('change', function (e) {
-        searchHeader(e);
-    });
+
+
+    dynamicNavbar();
 });
 
-function searchHeader(e) {
-    console.log('searchHeader');
+function dynamicNavbar(e) {
+    console.log('dynamicNavbar');
+
+    if (Cookies.get('usertype') === 'admin') {
+        console.log('test')
+        $('.nav-management').append('<li><a href="usermanagement.html">Management</a></li>');
+
+        //        if(window.location.href.indexOf("usermanagement") > -1) {}
+    } else {
+
+    }
 }

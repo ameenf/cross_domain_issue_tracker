@@ -84,7 +84,7 @@ function createProject(title, desc, users) {
     })
 }
 
-function updateProject(desc, id, title, users) {
+function updateProject(id, title, desc, users) {
     var data = {
         "description": desc,
         "id": id,
@@ -105,7 +105,7 @@ function updateProject(desc, id, title, users) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackUpdateProject(result);
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -316,7 +316,7 @@ function getTicketFeedback(id) {
     })
 };
 
-function createTicket(title, date, description, prioId, typeId, nodeId, projId, users, labels) {
+function createTicket(title, date, description, prioId, typeId, nodeId, projId, users, labels, files) {
     var data = {
         "title": title,
         "creationDate": date,
@@ -326,7 +326,8 @@ function createTicket(title, date, description, prioId, typeId, nodeId, projId, 
         "statusId": nodeId,
         "projectId": projId,
         "users": users,
-        "labels": labels
+        "labels": labels,
+        "files": files
     }
 
     $.ajax({
@@ -531,11 +532,7 @@ function createUser(username, password, type) {
             callbackCreateUser(result);
         },
         error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
-                window.location.href = baseurl;
-            }
+            callbackCreateUserFail(a, b, c);
         }
     })
 }
@@ -563,7 +560,42 @@ function updateUser(username, id, password) {
         dataType: "json",
         async: true,
         success: function (result) {
-            return result;
+            callbackUpdateUser(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
+
+function updatePW(username, id, password) {
+    var data = {
+        "email": "",
+        "id": id,
+        "password": password,
+        "type": "",
+        "username": username,
+    }
+
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
+        url: baseurl + "rest/users/updatePassword",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            location.reload();
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");
@@ -896,6 +928,37 @@ function createArrow(srcNode, trgNode, label) {
 }
 
 
+function updateArrow(arrowId, srcNode, trgNode, label) {
+
+    var data = {
+        "id": arrowId,
+        "sourceNode": srcNode,
+        "targetNode": trgNode,
+        "label": label
+    }
+    $.ajax({
+        type: "PUT",
+        url: baseurl + "rest/workflow/arrow",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            callbackUpdateArrow(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
 
 
 function deleteArrow(id) {
@@ -920,16 +983,47 @@ function deleteArrow(id) {
         }
     })
 }
-
+// Adding new node
+function createNode(projId, userId, statusId, posX, posY) {
+    var data = {
+        "projectId": projId,
+        "userId": userId,
+        "statusId": statusId,
+        "positionX": posX,
+        "positionY": posY
+    }
+    $.ajax({
+        type: "POST",
+        url: baseurl + "rest/workflow/node",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            callbackCreateNode(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c = "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////Files//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function getFiles() {
+function getFiles(id) {
     $.ajax({
         type: "GET",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
-        url: baseurl + "rest/files",
+        url: baseurl + "rest/files/getProjectFiles/" + id,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
         },
@@ -948,6 +1042,43 @@ function getFiles() {
         }
     })
 };
+
+function createFile(formData) {
+    $.ajax({
+        url: baseurl + "rest/files/upload",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        type: 'POST',
+        xhr: function () { // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) { // Check if upload property exists
+                myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+        //Ajax events
+        //            beforeSend: beforeSendHandler,
+        success: function (data, textStatus, jqXHR) {
+            console.log("SUCCESS");
+            callbackCreateFile(data);
+            fileId = data.id;
+
+        },
+        error: function (a, b, c) {
+            console.log("ERROR");
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        },
+        // Form data
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////General//////////////////////////////////////////////////////
@@ -1357,6 +1488,31 @@ function getGroups() {
     
 }
 
+function getGroupsWithPermissions(id) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetGroupsWithPermissions(result, id);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
+}
+
 function createGroup(name) {
     var data = {
         "description": "",
@@ -1381,6 +1537,69 @@ function createGroup(name) {
         success: function (result) {
             //            return result;
             callbackCreateGroup(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
+}
+
+function deleteGroup(id) {
+    $.ajax({
+        type: "DELETE",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups/remove/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            console.log(result);
+            location.reload();
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
+}
+
+function updateGroup(id, name, description, permissions) {
+    var data = {
+        "id": id,
+        "description": description,
+        "name": name,
+        "permissions": permissions,
+    }
+    
+    console.log(data);
+    
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            //            return result;
+            location.reload();
         },
         error: function (a, b, c) {
             console.log(a + " " + b + " " + c + "ERROR");

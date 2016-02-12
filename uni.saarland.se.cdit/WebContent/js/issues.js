@@ -68,6 +68,7 @@ function filterIssues() {
 function callbackGetTicketsByProject(result) {
     console.log(result);
     allTickets = result;
+    $('.spinner').remove();
     filterIssues();
 }
 

@@ -23,6 +23,7 @@ function callbackSuccessLogin(result) {
     console.log(result);
     Cookies.set('loggedin', 'true');
     Cookies.set('userid', result.id);
+    Cookies.set('usertype', result.type);
 
     $("#login-username").removeClass('has-error');
     $("#login-password").removeClass('has-error');

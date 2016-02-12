@@ -28,7 +28,6 @@ $(document).ready(function () {
                 console.log(a);
                 console.log(b);
                 console.log(c);
-
             },
             // Form data
             data: formData,

@@ -52,7 +52,7 @@ public class FileResource {
 		return file;
 	}
 	
-	@PermitAll
+
 	@GET
 	@Path("/{query}")
 	//@Produces("application/pdf")
@@ -64,10 +64,12 @@ public class FileResource {
 	    return response.build();
 	}
 	
+
 	@GET
 	@Path("/getProjectFiles/{projectId}")
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
 	public List<Attachment> getProjectAttachments(@PathParam("projectId") int id) {
+		System.out.println("getting project files");
 	    return dao.getProjectAttachments(id);
 	}
 	

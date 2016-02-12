@@ -1,4 +1,5 @@
 function startJsplumb() {
+
     jsPlumb.ready(function () {
         console.log("jsplumb loaded!");
         // Set the container for the workflow
@@ -317,10 +318,6 @@ function startJsplumb() {
         });
 
         $('body').on('click', '#closeAddNode', function () {
-
-        });
-
-        $('body').on('click', '#closeAddNode', function () {
             console.log("close");
             $('#addNode').trigger("click");
 
@@ -396,27 +393,26 @@ function startJsplumb() {
                 curScale: curScale
             };
         }
-        var editmode = false;
+        // clicklistener for turning editWorkflow on
         $('.switchEditMode').off().on('click', function () {
             // if switch is turned on, add listener to connect nodes
-            if (editmode == false) {
-                editmode = true;
+            if ($(this).prop('checked') == true) {
                 for (var key in arrConnect) {
-                    //  console.log(arrConnect[key].id)
                     arrConnect[key].toggleType("edit");
                 }
                 connectNodes();
             } else { // if switch is turned off, delete clicklistener
-                editmode = false;
                 for (var key in arrConnect) {
                     arrConnect[key].toggleType("edit");
                 }
+                $('path').off().on('click', function () {});
+                $('body').off('click', '.item');
                 $(".deleteNode").remove();
                 $(".item").off().on('click', function () {});
                 jsPlumb.unbind("click");
                 // TODO updatecall nodes
             }
-            console.log("click: " + $(this).prop('checked'));
+
 
         });
     });
