@@ -11,11 +11,14 @@ $(document).ready(function () {
         filterFiles();
     });
 
-    $('.files').on('click', '.itemName', function () {
+    $('.files').on('click', '.itemName', function (event) {
         var id_str = $(this).parent().attr('class');
         var split_id = id_str.split("innerFile");
         var str = $(this).attr('class');
-        window.open(baseurl + "rest/files/" + split_id[1] + "/" + $(this).html());
+        console.log(split_id);
+        console.log(split_id[2]);
+        console.log(baseurl + "rest/files/" + split_id[2] + "/" + $(this).html() + '/download');
+        window.open(baseurl + "rest/files/" + split_id[2] + "/" + $(this).html() + '/download');
     });
 });
 
@@ -35,7 +38,8 @@ function filterFiles() {
         console.log(allFiles[key].fullname);
         console.log(allFiles[key]);
         if ((allFiles[key].fullname.toLowerCase()).indexOf(substring.toLowerCase()) > -1) {
-            addFileRow(allFiles[key].id, allFiles[key].fullname, allFiles[key].tickerId);
+            console.log('allFiles', allFiles);
+            addFileRow(allFiles[key].id, allFiles[key].fullname, allFiles[key].ticketId);
         }
     }
     $('.project' + allFiles[allFiles.length - 1].id + ' .dividerHorizontal').remove();
