@@ -318,10 +318,6 @@ function startJsplumb() {
         });
 
         $('body').on('click', '#closeAddNode', function () {
-
-        });
-
-        $('body').on('click', '#closeAddNode', function () {
             console.log("close");
             $('#addNode').trigger("click");
 
@@ -409,6 +405,8 @@ function startJsplumb() {
                 for (var key in arrConnect) {
                     arrConnect[key].toggleType("edit");
                 }
+                $('path').off().on('click', function () {});
+                $('body').off('click', '.item');
                 $(".deleteNode").remove();
                 $(".item").off().on('click', function () {});
                 jsPlumb.unbind("click");

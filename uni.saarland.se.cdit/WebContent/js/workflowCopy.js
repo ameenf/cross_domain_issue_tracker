@@ -17,6 +17,7 @@ var currentStatusId;
 var projectId = Cookies.get("projectid"); // add prject id from cookie here
 var userId = Cookies.get("userid"); // get UserId from cookie
 var userName = Cookies.get("username"); // get UserId from cookie
+var userType = Cookies.get("usertype"); // get UserId from cookie
 var nodeIndex;
 var lastarrowId;
 var popoverId;
@@ -25,9 +26,11 @@ var nodename;
 var nodeId;
 var ticketLabel = [];
 var ticketUser = [];
+var fileId;
+var ticketFiles = [];
 
 $(document).ready(function () {
-    if (userName == "admin") {  // if user is admin, add adminarea
+    if (userType == "admin") { // if user is admin, add adminarea
         console.log("ADMIN HERE");
         $('.alertPlaceholder').before('<div id="adminArea"></div>');
         $('#adminArea').append('<form class="form-inline"></form>');
@@ -36,7 +39,17 @@ $(document).ready(function () {
         $('#adminArea .editRow').append('<button id="addNode" type="button" class="btn btn-default" data-toggle="popover" title="Select status" data-placement="bottom">Add Node</button>');
         $('#adminArea .editRow').append('<div class="popover"><div class="form-group"><div class="col-md-8 checkbox"></div></div><button id="closeAddNode" type="button" class="btn btn-default btn-block">Close</button><button id="saveAddNode" type="button" class="btn btn-primary btn-block">Save</button></div>');
 
-    }
+    };
+    //    $('#btnFileUpload').click(function () {
+    $('body').on('click', '#btnFileUpload', function () {
+
+        var formData = new FormData($('form')[2]);
+        //        var formData = new FormData($('.popover-content-addTicket #uploadFile'));
+        //        var formData = new FormData($('.uploadFile'));
+        $('#submitTicket').attr("disabled", "disabled"); //Most likely wrong selector
+        createFile(formData);
+    });
+
     getTickets(); // Get the amount of tickets and store number in node
     getStatus();
     getTypes();
@@ -44,6 +57,16 @@ $(document).ready(function () {
     getUsers();
     getLabels();
 });
+
+function callbackCreateFile(result) {
+    $('#submitTicket').removeAttr("disabled");
+    ticketFiles.push(result);
+    console.log('TickerFuiles : ', ticketFiles);
+}
+
+function progressHandlingFunction(a) {
+    console.log(a);
+}
 // If user leaves workflow, the position of the nodes will be updated
 $(window).unload(function (e) {
 
@@ -336,18 +359,16 @@ function listener() {
     var currentdate = new Date();
     var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " + currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
     console.log("LISTENER ACITVATET");
+
+
     //////////////////////////////////////////////////Create Ticket//////////////////////////////////////////////////////
     // Open dialog to create a ticket
     $('.addTicket').off().on('click', function (e) {
         optionsLabel = [];
         optionsUser = [];
         nodeIndex = $(this).parent().index();
-
         nodeId = workflowNodes[$(this).parent().index()].id;
-
         popoverId = nodeId;
-
-
     });
     // Popover for adding a ticket
     $(".addTicket").popover({
@@ -369,9 +390,17 @@ function listener() {
         e.preventDefault();
     });
 
+    ////////// Fileupload
+    var files;
+    // Clicklistener to upload file
+    $('body').on('click', '#fileuploader', function (e) {
+        console.log("ADD FILE");
+
+        // select file and upload 
+    });
+
     // Closebutton for the popover creating ticket
     $('body').on('click', '.closePopupAddTicketView', function () {
-        console.log("ASDSASD");
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
     });
 
@@ -406,7 +435,7 @@ function listener() {
         }
 
         // call to create a ticket
-        createTicket(subTicketTitle, datetime, subTicketDesc, prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel);
+        createTicket(subTicketTitle, datetime, subTicketDesc, prioId, typeId, workflowNodes[nodeIndex].statusId, projectId, optionsUser, optionsLabel, ticketFiles);
         $("[data-toggle=" + popoverId + "popoverAddTicket]").popover('hide');
 
     });
@@ -498,9 +527,6 @@ function listener() {
     });
 
 
-    $('#btnFileUpload').off().on('click', function (event) {
-        // select file and upload 
-    });
 } // listener()
 
 
