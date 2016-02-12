@@ -459,6 +459,12 @@ public class TicketDAO {
 		}
     }
 	
+	/*
+	 * 		processRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Ticket object
+	 * 
+	 * 
+	 */
 	protected Ticket processRow(ResultSet rs) throws SQLException {
         Ticket ticket = new Ticket();
         ticket.setId(rs.getInt("ticket_id"));

@@ -41,12 +41,6 @@ public class GeneralDAO {
         return list;
 	}
 	
-	protected Type processTypeRow(ResultSet rs) throws SQLException {
-        Type type = new Type();
-        type.setId(rs.getInt("type_id"));
-        type.setTitle(rs.getString("type_title"));
-        return type;
-    }
 	
 	public List<Priority> getAllPriority(){
 		List<Priority> list = new ArrayList<Priority>();
@@ -69,12 +63,6 @@ public class GeneralDAO {
         return list;
 	}
 	
-	protected Priority processPriorityRow(ResultSet rs) throws SQLException {
-		Priority priority = new Priority();
-        priority.setId(rs.getInt("priority_id"));
-        priority.setTitle(rs.getString("priority_title"));
-        return priority;
-    }
 	
 	public List<Status> getAllStatus(){
 		List<Status> list = new ArrayList<Status>();
@@ -97,12 +85,6 @@ public class GeneralDAO {
         return list;
 	}
 	
-	protected Status processStatusRow(ResultSet rs) throws SQLException {
-		Status status = new Status();
-		status.setId(rs.getInt("status_id"));
-		status.setTitle(rs.getString("status_title"));
-        return status;
-    }
 	
 	public List<Label> getAllLabels(){
 		List<Label> list = new ArrayList<Label>();
@@ -125,12 +107,6 @@ public class GeneralDAO {
         return list;
 	}
 	
-	protected Label processLabelRow(ResultSet rs) throws SQLException {
-		Label label = new Label();
-		label.setId(rs.getInt("label_id"));
-		label.setTitle(rs.getString("label_title"));
-        return label;
-    }
 	
 	public List<Permission> getAllPermissions(){
 		List<Permission> list = new ArrayList<Permission>();
@@ -153,11 +129,6 @@ public class GeneralDAO {
         return list;
 	}
 	
-	protected Permission processPermissionRow(ResultSet rs) throws SQLException {
-		Permission permission = new Permission();
-		permission.setName(rs.getString("permission_name"));
-        return permission;
-    }
 	
 	public Type create(Type type) {
         Connection c = null;
@@ -292,5 +263,69 @@ public class GeneralDAO {
 			ConnectionHelper.close(c);
 		}
         return Response.status(status).entity(new MessageHandler(msg)).build();
+    }
+	
+	/*
+	 * 		processTypeRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Type object
+	 * 
+	 * 
+	 */
+	protected Type processTypeRow(ResultSet rs) throws SQLException {
+        Type type = new Type();
+        type.setId(rs.getInt("type_id"));
+        type.setTitle(rs.getString("type_title"));
+        return type;
+    }
+
+	/*
+	 * 		processPermissionRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Permission object
+	 * 
+	 * 
+	 */
+	protected Permission processPermissionRow(ResultSet rs) throws SQLException {
+		Permission permission = new Permission();
+		permission.setName(rs.getString("permission_name"));
+        return permission;
+    }
+
+	/*
+	 * 		processLabelRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Label object
+	 * 
+	 * 
+	 */
+	protected Label processLabelRow(ResultSet rs) throws SQLException {
+		Label label = new Label();
+		label.setId(rs.getInt("label_id"));
+		label.setTitle(rs.getString("label_title"));
+        return label;
+    }
+
+	/*
+	 * 		processStatusRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Status object
+	 * 
+	 * 
+	 */
+	protected Status processStatusRow(ResultSet rs) throws SQLException {
+		Status status = new Status();
+		status.setId(rs.getInt("status_id"));
+		status.setTitle(rs.getString("status_title"));
+        return status;
+    }
+
+	/*
+	 * 		processPriorityRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Priority object
+	 * 
+	 * 
+	 */
+	protected Priority processPriorityRow(ResultSet rs) throws SQLException {
+		Priority priority = new Priority();
+        priority.setId(rs.getInt("priority_id"));
+        priority.setTitle(rs.getString("priority_title"));
+        return priority;
     }
 }

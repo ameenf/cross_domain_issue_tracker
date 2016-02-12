@@ -598,6 +598,12 @@ public class UserManagementDAO {
 		}
     }
 	
+	/*
+	 * 		processRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a User object
+	 * 
+	 * 
+	 */
 	protected User processRow(ResultSet rs) throws SQLException {
 		User user = new User();
 		user.setId(rs.getInt("users_id"));
@@ -608,6 +614,12 @@ public class UserManagementDAO {
         return user;
     }
 	
+	/*
+	 * 		processGroupRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Group object
+	 * 
+	 * 
+	 */
 	protected Group processGroupRow(ResultSet rs) throws SQLException {
 		Group group = new Group();
 		group.setId(rs.getInt("group_id"));
@@ -617,6 +629,12 @@ public class UserManagementDAO {
         return group;
     }
 	
+	/*
+	 * 		processProfileRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a UserProfile object
+	 * 
+	 * 
+	 */
 	private UserProfile processProfileRow(ResultSet rs) throws SQLException {
 		UserProfile profile = new UserProfile();
 		profile.setUserId(rs.getInt("users_id"));

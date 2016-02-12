@@ -1,3 +1,4 @@
+
 package uni.saarland.se.cdit.classes;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,18 +19,30 @@ public class Feedback {
 		this.id = id;
 	}
 	
+    /**
+     * @return feedbackDate
+     */
     public String getFeedbackDate() {
 		return feedbackDate;
 	}
 
+	/**
+	 * @param feedbackDate
+	 */
 	public void setFeedbackDate(String feedbackDate) {
 		this.feedbackDate = feedbackDate;
 	}
 	
+	/**
+	 * @return feedbackText
+	 */
 	public String getFeedbackText() {
 		return feedbackText;
 	}
 
+	/**
+	 * @param feedbackText
+	 */
 	public void setFeedbackText(String feedbackText) {
 		this.feedbackText = feedbackText;
 	}
@@ -38,6 +51,9 @@ public class Feedback {
 		return ticketId;
 	}
 
+	/**
+	 * @param ticketId
+	 */
 	public void setTicketId(int ticketId) {
 		this.ticketId = ticketId;
 	}
