@@ -35,9 +35,18 @@ $(document).ready(function () {
         $('.alertPlaceholder').before('<div id="adminArea"></div>');
         $('#adminArea').append('<form class="form-inline"></form>');
         $('#adminArea .form-inline').append('<div class="row editRow"></div>');
+
+        ////// Switch
         $('#adminArea .editRow').append('<div class="onoffswitch col-md-2"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switchEditMode" id="myonoffswitch"><label class="onoffswitch-label" for="myonoffswitch"></label></div>');
+
+        ////// Craete content for adding nodes
         $('#adminArea .editRow').append('<button id="addNode" type="button" class="btn btn-default" data-toggle="popover" title="Select status" data-placement="bottom">Add Node</button>');
-        $('#adminArea .editRow').append('<div class="popover"><div class="form-group"><div class="col-md-8 checkbox"></div></div><button id="closeAddNode" type="button" class="btn btn-default btn-block">Close</button><button id="saveAddNode" type="button" class="btn btn-primary btn-block">Save</button></div>');
+
+        $('#adminArea .editRow').append('<div class="popover"><div class="form-group"><div class="checkbox"></div><div class="usrCheckContent"></div></div>');
+
+        $('#adminArea .usrCheckContent').append('<div class="btn-group"><button type="button" id="btnAddNodeUser" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button><ul class="dropdown-menu dropdownUsersAddNode"></ul></div>');
+
+        $('#addNode + .popover').append('<div class="modal-footer"><button id="closeAddNode" type="button" class="btn btn-default btn-block">Close</button><button id="saveAddNode" type="button" class="btn btn-primary btn-block">Save</button></div>');
 
     };
     //    $('#btnFileUpload').click(function () {
@@ -551,7 +560,7 @@ function callbackGetWorkflow(result) {
             nodeArrows[key] = workflowNodes[key].arrows;
         }
 
-        $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
+        $('.bgRaster').append('<div id="' + workflowNodes[key].id + '" class="item userid' + workflowNodes[key].userId + '" style=left:' + workflowNodes[key].positionX + '%;top:' + workflowNodes[key].positionY + '%></div>');
         $('#' + workflowNodes[key].id).append('<div class="addTicket" data-placement="bottom" data-toggle="' + workflowNodes[key].id + 'popoverAddTicket" data-container="body" data-placement="left" data-html="true"></div>');
         $('#' + workflowNodes[key].id + ' .addTicket').append('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
         $('#' + workflowNodes[key].id).append('<div class="topTitle">' + allNodes[workflowNodes[key].statusId - 1].title + '</div>');
@@ -559,6 +568,11 @@ function callbackGetWorkflow(result) {
         $('#' + workflowNodes[key].id + ' .showNode').append('<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>');
         $('#' + workflowNodes[key].id + ' .showNode').after('<div class="amountTickets"></div>');
         $('#' + workflowNodes[key].id + ' .amountTickets').html(workflowNodes[key].ticketsCount);
+        if (userId == workflowNodes[key].userId) {
+            console.log(userId, " ", workflowNodes[key].userId);
+        } else {
+            $('.item.userid' + workflowNodes[key].userId).css("opacity", "0.6");
+        }
     }
     startJsplumb(); // When finished with nodecreation, start jsplumb to create connection etc.
     listener(); // Activate the listener after create HTML content
@@ -618,7 +632,6 @@ function callbackGetUsers(result) {
     allUsers = result;
     for (var key in result) {
         $('.dropdown-menu.dropdownUsers').append('<li><a href="#" class="small" data-value="' + result[key].id + '" tabIndex="-1"><input type="checkbox" id="user' + result[key].id + '" /><label for="user' + result[key].id + '"><span></span>' + result[key].username + '</label></a></li>');
-        // 
     }
 }
 

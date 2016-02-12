@@ -230,7 +230,7 @@ function startJsplumb() {
             $('.btnCloseLabel').off().on('click', function () {
                 $('.popoverArrow').hide();
             });
-        }
+        } // content()
 
         //////////////////////////////////////////////////Deleting Nodes//////////////////////////////////////////////////////
         var nodeObject, nodeStatusId, nodeIndex, nodeId;
@@ -278,17 +278,35 @@ function startJsplumb() {
         });
 
         //////////////////////////////////////////////////Adding Nodes//////////////////////////////////////////////////////
+        // Popover for adding a new node
         var statusIdTemp;
         $('#addNode').popover({
             html: true,
             title: 'Select status',
             content: function () {
+                $('#adminArea .dropdown-menu').empty();
+                for (var key in allUsers) {
+                    $('#adminArea .dropdown-menu').append('<li data-id="' + allUsers[key].id + '"><a href="#">' + allUsers[key].username + '</a></li>');
+                }
                 return $('#addNode + .popover').html();
             }
         });
-        // add a new node with title of the available status
+
+        // Click on a user in dropdown and highlight it
+        var clickedUserTemp;
+        $('body').on('click', '.popover .dropdown-menu.dropdownUsersAddNode a', function () {
+
+            clickedUserTemp = $(this).parent().attr('data-id');
+            $(".dropdown-menu.dropdownUsersAddNode>li>a").css("color", "black");
+            $(".dropdown-menu.dropdownUsersAddNode>li>a").css("background-color", "white");
+            $(this).css("color", "white");
+            $(this).css("background-color", "#337AB7")
+        });
+
+        // Add a new node with title of the available status
         $('body').on('click', '#saveAddNode', function () {
             var found = false;
+            // Go through all Nodes and look if it already exists
             for (var key in workflowNodes) {
                 if (allNodes[statusIdTemp].id == workflowNodes[key].statusId) {
                     console.log("exists already: " + allNodes[statusIdTemp].title);
@@ -300,11 +318,11 @@ function startJsplumb() {
                 $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
                     $("#connectionExistsAlert").hide();
                 });
+            } else if (clickedUserTemp == null) {
+                console.log("nothing clicked");
             } else { // add the new node
-
-                //                $(".bgRaster").append('<div id="" class="item jsplumb-draggable jsplumb-endpoint-anchor jsplumb-connected"><div class="topTitle">' + allNodes[statusIdTemp].title + '</div></div>');
                 console.log(allNodes[statusIdTemp].title);
-                createNode(projectId, userId, allNodes[statusIdTemp].id, 0, 0);
+                createNode(projectId, clickedUserTemp, allNodes[statusIdTemp].id, 0, 0);
 
                 jsPlumb.draggable($(".item"), {
                     containment: "parent",
@@ -316,16 +334,15 @@ function startJsplumb() {
                 jsPlumb.repaintEverything();
             }
         });
-
-        $('body').on('click', '#closeAddNode', function () {
-            console.log("close");
-            $('#addNode').trigger("click");
-
-        });
-
+        // Set the current statusid regarding checked item
         $('body').on('click', '.radioStatus', function () {
             statusIdTemp = $('.radioStatus').index(this);
             console.log(allNodes[statusIdTemp].id);
+        });
+        // Close adding node popover
+        $('body').on('click', '#closeAddNode', function () {
+            console.log("close");
+            $('#addNode').trigger("click");
         });
 
 
@@ -405,6 +422,9 @@ function startJsplumb() {
                 for (var key in arrConnect) {
                     arrConnect[key].toggleType("edit");
                 }
+                firstNode.removeClass('borderHighlight');
+                srcClick = "";
+
                 $('path').off().on('click', function () {});
                 $('body').off('click', '.item');
                 $(".deleteNode").remove();
