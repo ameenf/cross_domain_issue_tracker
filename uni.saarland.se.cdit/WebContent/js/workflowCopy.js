@@ -53,11 +53,18 @@ $(document).ready(function () {
     };
     //    $('#btnFileUpload').click(function () {
     $('body').on('click', '#btnFileUpload', function () {
+        console.log($(this).parent().attr("id"), " ", $(this).parent().attr("class"));
+        var formData;
+        if ($(this).parent().attr("class") == "uploadFileEditTicket") {
+            formData = new FormData($('form')[0]);
 
-        var formData = new FormData($('form')[2]);
+        } else {
+
+            formData = new FormData($('form')[2]);
+        }
         //        var formData = new FormData($('.popover-content-addTicket #uploadFile'));
         //        var formData = new FormData($('.uploadFile'));
-        $('#submitTicket').attr("disabled", "disabled"); //Most likely wrong selector
+        //$('#submitTicket').attr("disabled", "disabled"); //Most likely wrong selector
         createFile(formData);
     });
 
@@ -70,7 +77,7 @@ $(document).ready(function () {
 });
 
 function callbackCreateFile(result) {
-    $('#submitTicket').removeAttr("disabled");
+    //$('#submitTicket').removeAttr("disabled");
     ticketFiles.push(result);
     console.log('TickerFuiles : ', ticketFiles);
 }
@@ -252,7 +259,12 @@ function listenerShowTicket() {
 
             ////////// Files
             $('.popover-content .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Files</label><div class="col-sm-10"></div></div>');
-            $('.updFiles + .col-sm-10').append('<button class="btn btn-default btnEdit" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');
+            //            $('.updFiles + .col-sm-10').append('<button class="btn btn-default btnEdit" type="button" id="btnUpdFile"><span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>');            
+            $('.updFiles + .col-sm-10').append('<div class="uploadButtonsEditTicket"><form id="uploadFile" class="uploadFileEditTicket" enctype="multipart/form-data"><input name="file" type="file" /><input id="btnFileUpload" type="button" value="Upload" /></form></div>');
+
+            $('#btnUpdFile').off().on('click', function (e) {
+
+            });
 
             ////////// Feedback
             $('.popover-content .form-horizontal').append('<div class="form-group"> <label class="col-sm-2 control-label updFiles">Comments</label><div class="col-sm-10"></div></div>');
@@ -278,10 +290,12 @@ function listenerShowTicket() {
                     $('.popover-content input').removeAttr('readonly');
                     $('.popover-content select').removeAttr('disabled');
                     $('.popover-content textarea').removeAttr('readonly');
+                    $('.uploadButtonsEditTicket').css('visibility', 'visible');
                 } else {
                     $('.popover-content input').attr('readonly', '');
                     $('.popover-content select').attr('disabled', '');
                     $('.popover-content textarea').attr('readonly', '');
+                    $('.uploadButtonsEditTicket').css('visibility', 'hidden');
                 }
             });
 
