@@ -179,6 +179,12 @@ body {
     overflow-y: scroll;
 }
 
+.updateScrollContainer {
+    margin-top: 25px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
 .brandName {
     width: 230px;
 }

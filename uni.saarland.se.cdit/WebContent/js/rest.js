@@ -84,7 +84,7 @@ function createProject(title, desc, users) {
     })
 }
 
-function updateProject(desc, id, title, users) {
+function updateProject(id, title, desc, users) {
     var data = {
         "description": desc,
         "id": id,
@@ -1354,7 +1354,7 @@ function getGroups() {
             }
         }
     })
-    
+
 }
 
 function createGroup(name) {
@@ -1363,9 +1363,9 @@ function createGroup(name) {
         "name": name,
         "permissions": [],
     }
-    
+
     console.log(data);
-    
+
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
@@ -1390,5 +1390,5 @@ function createGroup(name) {
             }
         }
     })
-    
+
 }
