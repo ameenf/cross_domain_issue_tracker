@@ -220,6 +220,12 @@ public class ProjectDAO {
 		}
     }
 	
+	/*
+	 * 		processRow method takes a ResultSet as an argument and extracts the columns 
+	 * 		and add to the appropriate field in a Project object
+	 * 
+	 * 
+	 */
 	protected Project processRow(ResultSet rs) throws SQLException {
 		Project project = new Project();
 		project.setId(rs.getInt("project_id"));

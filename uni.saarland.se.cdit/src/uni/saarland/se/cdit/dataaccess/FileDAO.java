@@ -71,6 +71,31 @@ public class FileDAO {
         return list;
     }
 	
+	public boolean checkFile(int fileId, String fileName) {
+		
+		boolean success = false;
+        Connection c = null;
+        PreparedStatement ps = null;
+        String statement = "SELECT attachment_id, attachment_fullname FROM attachment "+
+        				   "WHERE attachment_id=? AND attachment_fullname=?";
+        try {
+            c = ConnectionHelper.getConnection();
+            ps = c.prepareStatement(statement);
+            ps.setInt(1, fileId);
+            ps.setString(1, fileName);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+            	success = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+        return success;
+    }
+	
 	public Attachment create(Attachment file) {
         Connection c = null;
         PreparedStatement ps = null;

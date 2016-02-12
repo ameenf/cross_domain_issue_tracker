@@ -1,3 +1,4 @@
+
 package uni.saarland.se.cdit.classes;
 
 import javax.xml.bind.annotation.XmlRootElement;

@@ -58,16 +58,20 @@ public class FileResource {
 		return file;
 	}
 	
-	@RolesAllowed({"admin","user"})
-	@GET
-	@Path("/{query}")
-	//@Produces("application/pdf")
-	public Response downloadFile(@PathParam("query") String fileName) {
+	@PermitAll
+	@GET @Path("/download/{id}/{query}")
+	public Response downloadFile(@PathParam("id") int fileId, @PathParam("query") String fileName) {
 		FileDAO dao = new FileDAO();
-	    File file = new File(dao.getFilesPath() + "/" + fileName);
-	    ResponseBuilder response = Response.ok((Object) file, DefaultMediaTypePredictor.CommonMediaTypes.getMediaTypeFromFile(file)); 
-	    response.header("Content-Disposition", "attachment;filename="+file.getName());
-	    return response.build();
+		boolean success = dao.checkFile(fileId, fileName);
+		if(success){
+			System.out.println("testing ");
+		    File file = new File(dao.getFilesPath() + "/" + fileName);
+		    ResponseBuilder response = Response.ok((Object) file, DefaultMediaTypePredictor.CommonMediaTypes.getMediaTypeFromFile(file)); 
+		    response.header("Content-Disposition", "attachment;filename="+file.getName());
+		    return response.build();
+	    }else{
+	    	return Response.status(400).entity(new MessageHandler("The request cannot be completed because of bad paramters. Retry again.")).build();
+	    }
 	}
 	
 	@RolesAllowed({"admin","user"})
