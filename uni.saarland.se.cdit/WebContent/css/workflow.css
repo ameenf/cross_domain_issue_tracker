@@ -133,7 +133,7 @@
 }
 
 .modal-body {
-    display: inline-block;
+/*    display: inline-block;*/
 }
 
 .nodeTicketWrapper {
@@ -330,10 +330,12 @@
 }
 
 .popover {
-    max-width: 420px;
-    width: 500px;
+    max-width: 700px;
+    width: 700px;
 }
-
+.popover .popover{
+    width: 200px;
+}
 .ticketScrollContainer {
     height: 250px;
     overflow-y: scroll;
