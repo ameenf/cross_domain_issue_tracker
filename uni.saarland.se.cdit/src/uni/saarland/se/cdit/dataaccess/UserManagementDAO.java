@@ -342,7 +342,7 @@ public class UserManagementDAO {
             String permissions[] = user.getPermissions();
             if(permissions!=null){
             	for(int i=0;i<permissions.length;i++){
-                    ps.setString(3, permissions[i]);
+                    ps.setString(3, permissions[i].toLowerCase());
                     ps.executeUpdate();
                     success = true;
             	}
@@ -379,7 +379,7 @@ public class UserManagementDAO {
             
             if(permissions!=null){
             	for(int i=0;i<permissions.length;i++){
-                    ps.setString(3, permissions[i]);
+                    ps.setString(3, permissions[i].toLowerCase());
                     ps.executeUpdate();
                     success = true;
             	}
@@ -417,7 +417,7 @@ public class UserManagementDAO {
             	ps = c.prepareStatement(statement);
             	for(int i=0;i<permissions.length;i++){
             		ps.setInt(1, id);
-                    ps.setString(2, permissions[i]);
+                    ps.setString(2, permissions[i].toLowerCase());
                     ps.executeUpdate();
             	}
             }
@@ -454,7 +454,7 @@ public class UserManagementDAO {
             	ps = c.prepareStatement(statement);
             	for(int i=0;i<permissions.length;i++){
             		ps.setInt(1, group.getId());
-                    ps.setString(2, permissions[i]);
+                    ps.setString(2, permissions[i].toLowerCase());
                     ps.executeUpdate();
             	}
             }
