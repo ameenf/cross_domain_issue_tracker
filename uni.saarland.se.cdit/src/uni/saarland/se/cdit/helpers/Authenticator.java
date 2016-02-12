@@ -92,10 +92,12 @@ public class Authenticator implements ContainerRequestFilter{
         	requestContext.abortWith(Response.status(401).entity(new MessageHandler("Access is unauthorized. You need to login first.")).build());
         user = dao.getUser(user);
         String userType = user.getType();
+        if(userType.equals("admin"))
+        	return;
         if(method.isAnnotationPresent(RolesAllowed.class)){
         	RolesAllowed roles = method.getAnnotation(RolesAllowed.class);
         	for(String role : roles.value()){
-        		if(role.equals(userType) || userType.equals("admin")){
+        		if(role.equals(userType)){
         			return;
         		}
         	}
