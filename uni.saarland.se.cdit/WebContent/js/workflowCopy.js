@@ -17,6 +17,7 @@ var currentStatusId;
 var projectId = Cookies.get("projectid"); // add prject id from cookie here
 var userId = Cookies.get("userid"); // get UserId from cookie
 var userName = Cookies.get("username"); // get UserId from cookie
+var userType = Cookies.get("usertype"); // get UserId from cookie
 var nodeIndex;
 var lastarrowId;
 var popoverId;
@@ -29,7 +30,7 @@ var fileId;
 var ticketFiles = [];
 
 $(document).ready(function () {
-    if (userName == "admin") { // if user is admin, add adminarea
+    if (userType == "admin") { // if user is admin, add adminarea
         console.log("ADMIN HERE");
         $('.alertPlaceholder').before('<div id="adminArea"></div>');
         $('#adminArea').append('<form class="form-inline"></form>');
