@@ -42,3 +42,8 @@
 .innerFile {
     margin: 20px;
 }
+
+#alertInfo {
+    display: none;
+    padding: 20px;
+}

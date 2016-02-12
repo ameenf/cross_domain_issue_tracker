@@ -14,7 +14,6 @@ $(document).ready(function () {
         Cookies.set('profileid', "-1");
         console.log('profileid set');
     });
-
 });
 
 function changePage(newurl) {

@@ -12,13 +12,14 @@ $(document).ready(function () {
     });
 });
 
+//Set cookies
 function handleLogin() {
     Cookies.set('username', $("#inputEmail").val());
     Cookies.set('password', $("#inputPassword").val());
     login($("#inputEmail").val(), $("#inputPassword").val());
 }
 
-
+//Handle login errors and more cookies after the result
 function callbackSuccessLogin(result) {
     console.log(result);
     Cookies.set('loggedin', 'true');

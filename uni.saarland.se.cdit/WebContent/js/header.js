@@ -9,19 +9,16 @@ $(document).ready(function () {
         window.location = "index.html";
     });
 
-
-
     dynamicNavbar();
 });
 
 function dynamicNavbar(e) {
     console.log('dynamicNavbar');
 
+    //Only show the management section if the user is an admin
     if (Cookies.get('usertype') === 'admin') {
         console.log('test')
         $('.nav-management').append('<li><a href="usermanagement.html">Management</a></li>');
-
-        //        if(window.location.href.indexOf("usermanagement") > -1) {}
     } else {
 
     }

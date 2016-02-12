@@ -1,6 +1,7 @@
 "use strict";
 var allProjects = [];
 
+//colorarray for each letter one color
 var colors = [
     '#ba3c3c',
     '#ba6c3c',
@@ -40,6 +41,7 @@ $(document).ready(function () {
         filterProjects();
     });
 
+    //Set projectid cookie and switch to workflow
     $('.projects').on('click', '.itemName', function () {
         var str = $(this).parent().attr('class');
         console.log('--------------------------------------------------------------');
@@ -85,10 +87,9 @@ function addProjectRow(id, title, users) {
     $('.project' + id).append('<div class="dividerHorizontal"></div>');
 }
 
+//Get the color for the matchin character from the color array
 function getCharColor(char) {
     var alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
     letterPosition = alphabet.indexOf(char.toLowerCase());
-    console.log("letterPosition");
-    console.log(letterPosition);
     return colors[letterPosition];
 }

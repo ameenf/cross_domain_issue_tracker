@@ -22,19 +22,23 @@ $(document).ready(function () {
         filterProjects();
     });
 
+    //Exoand the createproject view
     $('.b_addProject').on('click', function (e) {
         expandAddProject();
     });
 
+    //Clicklistener for creat project button
     $('#createProject').on('click', function (e) {
         createProject($("#i_addProject_title").val(), $("#i_addProject_desc").val(), userList);
     });
 
+    //Clicklistener to update a project
     $('#updateProject').on('click', function (e) {
         console.log('selectedProject', selectedProject[0]);
         updateProject(selectedProject[0].id, $("#i_updateProject_title").val(), $("#i_updateProject_desc").val(), userList);
     });
 
+    //Open the update dialog
     $('.projects').on('click', '.itemName', function (event) {
 
         var str = $(event.target).parent().attr('class');
@@ -52,6 +56,7 @@ $(document).ready(function () {
         expandUpdateProject();
     });
 
+    //Open delete modal
     $('.projects').on('click', '#b_deleteProject', function (event) {
         console.log("closestclass");
         console.log($(event.target).parent().attr('class'));
@@ -62,6 +67,8 @@ $(document).ready(function () {
         projectToDelete = split[1];
         $('#m_deleteProject').modal('toggle');
     });
+
+
     $('.projects').on('click', '#b_editProject', function () {
         Cookies.set('projectid', $(this).data('id'));
         Cookies.set('projectname', $(this).data('pname'));
@@ -75,16 +82,7 @@ $(document).ready(function () {
     });
 
     $('.scrollContainer').on('click', '.addUserToProject', function () {
-        console.log("Test");
-        console.log($(this.firstChild).attr('class'));
-
-
-        console.log($(this));
-        console.log($(this).next().attr('class'));
-        //        console.log($(this.attr('class')));
         var str = $(this).next().attr('class')
-        console.log(str);
-        console.log(str.split("userName userid"));
         var split = str.split("userName userid");
 
         $('.usertagWrapper').empty();
@@ -283,7 +281,7 @@ function addProjectRow(id, tag, title, users, active) {
         $('.innerUserlist' + id).append('<span title="' + users[keyy] + '" class="glyphicon glyphicon-user" aria-hidden="true"></span>');
     }
     $('.innerUser' + id).append('<div class="projectButtons' + id + '"></div>');
-    $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true" data-id="' + id + '"  data-pname="' + title +'"></span>');
+    $('.projectButtons' + id).append('<span id="b_editProject" class="glyphicon glyphicon-cog managementIcon" aria-hidden="true" data-id="' + id + '"  data-pname="' + title + '"></span>');
     $('.projectButtons' + id).append('<span id="b_deleteProject" class="glyphicon glyphicon-trash managementIcon" aria-hidden="true"></span>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
     if (!active) {

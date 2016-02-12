@@ -53,6 +53,7 @@ function openIssue(e) {
     console.log('openIssue()');
 }
 
+//Filter all the issues dynamically for the searchkey
 function filterIssues() {
     console.log('searchIssues()');
     var substring = $('.filterIssues').val();
@@ -65,6 +66,7 @@ function filterIssues() {
     }
 }
 
+//Remove loading animation
 function callbackGetTicketsByProject(result) {
     console.log(result);
     allTickets = result;
@@ -72,6 +74,7 @@ function callbackGetTicketsByProject(result) {
     filterIssues();
 }
 
+//Add a row to the list
 function addRow(id, title, description, statusId, priorityId) {
     $('.issues').append('<li class="itemRow issue' + id + '"></li>');
     $('.issue' + id).append('<div class="flexrow centeritems flexspacebetween innerIssue' + id + '"></div>');

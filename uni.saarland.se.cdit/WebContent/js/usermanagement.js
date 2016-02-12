@@ -186,8 +186,8 @@ function callbackUpdateUser(result) {
 }
 
 function callbackCreateUserFail(a, b, c) {
-    $("#connectionExistsAlert").show();
-    $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
-        $("#connectionExistsAlert").hide();
+    $("#alertInfo").show();
+    $("#alertInfo").fadeTo(2000, 500).slideUp(500, function () {
+        $("#alertInfo").hide();
     })
 }

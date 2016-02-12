@@ -15,6 +15,8 @@ $(document).ready(function () {
         filterUsers();
     });
 
+
+    //Clicklistener to open the modal
     $('.b_addUser').on('click', function (e) {
         openModalCreateUser();
     });
@@ -24,10 +26,11 @@ $(document).ready(function () {
     });
 
     $('.b_addUserProjectList').on('click', function (e) {
-        console.log("LGODAGFJAPSOFD");
         $('#dd_addUserProjectListTitle').text = "TEST";
     });
 
+
+    //Set cookie with profileid
     $('.users').on('click', '#profileLink', function () {
         Cookies.set('profileid', $(this).data('id'));
         console.log(Cookies.get('profileid'));
@@ -77,7 +80,7 @@ function openIssue(e) {
 //    }
 //}
 
-
+//Filter the users
 function filterUsers() {
     console.log('searchIssues()');
     var substring = $('.filterUsers').val();
@@ -90,6 +93,7 @@ function filterUsers() {
     }
 }
 
+//Adding the row with all divs and values
 function addUserRow(id, tag, username) {
     console.log("addUserRow");
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
