@@ -4,10 +4,6 @@ var allFiles = [];
 $(document).ready(function () {
     console.log("issues.js");
 
-    //Clickhandler for an element in the issues list
-    $('.issue').on('click', function (e) {
-        openIssue(e);
-    });
 
     //Changehandler for the search bar. Change something and press enter to call this
     $('.filterFiles').on('keyup', function () {
@@ -15,14 +11,10 @@ $(document).ready(function () {
     });
 
     $('.files').on('click', '.itemName', function () {
-        var str = $(this).parent().attr('class');
-        console.log('--------------------------------------------------------------');
-        console.log(str);
-        console.log(str.split("innerFile"));
-        var split = str.split("innerFile");
-        Cookies.set('projectid', split[1]);
-        //         = split[1];
-        changePage('workflow.html');
+        var id_str = $(this).parent().attr('class');
+        var split_id = id_str.split("innerFile");
+        var str = $(this).attr('class');
+        window.open(baseurl + "rest/files/" + split_id[1] + "/" + $(this).html());
     });
 
     getFiles(Cookies.get('projectid'));

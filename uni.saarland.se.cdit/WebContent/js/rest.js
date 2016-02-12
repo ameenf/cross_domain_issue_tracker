@@ -1067,6 +1067,32 @@ function getFiles(id) {
     })
 };
 
+function getFile(fullname) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/status",
+        url: baseurl + "rest/files/" + fullname,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        contentType: 'application/download',
+        processData: false,
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetFile(result);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+};
+
 function createFile(formData) {
     $.ajax({
         url: baseurl + "rest/files/upload",
