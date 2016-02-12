@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Users</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="css/users.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/awesome-bootstrap-checkbox.css">
 
 </head>
 
@@ -35,7 +34,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <div class="nav navbar-nav navbar-left">
-                    <div class="headeritem pageName">Management - Groups</div>
+                    <div class="headeritem pageName">Users</div>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <span class="headeritem headerIcon glyphicon glyphicon-log-out" aria-hidden="true"></span>
@@ -46,7 +45,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="sidebar">
+            <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     <li><a href="projects.html">Projects</a>
                     </li>
@@ -55,73 +54,26 @@
                     <li><a href="usermanagement.html">Management</a>
                     </li>
 
-                    <li class="nav_secondlevel"><a href="usermanagement.html">Users</a></li>
-                    <li class="nav_secondlevel"><a href="projectmanagement.html">Projects</a>
+                    <li class="nav_secondlevel"><a href="usermanagement.html">Users</a>
                     </li>
+                    <li class="nav_secondlevel active"><a href="projectmanagement.html">Projects<span class="sr-only">(current)</span></a></li>
                     <li class="nav_secondlevel"><a href="metamanagement.html">Meta</a>
-                        
                     </li>
-                    <li class="nav_secondlevel active"><a href="#">Groups<span class="sr-only">(current)</span></a></li>
+                    <li class="nav_secondlevel"><a href="groups_list.html">Groups</a></li>
+
                     <li><a href="profile.html" id="profileLink">Profile</a>
                     </li>
+
                 </ul>
 
             </div>
+
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div class="input-group">
+                <div>
                     <input type="text" class="form-control filterUsers" placeholder="Filter...">
-                    <span class="input-group-btn">
-        <button class="btn btn-success b_addUser" type="button">
-            <span id="s_newUserIcon" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    <span id="s_newUserText"> New Group</span>
-                    </button>
-                    </span>
                 </div>
-
-                <div class="addUserExpandable">
-                    <div class="dialog-header">
-                        <h4 class="modal-title" id="ml_addUser">Add a new group</h4>
-                    </div>
-                    <div class="modal-body">
-                        Name :
-                        <input type="text" class="form-control" id="i_name">
-                        
-                    </div>
-                    <div class="dialog-footer">
-                        <!--                        <button id="b_closeAddUser" type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                        <button id="createUser" type="submit" class="btn btn-primary">Add Group</button>
-                    </div>
-                </div>
-
                 <ul class="noList users"></ul>
             </div>
-
-            <!-- /Modal -->
-
-            <div class="modal fade" id="m_deleteUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Confirm deletion</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="flexcolumn centeritems">
-                                <div class="warningicon">
-                                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                                </div>
-                                <div class="warningtext">Do you really want to delete this group?</div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button id="deleteUser" type="submit" class="btn btn-primary">Delete Group</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Modal -->
         </div>
         <!-- /Row -->
     </div>
@@ -136,7 +88,7 @@
     <script src="js/js.cookie.js"></script>
     <script src="js/rest.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/groups_list.js"></script>
+    <script src="js/users_project.js"></script>
     <script src="js/header.js"></script>
 
 </body>

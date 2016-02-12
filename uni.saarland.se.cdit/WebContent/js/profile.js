@@ -14,7 +14,33 @@ $(document).ready(function () {
         $('#cogBtn').remove();
         $('#editBtns').remove();
         $('#changePW').remove();
+        //$('.sidebar' ).remove();
+        $('.sidebar' ).html( '<ul class="nav nav-sidebar"> <li><a href="projects.html">Back to projects</a>  </li>  <li><a href="workflow.html">Workflow</a> </li> <li><a href="issues.html">Issues</a> </li>  <li class="active"><a href="users.html">Users<span class="sr-only">(current)</span></a>  </li> <li><a href="files.html">Files</a>  </li> </ul>  <ul class="nav nav-sidebar nav-management"></ul> <ul class="nav nav-sidebar"> <li><a href="profile.html" id="profileLink">Profile</a> </li> </ul>');
+                                   /*<div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li><a href="projects.html">Back to projects</a>
+                    </li>
+                    <li><a href="workflow.html">Workflow</a>
+                    </li>
+                    <li><a href="issues.html">Issues</a>
+                    </li>
+                    <li class="active"><a href="">Users<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li><a href="files.html">Files</a>
+                    </li>
+                </ul>
+                <ul class="nav nav-sidebar nav-management"></ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="profile.html" id="profileLink">Profile</a>
+                    </li>
+                </ul>
+            </div>" ');*/
     }
+    
+    $('#profileLink').on('click', function (e) {
+        Cookies.set('profileid', "-1"); 
+        console.log('profileid set');
+    });
     
     getProfile(profileid);
     

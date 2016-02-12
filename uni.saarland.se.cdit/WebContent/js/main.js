@@ -12,7 +12,7 @@ $(document).ready(function () {
     
     $('#profileLink').on('click', function (e) {
         Cookies.set('profileid', "-1"); 
-        //console.log('profileid set');
+        console.log('profileid set');
     });
     
 });

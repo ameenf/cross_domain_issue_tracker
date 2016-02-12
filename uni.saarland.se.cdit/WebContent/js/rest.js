@@ -575,6 +575,41 @@ function updateUser(username, id, password) {
     })
 }
 
+
+function updatePW(username, id, password) {
+    var data = {
+        "email": "",
+        "id": id,
+        "password": password,
+        "type": "",
+        "username": username,
+    }
+
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/users/updatePassword",
+        url: baseurl + "rest/users/updatePassword",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            location.reload();
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+}
+
 function updateUser1(id, username, password, type) {
     var data = {
         "email": "",
@@ -1388,7 +1423,32 @@ function getGroups() {
             }
         }
     })
+    
+}
 
+function getGroupsWithPermissions(id) {
+    $.ajax({
+        type: "GET",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            callbackGetGroupsWithPermissions(result, id);
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
 }
 
 function createGroup(name) {
@@ -1397,9 +1457,9 @@ function createGroup(name) {
         "name": name,
         "permissions": [],
     }
-
+    
     console.log(data);
-
+    
     $.ajax({
         type: "POST",
         //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
@@ -1424,5 +1484,68 @@ function createGroup(name) {
             }
         }
     })
+    
+}
 
+function deleteGroup(id) {
+    $.ajax({
+        type: "DELETE",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups/remove/" + id,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        dataType: 'json',
+        async: true,
+        success: function (result) {
+            //            return result;
+            console.log(result);
+            location.reload();
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
+}
+
+function updateGroup(id, name, description, permissions) {
+    var data = {
+        "id": id,
+        "description": description,
+        "name": name,
+        "permissions": permissions,
+    }
+    
+    console.log(data);
+    
+    $.ajax({
+        type: "PUT",
+        //url: "http://localhost:8990/uni.saarland.se.cdit/rest/general/priority",
+        url: baseurl + "rest/users/groups",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('username') + ':' + Cookies.get('password')));
+        },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+            //            return result;
+            location.reload();
+        },
+        error: function (a, b, c) {
+            console.log(a + " " + b + " " + c + "ERROR");
+            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
+            if (c == "Unauthorized") {
+                window.location.href = baseurl;
+            }
+        }
+    })
+    
 }

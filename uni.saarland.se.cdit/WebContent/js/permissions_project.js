@@ -1,15 +1,20 @@
 "use strict";
 
 $(document).ready(function () {
+    $('.pageName').text(Cookies.get('projectname') + " - " + Cookies.get('uname')  + " - Permissions")
+    
     console.log("Getting ID");
     var userid;
     var projectid;
     //userid = Cookies.get('userid')
-    userid = 1;
-    projectid = 1;
+    userid = Cookies.get('profileid');;
+    projectid = Cookies.get('projectid');
     
-    console.log("User ID " + userid);
+    console.log("IDs: " + userid + ", " + projectid);
     getProjectPermissions(projectid, userid);
+    
+    
+    
 
     
     $('#updatePermissions').on('click', function (e) {

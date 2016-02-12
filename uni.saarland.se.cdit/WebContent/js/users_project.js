@@ -3,7 +3,8 @@ var allUsers = [];
 var filteredTickets = [];
 
 $(document).ready(function () {
-    console.log("users.js");
+    $('.pageName').text(Cookies.get('projectname') + " - Users")
+    getProjects();
 
     //Clickhandler for an element in the issues list
     $('.issue').on('click', function (e) {
@@ -30,14 +31,15 @@ $(document).ready(function () {
     });
     
     
-    $('.users').on('click', '#profileLink', function () {
+    $('.users').on('click', '#permissionsLink', function () {
         Cookies.set('profileid', $(this).data('id'));
-        console.log(Cookies.get('profileid'));
+        Cookies.set('uname', $(this).data('uname'));
+        console.log("profileID " + Cookies.get('profileid') + ", " + Cookies.get('uname'));
         //changePage('profile.html');
     });
 
 
-    getUsers();
+    //getUsers();
 });
 
 function openIssue(e) {
@@ -97,9 +99,7 @@ function addUserRow(id, tag, username) {
     $('.users').append('<li class="itemRow user' + id + '"></li>');
     $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');
     $('.innerUser' + id).append('<div class="itemTag" style="background-color:#' + randomColor + '">' + tag + '</div>');
-    $('.innerUser' + id).append('<a id="profileLink" class="itemName" href="profile.html" data-id="' + id + '">' + username + '</a>');
-    $('.innerUser' + id).append('<div class="itemInfo">' + 'Cross Domain Issue Tracker' + '</div>');
-    $('.innerUser' + id).append('<div class="userButtons' + id + '"></div>');
+    $('.innerUser' + id).append('<a id="permissionsLink" class="itemName" href="permissions_project.html" data-id="' + id + '" data-uname="' + username + '">' + username + '</a>');
     $('.user' + id).append('<div class="dividerHorizontal"></div>');
 }
 
@@ -107,5 +107,34 @@ function addUserRow(id, tag, username) {
 function callbackGetUsers(result) {
     console.log(result);
     allUsers = result;
+    filterUsers();
+}
+
+function callbackGetProjects(result) {
+    console.log(result);
+    var projectid = Cookies.get('projectid');
+    var project;
+    $.each(result, function( index, value ) {
+        console.log( index + ": " + value);
+        if (value.id == projectid){
+            console.log('match');
+            project = value;
+        }
+    });
+    
+    
+    var users = project.users;
+    
+    $.each(users, function( index, value ) {
+        console.log( index + ": " + value);
+        getUser(value);
+    });
+    
+    //filterProjects();
+}
+
+function callbackPermissions(result){
+    console.log(result);
+    allUsers.push(result);
     filterUsers();
 }

@@ -6,23 +6,82 @@ $(document).ready(function () {
     //userid = Cookies.get('userid')
     id = Cookies.get('groupid');;
     
-    console.log("User ID " + id);
-    getUser(id);
+    console.log("Group ID " + id);
+    getGroupsWithPermissions(id);
 
-    
+    $('#saveBtn').on('click', function (e) {
+        var permissions = [];
+        
+        if($("#addTicket").is(':checked'))
+            permissions.push("addticket");
+        if($('#updateTicket').is(':checked'))
+            permissions.push("updateticket");
+        if($('#deleteTicket').is(':checked'))
+            permissions.push("deleteticket");
+        if($('#addFeedback').is(':checked'))
+            permissions.push("addfeedback");
+        if($('#addFile').is(':checked'))
+            permissions.push("addfile");
+        if($('#addProject').is(':checked'))
+            permissions.push("addproject");
+        if($('#addUser').is(':checked'))
+            permissions.push("adduser");
+        if($('#addLabel').is(':checked'))
+            permissions.push("addlabel");
+        if($('#addType').is(':checked'))
+            permissions.push("addtype");
+        if($('#updateFeedback').is(':checked'))
+            permissions.push("updatefeedback");
+        if($('#updateProject').is(':checked'))
+            permissions.push("updateproject");
+        if($('#updateNode').is(':checked'))
+            permissions.push("updatenode");
+        /*if($('#updatePassword').is(':checked'))
+            permissions.push("updatepassword");*/
+        if($('#updateLabel').is(':checked'))
+            permissions.push("updatelabel");
+        if($('#updateStatus').is(':checked'))
+            permissions.push("updatestatus");
+        if($('#updateType').is(':checked'))
+            permissions.push("updatetype");
+        if($('#deleteProject').is(':checked'))
+            permissions.push("deleteproject");
+        if($('#deleteNode').is(':checked'))
+            permissions.push("deletenode");
+        if($('#deleteFile').is(':checked'))
+            permissions.push("deletefile");
+        if($('#deleteStatus').is(':checked'))
+            permissions.push("deleteStatus");
+        if($('#deleteType').is(':checked'))
+            permissions.push("deletetype");
+        if($('#deleteUser').is(':checked'))
+            permissions.push("deleteuser");     
+         if($('#addStatus').is(':checked'))
+                permissions.push("addstatus");
+        
+        console.log(permissions);
+        
+        updateGroup(id, $('#name').val(), $('#description').val(), permissions);    
+    });
 });
 
-function callbackSavedPermissions(result) {
-    
-}
 
-function callbackPermissions(result) {
-    console.log(result);
+function callbackGetGroupsWithPermissions(result, id) {
+    var group;
+    for ( var i = 0; i < result.length; i++){
+        if ( result[i].id == id ){
+            group = result[i];
+        }
+    }
     
-    console.log(result.permissions.length);
+    console.log(group);
+    console.log(group.description);
+    $('#name').val(group.name);
+    $('#description').val(group.description);
+    //console.log(group.permissions.length);
 
-    for ( var i = 0; i < result.permissions.length; i++){
-        switch(result.permissions[i]){
+    for ( var i = 0; i < group.permissions.length; i++){
+        switch(group.permissions[i]){
             case "addticket":
                 $('#addTicket').prop('checked', true);
                 break;
@@ -98,6 +157,3 @@ function callbackPermissions(result) {
     }
 
 }
-
-
-

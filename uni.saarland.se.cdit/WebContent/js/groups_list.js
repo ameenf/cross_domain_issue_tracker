@@ -1,13 +1,9 @@
 "use strict";
 var allGroups = [];
-var usertoDelete;
+var grouptoDelete;
 
 $(document).ready(function () {
-    console.log("users.js");
-
     //Initial rest calls
-    //getProjects();
-    //getUsers();
     getGroups();
 
     //Changehandler for the search bar. Change something and press enter to call this
@@ -43,18 +39,15 @@ $(document).ready(function () {
         console.log(str.split("userButtons"));
         var split = str.split("userButtons");
         console.log(split);
-        usertoDelete = split[1];
+        grouptoDelete = split[1];
         $('#m_deleteUser').modal('toggle');
     });
 
 
     $('#deleteUser').on('click', function () {
-        //deleteUser(usertoDelete);
+        console.log(grouptoDelete);
+        deleteGroup(grouptoDelete);
         $('#m_deleteUser').modal('toggle');
-    });
-
-    $('.users').on('click', '.b_editUser', function () {
-        changePage("userPreferences.html");
     });
 });
 
@@ -67,7 +60,7 @@ function callbackCreateGroup(result) {
     $("#s_newUserIcon").removeClass("glyphicon-minus");
     $("#s_newUserIcon").addClass("glyphicon-plus");
 
-    addGroupRow(result.id, result.name.substring(0, 1), result.name, result.description);
+    addGroupRow(result.id, result.name.substring(0, 1), result.name, result.description, result.active);
 }
 
 function expandAddUser() {
@@ -75,9 +68,6 @@ function expandAddUser() {
     //Clear dropdown
     $('#dd_addUserProjectList').empty();
     //Add available projects to the dropdown
-    for (var key in allProjects) {
-        $('#dd_addUserProjectList').append('<option value="' + allProjects[key].id + '" selected="">' + allProjects[key].title + '</option>');
-    }
 
     //Toggle to switch icons
     $(".addUserExpandable").slideToggle("slow", function () {
@@ -100,14 +90,20 @@ function filterGroups() {
 
     for (var key in allGroups) {
         if ((allGroups[key].name).indexOf(substring.toLowerCase()) > -1) {
-            addGroupRow(allGroups[key].id, allGroups[key].name.substring(0, 1), allGroups[key].name, allGroups[key].description);
+            addGroupRow(allGroups[key].id, allGroups[key].name.substring(0, 1), allGroups[key].name, allGroups[key].description, allGroups[key].active);
         }
     }
     $('.user' + allGroups[allGroups.length - 1].id + ' .dividerHorizontal').remove();
 }
 
-function addGroupRow(id, tag, name, description) {
-    console.log("addUserRow");
+function addGroupRow(id, tag, name, description, active) {
+    /*console.log("addUserRow"); 
+    console.log(active);*/
+    if (!active){
+        console.log("not active");
+        return;
+    }
+    
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
     $('.users').append('<li class="itemRow user' + id + '"></li>');
     $('.user' + id).append('<div class="flexrow centeritems flexspacebetween innerUser' + id + '"></div>');
