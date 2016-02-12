@@ -531,11 +531,7 @@ function createUser(username, password, type) {
             callbackCreateUser(result);
         },
         error: function (a, b, c) {
-            console.log(a + " " + b + " " + c + "ERROR");
-            document.body.innerHTML = a + " " + b + " " + c + "ERROR";
-            if (c = "Unauthorized") {
-                window.location.href = baseurl;
-            }
+            callbackCreateUserFail(a, b, c);
         }
     })
 }

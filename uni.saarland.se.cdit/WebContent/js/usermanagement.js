@@ -180,3 +180,13 @@ function callbackGetProjects(result) {
 function callbackUpdateUser(result) {
     changePage('usermanagement.html');
 }
+
+function callbackUpdateUser(result) {
+    changePage('usermanagement.html');
+}
+
+function callbackCreateUserFail(a, b, c) {
+    $("#connectionExistsAlert").show();
+    $("#connectionExistsAlert").fadeTo(2000, 500).slideUp(500, function () {
+                $("#connectionExistsAlert").hide();
+            }
