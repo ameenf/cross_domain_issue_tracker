@@ -38,6 +38,10 @@ public class Authenticator implements ContainerRequestFilter{
 	
 	private UserManagementDAO dao = new UserManagementDAO();
 	private User user = new User();
+	private Method method ;
+	private String resourceName ;
+	private String httpMethod ;
+	private String httpPath ;
 	
 	@Context
     private ResourceInfo resourceInfo;
@@ -48,10 +52,10 @@ public class Authenticator implements ContainerRequestFilter{
 	@Override
     public void filter(ContainerRequestContext requestContext)
     {
-		Method method = resourceInfo.getResourceMethod();
-		String resourceName = resourceInfo.getResourceClass().getName();
-		String httpMethod = requestContext.getMethod();
-		String httpPath = requestContext.getUriInfo().getPath();
+		 method = resourceInfo.getResourceMethod();
+		 resourceName = resourceInfo.getResourceClass().getName();
+		 httpMethod = requestContext.getMethod();
+		 httpPath = requestContext.getUriInfo().getPath();
 		
 		//if(resource.isAnnotationPresent(PermitAll.class))
 		//	return;
@@ -94,7 +98,6 @@ public class Authenticator implements ContainerRequestFilter{
         	RolesAllowed roles = method.getAnnotation(RolesAllowed.class);
         	for(String role : roles.value()){
         		if(role.equals(userType)){
-        			System.out.print("Role: "+role);
         			return;
         		}
         	}
