@@ -165,6 +165,7 @@ public class ProjectDAO {
 	
 	public Project update(Project project) {
         Connection c = null;
+        int id = project.getId();
         try {
             c = ConnectionHelper.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE project " +
@@ -173,6 +174,22 @@ public class ProjectDAO {
             ps.setString(2, project.getDescription());
             ps.setInt(3, project.getId());
             ps.executeUpdate();
+            
+            String statement = "DELETE FROM project_users WHERE project_id = ?";
+            ps = c.prepareStatement(statement);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+            int users[] = project.getUsers();
+            if(users!=null){
+            	statement = "INSERT INTO project_users(project_id, users_id) VALUES (?, ?)";
+            	ps = c.prepareStatement(statement);
+            	for(int i=0;i<users.length;i++){
+            		ps.setInt(1, id);
+                    ps.setInt(2, users[i]);
+                    ps.executeUpdate();
+            	}
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
