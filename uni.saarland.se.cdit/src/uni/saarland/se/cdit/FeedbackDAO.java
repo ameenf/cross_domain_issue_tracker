@@ -36,7 +36,7 @@ public class FeedbackDAO {
 	public Feedback create(Feedback feedback) {
         Connection c = null;
         PreparedStatement ps = null;
-        String statement= "INSERT INTO feedback(feedback_text, ticket_id, user_id) VALUES (?, ?)";
+        String statement= "INSERT INTO feedback(feedback_text, ticket_id, user_id) VALUES (?, ?, ?)";
         try {
             c = ConnectionHelper.getConnection();
             ps = c.prepareStatement(statement, new String[] { "feedback_id", "feedback_date" });
