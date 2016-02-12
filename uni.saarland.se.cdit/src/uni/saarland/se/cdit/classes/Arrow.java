@@ -1,3 +1,9 @@
+/*
+ * 
+ *   This class represents the arrow in the workflow graph. Arrow needs to have an ID, a source node, a target node and a label
+ * 
+ */
+
 package uni.saarland.se.cdit.classes;
 import javax.xml.bind.annotation.XmlRootElement;
 

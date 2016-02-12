@@ -41,7 +41,7 @@ public class UserManagementResource {
 
 	}
 	
-	@RolesAllowed({"admin"})
+	@RolesAllowed({"admin","user"})
 	@JSONP(queryParam="jsonpCallback")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, "application/javascript", MediaType.APPLICATION_XML })
