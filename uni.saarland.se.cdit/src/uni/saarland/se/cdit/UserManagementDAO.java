@@ -71,7 +71,10 @@ public class UserManagementDAO {
             s.setInt(1, id);
             ResultSet rs = s.executeQuery();
             while (rs.next()) {
-                list.add(processRow(rs));
+            	User user = new User();
+            	user.setId(rs.getInt("users_id"));
+            	user.setUsername(rs.getString("users_username"));
+                list.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
