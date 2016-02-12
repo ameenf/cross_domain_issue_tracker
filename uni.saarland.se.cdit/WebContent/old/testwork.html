@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
+
+    <title>CDIT</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-switch.css">
+    <link rel="stylesheet" href="testwo.css">
+
+
+
+</head>
+
+<body>
+    <div class="onoffswitch">
+        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switchEditMode" id="myonoffswitch">
+        <label class="onoffswitch-label" for="myonoffswitch"></label>
+    </div>
+
+    <form class="form-horizontal">
+        <div class="nodeForm form-group form-group-sm has-feedback">
+            <label class="col-sm-1 control-label" for="nodeTitle">Node Title</label>
+            <div class="col-sm-2">
+                <input type="text" id="nodeTitleInput" class="form-control">
+            </div>
+        </div>
+        <button id="addNode" type="button" class="btn btn-default">Add Node</button>
+    </form>
+
+
+    <div id="diagramContainer">
+
+
+
+        <!-- Show Ticket -->
+        <div class="bgRaster">
+            <div id="1" class="item" style="top:50px">
+                <div class="topTitle">Research</div>
+            </div>
+            <div id="2" class="item" style="left:150px;top:200px">
+                <div class="topTitle">Concept</div>
+            </div>
+            <div id="3" class="item" style="left:300px; top:50px">
+                <div class="topTitle">Development</div>
+            </div>
+            <div id="4" class="item" style="left:450px;top:200px">
+                <div class="topTitle">Validate</div>
+            </div>
+            <div id="5" class="item" style="left:600px;top:50px">
+                <div class="topTitle">Optimization</div>
+            </div>
+            <div id="6" class="item" style="left:750px;top:200px">
+                <div class="amountTickets">50</div>
+                <div class="addTicket"> </div>
+                <div class="topTitle">TESTNODE</div>
+                <div class="showNode"> </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="js/jsPlumb-2.0.5-min.js"></script>
+    <script src="js/js.cookie.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="testwor.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
